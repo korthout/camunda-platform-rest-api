@@ -8,16 +8,20 @@
     <relativePath/>
     <!-- lookup parent from repository -->
   </parent>
+
   <groupId>com.github.korthout</groupId>
   <artifactId>zeebe-rest-client</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+
   <name>Zeebe REST client</name>
   <description>REST API to interact with a Zeebe cluster</description>
+
   <properties>
     <java.version>17</java.version>
     <kotlin.version>1.6.21</kotlin.version>
     <spotless.version>2.27.2</spotless.version>
   </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -74,10 +78,12 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
+
       <plugin>
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-maven-plugin</artifactId>
@@ -98,6 +104,7 @@
         </dependencies>
       </plugin>
     </plugins>
+    
     <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
     <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
   </build>
