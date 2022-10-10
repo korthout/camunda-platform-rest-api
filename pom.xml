@@ -57,6 +57,13 @@
             </includes>
             <flexmark/>
           </markdown>
+          <kotlin>
+            <ktfmt>
+              <version>0.41</version>
+              <!-- optional, other options are DROPBOX, GOOGLE and KOTLINLANG -->
+              <style>DEFAULT</style>
+            </ktfmt>
+          </kotlin>
         </configuration>
         <executions>
           <execution>
