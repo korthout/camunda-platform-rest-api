@@ -1,6 +1,7 @@
 target/
 !**/src/main/**/target/
 !**/src/test/**/target/
+*credentials*
 
 ### STS ###
 .apt_generated
