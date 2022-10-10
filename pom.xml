@@ -20,6 +20,7 @@
     <java.version>17</java.version>
     <kotlin.version>1.6.21</kotlin.version>
     <spotless.version>2.27.2</spotless.version>
+    <spring-zeebe-starter.version>8.0.10</spring-zeebe-starter.version>
   </properties>
 
   <dependencies>
@@ -34,6 +35,11 @@
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-stdlib-jdk8</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.camunda</groupId>
+      <artifactId>spring-zeebe-starter</artifactId>
+      <version>${spring-zeebe-starter.version}</version>
     </dependency>
 
     <dependency>
