@@ -18,15 +18,28 @@ The Zeebe REST Client aims to provide a simple but flexible REST API, to use Zee
 | `POST` | `/instance` | Not yet implemented                        |
 | ..     | ..          | Not yet implemented                        |
 
-## Usage
+## Getting Started
 
-For now, you'll need Maven to start the Zeebe REST Client.
+### Docker
 
-```sh
-mvn spring-boot:run
+The easiest way to start the Zeebe REST Client is using Docker.
+
+```shell
+docker pull ghcr.io/korthout/zeebe-rest-client:latest
 ```
 
-In the future, I'd like to expand this to Docker, so you don't need have Maven to run it.
+Using the provided [Docker Compose file](./docker/docker-compose.yaml) we can start a new local Zeebe cluster and connect the Zeebe REST Client to it.
+This is a great way to try out the Zeebe REST Client before connecting it to your production Zeebe cluster.
+
+```shell
+docker compose -f ./docker/docker-compose.yaml up -d
+```
+
+Once running, you can try it out the REST API.
+
+```shell
+curl localhost:8080/status
+```
 
 ### Configuration
 
