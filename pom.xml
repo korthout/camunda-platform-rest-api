@@ -54,6 +54,8 @@
     <spotless.version>2.27.2</spotless.version>
     <spring-zeebe-starter.version>8.1.8</spring-zeebe-starter.version>
     <jib-maven-plugin.version>3.3.0</jib-maven-plugin.version>
+    <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+    <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
   </properties>
 
   <dependencies>
@@ -157,6 +159,55 @@
               <classifier>javadoc</classifier>
               <classesDirectory>${basedir}/javadoc</classesDirectory>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Sign the artifacts -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>${maven-gpg-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+            <phase>verify</phase>
+            <configuration>
+              <gpgArguments>
+                <arg>--pinentry-mode</arg>
+                <arg>loopback</arg>
+              </gpgArguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Stage the artifacts on ossrh -->
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>${nexus-staging-maven-plugin.version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>ossrh</serverId>
+          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        </configuration>
+      </plugin>
+
+      <!-- Deploy the artifacts to Maven Central -->
+      <plugin>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>${maven-deploy-plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+            <phase>deploy</phase>
           </execution>
         </executions>
       </plugin>
