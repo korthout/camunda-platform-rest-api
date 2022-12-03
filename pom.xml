@@ -16,6 +16,38 @@
   <name>Zeebe REST client</name>
   <description>REST API to interact with a Zeebe cluster</description>
 
+  <developers>
+    <developer>
+      <name>Nico Korthout</name>
+      <email>nicokorthout@gmail.com</email>
+      <organization>Developer</organization>
+      <organizationUrl>https://www.github.com/korthout</organizationUrl>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:https://github.com/korthout/zeebe-rest-client.git</connection>
+    <developerConnection>scm:git:https://github.com/korthout/zeebe-rest-client.git</developerConnection>
+    <tag>HEAD</tag>
+    <url>https://github.com/korthout/zeebe-rest-client</url>
+  </scm>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/korthout/zeebe-rest-client/issues</url>
+  </issueManagement>
+
+  <distributionManagement>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
+
   <properties>
     <java.version>17</java.version>
     <kotlin.version>1.6.21</kotlin.version>
