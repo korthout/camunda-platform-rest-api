@@ -17,11 +17,20 @@ class StatusController {
 
   /** Retrieves the Topology of a Zeebe cluster. */
   @GetMapping
-  fun getStatus(): ResponseEntity<Topology> =
+  fun getStatus(): ResponseEntity<Response<Topology>> =
     if (!client.isRunning) ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build()
     else {
-      val topology = client.newTopologyRequest().send().join()
-      // todo: handle exceptional cases
-      ResponseEntity.ok(topology)
+      client
+        .newTopologyRequest()
+        .send()
+        .thenApply { ResponseEntity.ok(Response(it)) }
+        .exceptionally { ResponseEntity.badRequest().body(Response(it.toString())) }
+        .toCompletableFuture()
+        .join()
     }
+
+  data class Response<T>(val data: T?, val error: String?) {
+    constructor(data: T) : this(data, null)
+    constructor(error: String) : this(null, error)
+  }
 }
