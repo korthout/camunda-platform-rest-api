@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+  zeebe:
+    container_name: zeebe
+    image: camunda/zeebe:8.1.0
+    ports:
+      - "26500:26500"
+      - "9600:9600"
+    environment:
+      # allow running with low disk space
+      - ZEEBE_BROKER_DATA_DISKUSAGECOMMANDWATERMARK=0.998
+      - ZEEBE_BROKER_DATA_DISKUSAGEREPLICATIONWATERMARK=0.999
+      - "JAVA_TOOL_OPTIONS=-Xms512m -Xmx512m"
+    restart: always
+    volumes:
+      - zeebe:/usr/local/zeebe/data
+    networks:
+      - camunda-platform
+
+  zeebe-rest-client:
+    container_name: zeebe-rest-client
+    image: zeebe-rest-client:${ZEEBE_REST_CLIENT_VERSION:-0.0.1-SNAPSHOT}
+    ports:
+      - "8080:8080"
+    environment:
+      - ZEEBE_CLIENT_BROKER_GATEWAY-ADDRESS=zeebe:26500
+      - ZEEBE_CLIENT_SECURITY_PLAINTEXT=true
+    networks:
+      - camunda-platform
+    depends_on:
+      - zeebe
+
+volumes:
+  zeebe:
+
+networks:
+  camunda-platform:
