@@ -20,7 +20,7 @@ services:
 
   zeebe-rest-client:
     container_name: zeebe-rest-client
-    image: zeebe-rest-client:${ZEEBE_REST_CLIENT_VERSION:-0.0.1-SNAPSHOT}
+    image: ghcr.io/korthout/zeebe-rest-client:${ZEEBE_REST_CLIENT_VERSION:-latest}
     ports:
       - "8080:8080"
     environment:
