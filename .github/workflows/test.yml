@@ -2,7 +2,7 @@ name: Test
 on:
   pull_request: { }
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -14,9 +14,5 @@ jobs:
           cache: maven
       - name: Build Package
         run: mvn -B package -DskipTests
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
       - name: Verify Package
         run: mvn -B verify
