@@ -23,7 +23,7 @@ jobs:
           # new login with new container registry url and PAT
           echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
       - name: Build and Publish Package
-        run: mvn -B deploy -DskipTests
+        run: mvn -B deploy -DskipTests -Prelease
         env:
           MAVEN_USERNAME: korthout
           MAVEN_CENTRAL_TOKEN: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
