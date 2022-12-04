@@ -26,11 +26,11 @@ The easiest way to start the Zeebe REST Client is using Docker.
 docker pull ghcr.io/korthout/zeebe-rest-client:latest
 ```
 
-Using the provided [Docker Compose file](./docker/docker-compose.yaml) you can start a new local Zeebe cluster and connect the Zeebe REST Client to it.
+Using the provided [Docker Compose file](./docker/docker-compose.yml) you can start a new local Zeebe cluster and connect the Zeebe REST Client to it.
 This is a great way to try out the Zeebe REST Client before connecting it to your production Zeebe cluster.
 
 ```shell
-docker compose -f ./docker/docker-compose.yaml up -d
+docker compose -f ./docker/docker-compose.yml up -d
 ```
 
 Once running, you can try it out the REST API.
