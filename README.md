@@ -20,15 +20,13 @@ The Zeebe REST Client aims to provide a simple but flexible REST API, to use Zee
 
 ## Getting Started
 
-### Docker
-
 The easiest way to start the Zeebe REST Client is using Docker.
 
 ```shell
 docker pull ghcr.io/korthout/zeebe-rest-client:latest
 ```
 
-Using the provided [Docker Compose file](./docker/docker-compose.yaml) we can start a new local Zeebe cluster and connect the Zeebe REST Client to it.
+Using the provided [Docker Compose file](./docker/docker-compose.yaml) you can start a new local Zeebe cluster and connect the Zeebe REST Client to it.
 This is a great way to try out the Zeebe REST Client before connecting it to your production Zeebe cluster.
 
 ```shell
@@ -41,45 +39,37 @@ Once running, you can try it out the REST API.
 curl localhost:8080/status
 ```
 
-### Configuration
+## Connecting to your Camunda Platform SaaS cluster
+
+Connecting to your own cluster can be achieved using environment variables.
+In order to connect to a Camunda Platform SaaS cluster, you'll need to
+[create an API Client](https://docs.camunda.io/docs/components/console/manage-clusters/manage-api-clients/)
+first. Make sure to select the `Zeebe` scope.
+Once created, download the credentials as Spring Boot file.
+These Spring Boot properties can be directly used as environment variables.
+Simply pass the file to Docker when you start up the container.
+
+```shell
+docker run --env-file <path-to-credentials-spring-boot-file> -p 8080:8080 ghcr.io/korthout/zeebe-rest-client:latest
+```
 
 > **Note**
-> As an alternative you can use the [Zeebe Client environment variables](https://docs.camunda.io/docs/apis-clients/java-client/#bootstrapping) to set any of these configurations.
+> You'll need to open port 8080, so you can reach the API from your local machine, and it can reach the cluster.
 
-Connections to the Camunda SaaS can be easily configured,
-create the following entries in `src/main/resources/application.yaml`. .
+If you don't connect to the Camunda Platform SaaS production environment you may also have to adjust these properties:
 
-```yaml
-zeebe:
-  client:
-    cloud:
-      cluster-id: xxx
-      client-id: xxx
-      client-secret: xxx
-      region: bru-2
+```shell
+zeebe.client.cloud.base-url=zeebe.camunda.io
+zeebe.client.cloud.port=443
+zeebe.client.cloud.auth-url=https://login.cloud.camunda.io/oauth/token
 ```
 
-You can also configure the connection to a self-managed Zeebe broker:
+## Configuration
 
-```yaml
-zeebe:
-  client:
-    broker:
-      gateway-address: 127.0.0.1:26500
-    security:
-      plaintext: true
-```
-
-If you don't connect to the Camunda SaaS production environment you may have to also adjust these properties:
-
-```yaml
-zeebe:
-  client:
-    cloud:
-      base-url: zeebe.camunda.io
-      port: 443
-      auth-url: https://login.cloud.camunda.io/oauth/token
-```
+You can configure the underlying spring-zeebe client using any of the
+[Zeebe Client environment variables](https://docs.camunda.io/docs/apis-clients/java-client/#bootstrapping)
+and the [additional configuration options](https://github.com/camunda-community-hub/spring-zeebe#additional-configuration-options)
+offered by spring-zeebe.
 
 ## Acknowledgements
 
