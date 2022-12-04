@@ -1,0 +1,25 @@
+version: 2
+updates:
+  # Enable version updates for maven
+  - package-ecosystem: "maven"
+    directory: "/"
+    commit-message:
+      prefix: "deps(maven): "
+    labels:
+      - "dependencies"
+
+  # Enable version updates for the github actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    commit-message:
+      prefix: "deps(.github): "
+    labels:
+      - "dependencies"
+
+  # Enable version updates for docker
+  - package-ecosystem: "docker"
+    directory: "/"
+    commit-message:
+      prefix: "deps(docker): "
+    labels:
+      - "dependencies"
