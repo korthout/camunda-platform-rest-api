@@ -15,6 +15,7 @@ jobs:
       - name: Build Package
         run: mvn -B package -DskipTests
   test:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Verify Package
