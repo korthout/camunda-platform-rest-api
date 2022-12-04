@@ -3,6 +3,10 @@ updates:
   # Enable version updates for maven
   - package-ecosystem: "maven"
     directory: "/"
+    schedule:
+      interval: "daily"
+      time: "13:00"
+      timezone: "UTC"
     commit-message:
       prefix: "deps(maven): "
     labels:
@@ -11,6 +15,10 @@ updates:
   # Enable version updates for the github actions
   - package-ecosystem: "github-actions"
     directory: "/"
+    schedule:
+      interval: "daily"
+      time: "13:00"
+      timezone: "UTC"
     commit-message:
       prefix: "deps(.github): "
     labels:
@@ -19,6 +27,10 @@ updates:
   # Enable version updates for docker
   - package-ecosystem: "docker"
     directory: "/"
+    schedule:
+      interval: "daily"
+      time: "13:00"
+      timezone: "UTC"
     commit-message:
       prefix: "deps(docker): "
     labels:
