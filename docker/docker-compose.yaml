@@ -3,7 +3,7 @@ version: "3"
 services:
   zeebe:
     container_name: zeebe
-    image: camunda/zeebe:8.1.0
+    image: camunda/zeebe:8.1.4
     ports:
       - "26500:26500"
       - "9600:9600"
