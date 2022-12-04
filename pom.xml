@@ -54,7 +54,7 @@
     <spotless.version>2.27.2</spotless.version>
     <spring-zeebe-starter.version>8.1.8</spring-zeebe-starter.version>
     <jib-maven-plugin.version>3.3.0</jib-maven-plugin.version>
-    <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+    <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
     <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
   </properties>
 
