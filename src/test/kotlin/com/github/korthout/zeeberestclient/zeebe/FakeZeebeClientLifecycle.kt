@@ -14,6 +14,10 @@ class FakeZeebeClientLifecycle :
     ApplicationEventPublisher {}) {
 
   fun onTopologyRequest(topology: Topology) {
-    FakeZeebeClient.topology = topology
+    FakeZeebeClient.onTopologyRequest(topology)
+  }
+
+  fun onTopologyRequest(throwable: Throwable) {
+    FakeZeebeClient.onTopologyRequest(throwable)
   }
 }

@@ -12,7 +12,18 @@ import java.time.Duration
 /** Fake ZeebeClient for usage in tests. Simply set respective property and it will be returned. */
 object FakeZeebeClient : ZeebeClient {
 
+  var error: Throwable? = null
   var topology: Topology? = null
+
+  fun onTopologyRequest(topology: Topology) {
+    error = null
+    this.topology = topology
+  }
+
+  fun onTopologyRequest(error: Throwable) {
+    this.error = error
+    topology = null
+  }
 
   override fun close() {
     // do nothing
@@ -49,7 +60,7 @@ object FakeZeebeClient : ZeebeClient {
       }
 
       override fun send(): ZeebeFuture<Topology> {
-        return CompletedZeebeFuture(topology)
+        return CompletedZeebeFuture(topology, error)
       }
     }
   }
@@ -107,10 +118,6 @@ object FakeZeebeClient : ZeebeClient {
   }
 
   override fun newActivateJobsCommand(): ActivateJobsCommandStep1 {
-    TODO("Not yet implemented")
-  }
-
-  fun setTopologyRequest(topology: Topology) {
     TODO("Not yet implemented")
   }
 }
