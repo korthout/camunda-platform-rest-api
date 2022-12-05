@@ -18,13 +18,18 @@ class StatusController {
   /** Retrieves the Topology of a Zeebe cluster. */
   @GetMapping
   fun getStatus(): ResponseEntity<Response<Topology>> =
-    if (!client.isRunning) ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build()
+    if (!client.isRunning)
+      ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+        .body(
+          Response(
+            "Unable to connect to Zeebe cluster." +
+              " Please try again, or check the configuration settings."))
     else {
       client
         .newTopologyRequest()
         .send()
         .thenApply { ResponseEntity.ok(Response(it)) }
-        .exceptionally { ResponseEntity.badRequest().body(Response(it.toString())) }
+        .exceptionally { ResponseEntity.badRequest().body(Response(it.cause.toString())) }
         .toCompletableFuture()
         .join()
     }
