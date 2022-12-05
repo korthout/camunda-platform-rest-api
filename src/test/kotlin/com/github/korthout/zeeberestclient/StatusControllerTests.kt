@@ -77,14 +77,7 @@ class StatusControllerTests(@Autowired val mvc: MockMvc) {
       .perform(get("/status"))
       .andExpect(status().is4xxClientError)
       .andExpect(content().json("{ data: null }"))
-      .andExpect(
-        content()
-          .json(
-            """
-            {
-              error: "java.util.concurrent.CompletionException: java.lang.RuntimeException: bla"
-            }
-            """))
+      .andExpect(content().json("""{ error: "java.lang.RuntimeException: bla" }"""))
   }
 
   val emptyTopology =

@@ -29,7 +29,7 @@ class StatusController {
         .newTopologyRequest()
         .send()
         .thenApply { ResponseEntity.ok(Response(it)) }
-        .exceptionally { ResponseEntity.badRequest().body(Response(it.toString())) }
+        .exceptionally { ResponseEntity.badRequest().body(Response(it.cause.toString())) }
         .toCompletableFuture()
         .join()
     }
