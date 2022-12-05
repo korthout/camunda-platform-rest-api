@@ -20,4 +20,8 @@ class FakeZeebeClientLifecycle :
   fun onTopologyRequest(throwable: Throwable) {
     FakeZeebeClient.onTopologyRequest(throwable)
   }
+
+  fun isRunning(value: Boolean) {
+    this.running = value
+  }
 }

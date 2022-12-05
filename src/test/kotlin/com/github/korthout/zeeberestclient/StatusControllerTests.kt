@@ -54,6 +54,23 @@ class StatusControllerTests(@Autowired val mvc: MockMvc) {
   }
 
   @Test
+  fun getShouldRespondUnavailable() {
+    zeebeClient.isRunning(false)
+    mvc
+      .perform(get("/status"))
+      .andExpect(status().isServiceUnavailable)
+      .andExpect(content().json("{ data: null }"))
+      .andExpect(
+        content()
+          .json(
+            """
+            {
+              error: "Unable to connect to Zeebe cluster. Please try again, or check the configuration settings."
+            }
+            """))
+  }
+
+  @Test
   fun getShouldRespondError() {
     zeebeClient.onTopologyRequest(RuntimeException("bla"))
     mvc
