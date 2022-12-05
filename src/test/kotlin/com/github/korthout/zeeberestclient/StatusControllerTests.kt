@@ -1,10 +1,10 @@
 package com.github.korthout.zeeberestclient
 
 import com.github.korthout.zeeberestclient.zeebe.FakeZeebeClientLifecycle
-import io.camunda.zeebe.client.api.response.BrokerInfo
-import io.camunda.zeebe.client.api.response.Topology
+import io.camunda.zeebe.client.api.response.*
 import io.camunda.zeebe.spring.client.lifecycle.ZeebeClientLifecycle
 import java.lang.RuntimeException
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -30,6 +30,11 @@ class StatusControllerTests(@Autowired val mvc: MockMvc) {
 
   @Autowired lateinit var zeebeClient: FakeZeebeClientLifecycle
 
+  @BeforeEach
+  fun setup() {
+    zeebeClient.reset()
+  }
+
   @Test
   fun getShouldRespondEmptyTopology() {
     zeebeClient.onTopologyRequest(emptyTopology)
@@ -48,6 +53,41 @@ class StatusControllerTests(@Autowired val mvc: MockMvc) {
                 "replicationFactor": 0,
                 "gatewayVersion": "",
                 "brokers": []
+              }
+            }
+            """))
+  }
+
+  @Test
+  fun getShouldRespondCompleteTopology() {
+    zeebeClient.onTopologyRequest(completeTopology)
+    mvc
+      .perform(get("/status"))
+      .andExpect(status().isOk)
+      .andExpect(content().json("{ error: null }"))
+      .andExpect(
+        content()
+          .json(
+            """
+            {
+              "data": {
+                "clusterSize": 1,
+                "partitionsCount": 1,
+                "replicationFactor": 1,
+                "gatewayVersion": "1",
+                "brokers": [{
+                  "address": "localhost",
+                  "host": "localhost",
+                  "port": 25600,
+                  "version": "1",
+                  "partitions": [{
+                    "partitionId": 1,
+                    "role": "LEADER",
+                    "leader": true,
+                    "health": "HEALTHY"
+                  }],
+                  "nodeId": 1
+                }]
               }
             }
             """))
@@ -100,6 +140,71 @@ class StatusControllerTests(@Autowired val mvc: MockMvc) {
 
       override fun getGatewayVersion(): String {
         return ""
+      }
+    }
+
+  val completeTopology =
+    object : Topology {
+      override fun getBrokers(): MutableList<BrokerInfo> {
+        return arrayListOf(
+          object : BrokerInfo {
+            override fun getNodeId(): Int {
+              return 1
+            }
+
+            override fun getHost(): String {
+              return "localhost"
+            }
+
+            override fun getPort(): Int {
+              return 25600
+            }
+
+            override fun getAddress(): String {
+              return "localhost"
+            }
+
+            override fun getVersion(): String {
+              return "1"
+            }
+
+            override fun getPartitions(): MutableList<PartitionInfo> {
+              return arrayListOf(
+                object : PartitionInfo {
+                  override fun getPartitionId(): Int {
+                    return 1
+                  }
+
+                  override fun getRole(): PartitionBrokerRole {
+                    return PartitionBrokerRole.LEADER
+                  }
+
+                  override fun isLeader(): Boolean {
+                    return true
+                  }
+
+                  override fun getHealth(): PartitionBrokerHealth {
+                    return PartitionBrokerHealth.HEALTHY
+                  }
+                })
+            }
+          })
+      }
+
+      override fun getClusterSize(): Int {
+        return 1
+      }
+
+      override fun getPartitionsCount(): Int {
+        return 1
+      }
+
+      override fun getReplicationFactor(): Int {
+        return 1
+      }
+
+      override fun getGatewayVersion(): String {
+        return "1"
       }
     }
 }
