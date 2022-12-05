@@ -4,6 +4,7 @@ import com.github.korthout.zeeberestclient.zeebe.FakeZeebeClientLifecycle
 import io.camunda.zeebe.client.api.response.BrokerInfo
 import io.camunda.zeebe.client.api.response.Topology
 import io.camunda.zeebe.spring.client.lifecycle.ZeebeClientLifecycle
+import org.junit.jupiter.api.BeforeEach
 import java.lang.RuntimeException
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,6 +30,11 @@ class StatusControllerTests(@Autowired val mvc: MockMvc) {
   }
 
   @Autowired lateinit var zeebeClient: FakeZeebeClientLifecycle
+
+  @BeforeEach
+  fun setup() {
+    zeebeClient.reset()
+  }
 
   @Test
   fun getShouldRespondEmptyTopology() {
