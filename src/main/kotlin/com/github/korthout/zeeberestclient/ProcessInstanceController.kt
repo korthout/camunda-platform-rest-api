@@ -28,9 +28,18 @@ class ProcessInstanceController {
               "Unable to connect to Zeebe cluster." +
                 " Please try again, or check the configuration settings."))
       body.bpmnProcessId != null ->
-        send(client.newCreateInstanceCommand().bpmnProcessId(body.bpmnProcessId).latestVersion())
+        send(
+          client
+            .newCreateInstanceCommand()
+            .bpmnProcessId(body.bpmnProcessId)
+            .latestVersion()
+            .variables(body.variables))
       body.processDefinitionKey != null ->
-        send(client.newCreateInstanceCommand().processDefinitionKey(body.processDefinitionKey))
+        send(
+          client
+            .newCreateInstanceCommand()
+            .processDefinitionKey(body.processDefinitionKey)
+            .variables(body.variables))
       else ->
         ResponseEntity.badRequest()
           .body(
@@ -50,7 +59,11 @@ class ProcessInstanceController {
 
   data class CreateProcessInstanceRequest
   @JsonCreator
-  constructor(val bpmnProcessId: String?, val processDefinitionKey: Long?)
+  constructor(
+    val bpmnProcessId: String?,
+    val processDefinitionKey: Long?,
+    val variables: Map<String, Any>?
+  )
 
   data class Response<T>(val data: T?, val error: String?) {
     constructor(data: T) : this(data, null)
