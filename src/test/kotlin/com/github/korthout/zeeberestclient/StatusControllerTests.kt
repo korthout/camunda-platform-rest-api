@@ -4,6 +4,7 @@ import com.github.korthout.zeeberestclient.zeebe.FakeZeebeClientLifecycle
 import io.camunda.zeebe.client.api.response.BrokerInfo
 import io.camunda.zeebe.client.api.response.Topology
 import io.camunda.zeebe.spring.client.lifecycle.ZeebeClientLifecycle
+import java.lang.RuntimeException
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -48,6 +49,23 @@ class StatusControllerTests(@Autowired val mvc: MockMvc) {
                 "gatewayVersion": "",
                 "brokers": []
               }
+            }
+            """))
+  }
+
+  @Test
+  fun getShouldRespondError() {
+    zeebeClient.onTopologyRequest(RuntimeException("bla"))
+    mvc
+      .perform(get("/status"))
+      .andExpect(status().is4xxClientError)
+      .andExpect(content().json("{ data: null }"))
+      .andExpect(
+        content()
+          .json(
+            """
+            {
+              error: "java.util.concurrent.CompletionException: java.lang.RuntimeException: bla"
             }
             """))
   }
