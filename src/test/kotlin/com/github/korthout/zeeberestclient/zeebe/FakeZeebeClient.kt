@@ -130,21 +130,21 @@ object FakeZeebeClient : ZeebeClient {
         }
 
         override fun variables(variables: InputStream?): CreateProcessInstanceCommandStep3 {
-          TODO("Not yet implemented")
+          return this
         }
 
         override fun variables(variables: String?): CreateProcessInstanceCommandStep3 {
-          TODO("Not yet implemented")
+          return this
         }
 
         override fun variables(
           variables: MutableMap<String, Any>?
         ): CreateProcessInstanceCommandStep3 {
-          TODO("Not yet implemented")
+          return this
         }
 
         override fun variables(variables: Any?): CreateProcessInstanceCommandStep3 {
-          TODO("Not yet implemented")
+          return this
         }
 
         override fun startBeforeElement(elementId: String?): CreateProcessInstanceCommandStep3 {

@@ -155,6 +155,42 @@ class ProcessInstanceControllerTests(@Autowired val mvc: MockMvc) {
             """))
   }
 
+  @Test
+  fun postShouldAllowPassingAlongVariables() {
+    zeebeClient.onCreateInstanceCommand(FakeProcessInstanceEvent)
+    mvc
+      .perform(
+        post("/process-instances")
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(
+            """
+            {
+              "bpmnProcessId": "order-process",
+              "variables": {
+                "foo": true,
+                "bar": [{
+                  "baz": 1
+                }]
+              }
+            }
+            """))
+      .andExpect(status().isOk)
+      .andExpect(content().json("{ error: null }"))
+      .andExpect(
+        content()
+          .json(
+            """
+            {
+              data: {
+                "processDefinitionKey": 1,
+                "bpmnProcessId": "order-process",
+                "version": 1,
+                "processInstanceKey": 2
+              }
+            }
+            """))
+  }
+
   object FakeProcessInstanceEvent : ProcessInstanceEvent {
     override fun getProcessDefinitionKey(): Long {
       return 1L
