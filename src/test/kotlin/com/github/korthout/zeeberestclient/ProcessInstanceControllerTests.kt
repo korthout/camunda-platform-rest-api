@@ -108,6 +108,32 @@ class ProcessInstanceControllerTests(@Autowired val mvc: MockMvc) {
   }
 
   @Test
+  fun postShouldRejectWhenBothProcessDefinitionKeyAndBpmnProcessIdProvided() {
+    zeebeClient.onCreateInstanceCommand(FakeProcessInstanceEvent)
+    mvc
+      .perform(
+        post("/process-instances")
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(
+            """
+            {
+              "bpmnProcessId": "order-process",
+              "processDefinitionKey": 1
+            }
+            """))
+      .andExpect(status().isBadRequest)
+      .andExpect(content().json("{ data: null }"))
+      .andExpect(
+        content()
+          .json(
+            """
+            {
+              error: "Expected body to contain either `bpmnProcessId` or `processDefinitionKey`, but found both."
+            }
+            """))
+  }
+
+  @Test
   fun postShouldRespondError() {
     zeebeClient.onCreateInstanceCommand(RuntimeException("bla"))
     mvc

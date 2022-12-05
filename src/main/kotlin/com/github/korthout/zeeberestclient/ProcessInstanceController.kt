@@ -27,6 +27,11 @@ class ProcessInstanceController {
             Response(
               "Unable to connect to Zeebe cluster." +
                 " Please try again, or check the configuration settings."))
+      body.bpmnProcessId != null && body.processDefinitionKey != null ->
+        ResponseEntity.badRequest()
+          .body(
+            Response(
+              "Expected body to contain either `bpmnProcessId` or `processDefinitionKey`, but found both."))
       body.bpmnProcessId != null ->
         send(
           client
