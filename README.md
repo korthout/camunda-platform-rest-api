@@ -134,7 +134,9 @@ These Spring Boot properties can be directly used as environment variables.
 Simply pass the file to Docker when you start up the container.
 
 ```shell
-docker run --env-file <path-to-credentials-spring-boot-file> -p 8080:8080 ghcr.io/korthout/zeebe-rest-client:latest
+docker run -p 8080:8080 \
+  --env-file /path-to-credentials-spring-boot-file \
+  ghcr.io/korthout/zeebe-rest-client:latest
 ```
 
 > **Note**
