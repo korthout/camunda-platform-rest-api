@@ -1,6 +1,6 @@
 package com.github.korthout.zeeberestclient.zeebe
 
-import com.github.korthout.zeeberestclient.ProcessInstanceControllerTests
+import io.camunda.zeebe.client.api.response.ProcessInstanceEvent
 import io.camunda.zeebe.client.api.response.Topology
 import io.camunda.zeebe.spring.client.annotation.processor.ZeebeAnnotationProcessorRegistry
 import io.camunda.zeebe.spring.client.lifecycle.ZeebeClientLifecycle
@@ -27,9 +27,7 @@ class FakeZeebeClientLifecycle :
     FakeZeebeClient.onTopologyRequest(error)
   }
 
-  fun onCreateInstanceCommand(
-    processInstance: ProcessInstanceControllerTests.FakeProcessInstanceEvent
-  ) {
+  fun onCreateInstanceCommand(processInstance: ProcessInstanceEvent) {
     FakeZeebeClient.onCreateInstanceCommand(processInstance)
   }
 
