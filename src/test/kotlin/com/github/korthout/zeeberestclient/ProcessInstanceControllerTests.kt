@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 class ProcessInstanceControllerTests(@Autowired val mvc: MockMvc) {
 
   @TestConfiguration
-  internal class StatusControllerTestConfiguration {
+  internal class ControllerTestConfiguration {
     @Bean
     fun client(): ZeebeClientLifecycle {
       return FakeZeebeClientLifecycle()
