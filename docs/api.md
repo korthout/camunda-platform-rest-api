@@ -2,15 +2,15 @@
 This document tries to provide full reference documentation on the REST API. 
 
 ## Overview
-| Method |       Resource       |                Description                 |
-|--------|----------------------|--------------------------------------------|
-| `GET`  | `/status`            | Retrieves the Topology of a Zeebe cluster. |
-| `POST` | `/process-instances` | Creates a new Process Instance             |
-| ..     | ..                   | Not yet implemented                        |
+| Method |       Resource       | Description                              |
+|--------|----------------------|------------------------------------------|
+| `GET`  | `/status`            | Retrieve the Topology of a Zeebe cluster |
+| `POST` | `/process-instances` | Create a new Process Instance            |
+| ..     | ..                   | Not yet implemented                      |
 
 ## `GET /status`
 
-Retrieves the Topology of a Zeebe cluster.
+Retrieve the Topology of a Zeebe cluster.
 
 On HttpStatus `200`:
 
@@ -50,11 +50,11 @@ On HttpStatus `400`, `503`:
 
 ## `POST /process-instances`
 
-Creates a new Process Instance
+Create a new Process Instance.
 
-**Requires**
+**Required**
 - header: `'Content-Type': APPLICATION_JSON`
-- a body containing:
+- body containing:
 
 ```json5
 {
