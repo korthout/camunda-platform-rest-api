@@ -33,9 +33,4 @@ class StatusController {
         .toCompletableFuture()
         .join()
     }
-
-  data class Response<T>(val data: T?, val error: String?) {
-    constructor(data: T) : this(data, null)
-    constructor(error: String) : this(null, error)
-  }
 }
