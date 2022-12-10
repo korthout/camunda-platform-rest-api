@@ -1,2 +1,6 @@
 server:
   port: 8080
+zeebe:
+  client:
+    worker:
+      defaultName: "default"
