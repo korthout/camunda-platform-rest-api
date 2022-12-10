@@ -4,8 +4,11 @@ import io.camunda.zeebe.client.ZeebeClient
 import io.camunda.zeebe.client.ZeebeClientConfiguration
 import io.camunda.zeebe.client.api.ZeebeFuture
 import io.camunda.zeebe.client.api.command.*
+import io.camunda.zeebe.client.api.command.ActivateJobsCommandStep1.ActivateJobsCommandStep2
+import io.camunda.zeebe.client.api.command.ActivateJobsCommandStep1.ActivateJobsCommandStep3
 import io.camunda.zeebe.client.api.command.CreateProcessInstanceCommandStep1.CreateProcessInstanceCommandStep2
 import io.camunda.zeebe.client.api.command.CreateProcessInstanceCommandStep1.CreateProcessInstanceCommandStep3
+import io.camunda.zeebe.client.api.response.ActivateJobsResponse
 import io.camunda.zeebe.client.api.response.ActivatedJob
 import io.camunda.zeebe.client.api.response.ProcessInstanceEvent
 import io.camunda.zeebe.client.api.response.Topology
@@ -19,6 +22,7 @@ object FakeZeebeClient : ZeebeClient {
   var error: Throwable? = null
   var topology: Topology? = null
   var processInstance: ProcessInstanceEvent? = null
+  var jobs: ActivateJobsResponse? = null
 
   fun reset() {
     error = null
@@ -44,6 +48,16 @@ object FakeZeebeClient : ZeebeClient {
   fun onCreateInstanceCommand(error: Throwable) {
     this.error = error
     processInstance = null
+  }
+
+  fun onActivateJobsCommand(jobs: List<ActivatedJob>) {
+    error = null
+    this.jobs = ActivateJobsResponse { jobs }
+  }
+
+  fun onActivateJobsCommand(error: Throwable) {
+    this.error = error
+    jobs = null
   }
 
   override fun close() {
@@ -196,6 +210,38 @@ object FakeZeebeClient : ZeebeClient {
   }
 
   override fun newActivateJobsCommand(): ActivateJobsCommandStep1 {
-    TODO("Not yet implemented")
+    return ActivateJobsCommandStep1 {
+      ActivateJobsCommandStep2 {
+        object : ActivateJobsCommandStep3 {
+          override fun requestTimeout(
+            requestTimeout: Duration
+          ): FinalCommandStep<ActivateJobsResponse> {
+            return this
+          }
+
+          override fun send(): ZeebeFuture<ActivateJobsResponse> {
+            return CompletedZeebeFuture(jobs, error)
+          }
+
+          override fun timeout(timeout: Duration): ActivateJobsCommandStep3 {
+            return this
+          }
+
+          override fun workerName(workerName: String): ActivateJobsCommandStep3 {
+            return this
+          }
+
+          override fun fetchVariables(
+            fetchVariables: MutableList<String>
+          ): ActivateJobsCommandStep3 {
+            return this
+          }
+
+          override fun fetchVariables(vararg fetchVariables: String): ActivateJobsCommandStep3 {
+            return this
+          }
+        }
+      }
+    }
   }
 }
