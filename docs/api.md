@@ -6,6 +6,7 @@ This document tries to provide full reference documentation on the REST API.
 |--------|----------------------|------------------------------------------|
 | `GET`  | `/status`            | Retrieve the Topology of a Zeebe cluster |
 | `POST` | `/process-instances` | Create a new Process Instance            |
+| `GET`  | `/jobs`              | Activate Jobs                            |
 | ..     | ..                   | Not yet implemented                      |
 
 ## `GET /status`
@@ -78,6 +79,53 @@ On HttpStatus `200`:
     "bpmnProcessId": "string",
     "version": "number",
     "processInstanceKey": "number"
+  },
+  "error": null
+}
+```
+
+On HttpStatus `400`, `503`:
+
+```json5
+{
+  "data": null,
+  "error": "string"
+}
+```
+
+## `GET /jobs`
+
+Activate Jobs.
+
+**Required**
+- query param: `type`: `string`
+
+**Optional**
+- query param: `maxJobsToActivate`: `number` (default: `32`)
+- query param: `worker`: `string` (default: `"default"`)
+- query param: `jobTimeout`: `string` (default: `"5m"`)
+- query param: `fetchVariables`: `[string]` (default: `[]`)
+
+On HttpStatus `200`:
+
+```json5
+{
+  data: {
+    "jobs": [{
+      "key": "number",
+      "type": "string",
+      "processInstanceKey": "number",
+      "bpmnProcessId": "string",
+      "processDefinitionVersion": "number",
+      "processDefinitionKey": "number",
+      "elementId": "string",
+      "elementInstanceKey": "number",
+      "customHeaders": "object",
+      "worker": "string",
+      "retries": "number",
+      "deadline": "number",
+      "variables": "object"
+    }]
   },
   "error": null
 }
