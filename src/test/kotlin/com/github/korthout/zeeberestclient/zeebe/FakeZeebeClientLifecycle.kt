@@ -1,5 +1,6 @@
 package com.github.korthout.zeeberestclient.zeebe
 
+import io.camunda.zeebe.client.api.response.ActivatedJob
 import io.camunda.zeebe.client.api.response.ProcessInstanceEvent
 import io.camunda.zeebe.client.api.response.Topology
 import io.camunda.zeebe.spring.client.annotation.processor.ZeebeAnnotationProcessorRegistry
@@ -33,6 +34,14 @@ class FakeZeebeClientLifecycle :
 
   fun onCreateInstanceCommand(error: Throwable) {
     FakeZeebeClient.onCreateInstanceCommand(error)
+  }
+
+  fun onActivateJobsCommand(jobs: List<ActivatedJob>) {
+    FakeZeebeClient.onActivateJobsCommand(jobs)
+  }
+
+  fun onActivateJobsCommand(error: Throwable) {
+    FakeZeebeClient.onActivateJobsCommand(error)
   }
 
   fun isRunning(value: Boolean) {
