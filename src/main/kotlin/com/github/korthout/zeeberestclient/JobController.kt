@@ -1,7 +1,6 @@
 package com.github.korthout.zeeberestclient
 
 import com.blueanvil.toDuration
-import io.camunda.zeebe.client.api.command.ActivateJobsCommandStep1.ActivateJobsCommandStep3
 import io.camunda.zeebe.client.api.response.ActivateJobsResponse
 import io.camunda.zeebe.client.api.response.ActivatedJob
 import io.camunda.zeebe.spring.client.lifecycle.ZeebeClientLifecycle
@@ -33,23 +32,19 @@ class JobController {
               "Unable to connect to Zeebe cluster." +
                 " Please try again, or check the configuration settings."))
       else ->
-        send(
-          client
-            .newActivateJobsCommand()
-            .jobType(type)
-            .maxJobsToActivate(maxJobsToActivate)
-            .workerName(worker)
-            .timeout(timeout.toDuration())
-            .fetchVariables(fetchVariables))
+        client
+          .newActivateJobsCommand()
+          .jobType(type)
+          .maxJobsToActivate(maxJobsToActivate)
+          .workerName(worker)
+          .timeout(timeout.toDuration())
+          .fetchVariables(fetchVariables)
+          .send()
+          .thenApply { ResponseEntity.ok(Response(ActivatedJobs(it))) }
+          .exceptionally { ResponseEntity.badRequest().body(Response(it.cause.toString())) }
+          .toCompletableFuture()
+          .join()
     }
-
-  fun send(command: ActivateJobsCommandStep3): ResponseEntity<Response<ActivatedJobs>> =
-    command
-      .send()
-      .thenApply { ResponseEntity.ok(Response(ActivatedJobs(it))) }
-      .exceptionally { ResponseEntity.badRequest().body(Response(it.cause.toString())) }
-      .toCompletableFuture()
-      .join()
 
   class ActivatedJobs(activatedJobs: ActivateJobsResponse) {
     // transform the response, so it better fits to JSON (specifically for variables/variablesMap)
