@@ -9,7 +9,7 @@ This document tries to provide full reference documentation on the REST API.
 | `GET`   | `/status`            | Retrieve the Topology of a Zeebe cluster |
 | `POST`  | `/process-instances` | Create a new Process Instance            |
 | `GET`   | `/jobs`              | Activate Jobs                            |
-| `PATCH` | `/jobs/{key}`        | Update Jobs                              |
+| `PATCH` | `/jobs/{key}`        | Update a Job                             |
 | ..      | ..                   | Not yet implemented                      |
 
 ## `GET /status`
@@ -145,7 +145,7 @@ On HttpStatus `400`, `503`:
 
 ## `PATCH /jobs/{key}`
 
-Update Jobs.
+Update a Job.
 
 Can be used to change:
 - the `status` of a job to `completed`
