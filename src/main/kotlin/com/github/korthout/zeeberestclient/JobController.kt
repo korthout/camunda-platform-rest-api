@@ -53,10 +53,10 @@ class JobController {
 
   class ActivatedJobs(activatedJobs: ActivateJobsResponse) {
     // transform the response, so it better fits to JSON (specifically for variables/variablesMap)
-    val jobs = activatedJobs.jobs.map { Job(it) }
+    val jobs = activatedJobs.jobs.map { Job(it, "activated") }
   }
 
-  class Job(activatedJob: ActivatedJob) {
+  class Job(activatedJob: ActivatedJob, val status: String) {
     val key = activatedJob.key
     val type = activatedJob.type
     val processInstanceKey = activatedJob.processInstanceKey

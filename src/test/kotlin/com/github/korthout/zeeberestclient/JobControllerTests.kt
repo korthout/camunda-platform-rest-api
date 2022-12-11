@@ -62,7 +62,8 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
                   "deadline": -1,
                   "variables": {
                     "foo": "bar"
-                  }
+                  },
+                  "status": "activated"
                 }]
               }
             }
