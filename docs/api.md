@@ -1,8 +1,10 @@
 # API Reference
-This document tries to provide full reference documentation on the REST API. 
+
+This document tries to provide full reference documentation on the REST API.
 
 ## Overview
-| Method |       Resource       | Description                              |
+
+| Method |       Resource       |               Description                |
 |--------|----------------------|------------------------------------------|
 | `GET`  | `/status`            | Retrieve the Topology of a Zeebe cluster |
 | `POST` | `/process-instances` | Create a new Process Instance            |
@@ -139,3 +141,4 @@ On HttpStatus `400`, `503`:
   "error": "string"
 }
 ```
+

@@ -12,7 +12,7 @@ The Zeebe REST Client aims to provide a simple but flexible REST API, to use Zee
 
 ### API
 
-| Method |       Resource       | Description                              |
+| Method |       Resource       |               Description                |
 |--------|----------------------|------------------------------------------|
 | `GET`  | `/status`            | Retrieve the Topology of a Zeebe cluster |
 | `POST` | `/process-instances` | Create a new Process Instance            |
