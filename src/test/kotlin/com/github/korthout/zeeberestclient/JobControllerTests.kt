@@ -2,6 +2,7 @@ package com.github.korthout.zeeberestclient
 
 import com.github.korthout.zeeberestclient.zeebe.FakeZeebeClientLifecycle
 import io.camunda.zeebe.client.api.response.ActivatedJob
+import io.camunda.zeebe.client.api.response.CompleteJobResponse
 import io.camunda.zeebe.spring.client.lifecycle.ZeebeClientLifecycle
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -10,8 +11,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
@@ -190,8 +192,86 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
             """))
   }
 
+  @Test
+  fun putStatusShouldAcceptCompleted() {
+    zeebeClient.onCompleteJobsCommand(fakeCompletedJob)
+    mvc
+      .perform(
+        patch("/jobs/1")
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(
+            """
+            {
+              "status": "completed"
+            }
+            """))
+      .andExpect(status().isNoContent)
+  }
+
+  @Test
+  fun putStatusShouldRejectCompletedWithoutStatus() {
+    zeebeClient.onCompleteJobsCommand(fakeCompletedJob)
+    mvc
+      .perform(patch("/jobs/1").contentType(MediaType.APPLICATION_JSON).content("{}"))
+      .andExpect(status().isBadRequest)
+      .andExpect(content().json("{ data: null}"))
+      .andExpect(
+        content()
+          .json(
+            """
+            {
+              error: "Expected body property `status` to be provided, but it's null or undefined."
+            }
+            """))
+  }
+
+  @Test
+  fun putStatusShouldRejectCompletedWithUnknownStatus() {
+    zeebeClient.onCompleteJobsCommand(fakeCompletedJob)
+    mvc
+      .perform(
+        patch("/jobs/1")
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(
+            """
+            {
+              "status": "unknown"
+            }
+            """))
+      .andExpect(status().isBadRequest)
+      .andExpect(content().json("{ data: null}"))
+      .andExpect(
+        content()
+          .json(
+            """
+            {
+              error: "Expected body property `status` to be one of `[completed]`, but it's `unknown`."
+            }
+            """))
+  }
+
+  @Test
+  fun putStatusShouldAcceptCompletedWithVariables() {
+    zeebeClient.onCompleteJobsCommand(fakeCompletedJob)
+    mvc
+      .perform(
+        patch("/jobs/1")
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(
+            """
+            {
+              "status": "completed",
+              "variables": {
+                "foo": "bar"
+              }
+            }
+            """))
+      .andExpect(status().isNoContent)
+  }
+
   val fakeActivatedJobs: List<ActivatedJob> = listOf(FakeActivatedJob)
   val emptyActivatedJobs: List<ActivatedJob> = emptyList()
+  val fakeCompletedJob = object : CompleteJobResponse {}
 
   object FakeActivatedJob : ActivatedJob {
     override fun getKey(): Long {
