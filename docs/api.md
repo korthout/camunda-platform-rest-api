@@ -1,13 +1,16 @@
 # API Reference
-This document tries to provide full reference documentation on the REST API. 
+
+This document tries to provide full reference documentation on the REST API.
 
 ## Overview
-| Method |       Resource       | Description                              |
-|--------|----------------------|------------------------------------------|
-| `GET`  | `/status`            | Retrieve the Topology of a Zeebe cluster |
-| `POST` | `/process-instances` | Create a new Process Instance            |
-| `GET`  | `/jobs`              | Activate Jobs                            |
-| ..     | ..                   | Not yet implemented                      |
+
+| Method  |       Resource       |               Description                |
+|---------|----------------------|------------------------------------------|
+| `GET`   | `/status`            | Retrieve the Topology of a Zeebe cluster |
+| `POST`  | `/process-instances` | Create a new Process Instance            |
+| `GET`   | `/jobs`              | Activate Jobs                            |
+| `PATCH` | `/jobs/{key}`        | Update Jobs                              |
+| ..      | ..                   | Not yet implemented                      |
 
 ## `GET /status`
 
@@ -139,3 +142,40 @@ On HttpStatus `400`, `503`:
   "error": "string"
 }
 ```
+
+## `PATCH /jobs/{key}`
+
+Update Jobs.
+
+Can be used to change:
+- the `status` of a job to `completed`
+
+**Required**
+- path param: `key`: `long` (the key of the job)
+- body containing:
+
+```json5
+{
+  // required
+  "status": "string; one-of [completed]",
+
+  // optional
+  "variables": "object or null"
+}
+```
+
+On HttpStatus `204`:
+
+```
+EMPTY_RESPONSE
+```
+
+On HttpStatus `400`, `503`:
+
+```json5
+{
+  "data": null,
+  "error": "string"
+}
+```
+

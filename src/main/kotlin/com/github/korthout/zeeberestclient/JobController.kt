@@ -1,7 +1,8 @@
 package com.github.korthout.zeeberestclient
 
 import com.blueanvil.toDuration
-import io.camunda.zeebe.client.api.command.ActivateJobsCommandStep1.ActivateJobsCommandStep3
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonProperty
 import io.camunda.zeebe.client.api.response.ActivateJobsResponse
 import io.camunda.zeebe.client.api.response.ActivatedJob
 import io.camunda.zeebe.spring.client.lifecycle.ZeebeClientLifecycle
@@ -33,30 +34,26 @@ class JobController {
               "Unable to connect to Zeebe cluster." +
                 " Please try again, or check the configuration settings."))
       else ->
-        send(
-          client
-            .newActivateJobsCommand()
-            .jobType(type)
-            .maxJobsToActivate(maxJobsToActivate)
-            .workerName(worker)
-            .timeout(timeout.toDuration())
-            .fetchVariables(fetchVariables))
+        client
+          .newActivateJobsCommand()
+          .jobType(type)
+          .maxJobsToActivate(maxJobsToActivate)
+          .workerName(worker)
+          .timeout(timeout.toDuration())
+          .fetchVariables(fetchVariables)
+          .send()
+          .thenApply { ResponseEntity.ok(Response(ActivatedJobs(it))) }
+          .exceptionally { ResponseEntity.badRequest().body(Response(it.cause.toString())) }
+          .toCompletableFuture()
+          .join()
     }
-
-  fun send(command: ActivateJobsCommandStep3): ResponseEntity<Response<ActivatedJobs>> =
-    command
-      .send()
-      .thenApply { ResponseEntity.ok(Response(ActivatedJobs(it))) }
-      .exceptionally { ResponseEntity.badRequest().body(Response(it.cause.toString())) }
-      .toCompletableFuture()
-      .join()
 
   class ActivatedJobs(activatedJobs: ActivateJobsResponse) {
     // transform the response, so it better fits to JSON (specifically for variables/variablesMap)
-    val jobs = activatedJobs.jobs.map { Job(it) }
+    val jobs = activatedJobs.jobs.map { Job(it, "activated") }
   }
 
-  class Job(activatedJob: ActivatedJob) {
+  class Job(activatedJob: ActivatedJob, val status: String) {
     val key = activatedJob.key
     val type = activatedJob.type
     val processInstanceKey = activatedJob.processInstanceKey
@@ -71,4 +68,44 @@ class JobController {
     val deadline = activatedJob.deadline
     val variables = activatedJob.variablesAsMap
   }
+
+  /** Update a job. */
+  @PatchMapping("/{key}")
+  fun updateJob(
+    @PathVariable("key") key: Long,
+    @RequestBody body: UpdateJobRequest
+  ): ResponseEntity<Response<Nothing>> =
+    when {
+      !client.isRunning ->
+        ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+          .body(
+            Response(
+              "Unable to connect to Zeebe cluster." +
+                " Please try again, or check the configuration settings."))
+      else ->
+        when (body.status) {
+          "completed" ->
+            client
+              .newCompleteCommand(key)
+              .variables(body.variables ?: emptyMap())
+              .send()
+              .thenApply { ResponseEntity.noContent().build<Response<Nothing>>() }
+              .exceptionally { ResponseEntity.badRequest().body(Response(it.cause.toString())) }
+              .toCompletableFuture()
+              .join()
+          else ->
+            ResponseEntity.badRequest()
+              .body(
+                Response(
+                  "Expected body property `status` to be one of `[completed]`," +
+                    " but it's `${body.status}`."))
+        }
+    }
+
+  data class UpdateJobRequest
+  @JsonCreator
+  constructor(
+    @JsonProperty("status", required = true) val status: String,
+    @JsonProperty("variables", defaultValue = "{}") val variables: Map<String, Any>?
+  )
 }

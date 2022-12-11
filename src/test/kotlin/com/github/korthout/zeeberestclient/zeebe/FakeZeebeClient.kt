@@ -8,10 +8,7 @@ import io.camunda.zeebe.client.api.command.ActivateJobsCommandStep1.ActivateJobs
 import io.camunda.zeebe.client.api.command.ActivateJobsCommandStep1.ActivateJobsCommandStep3
 import io.camunda.zeebe.client.api.command.CreateProcessInstanceCommandStep1.CreateProcessInstanceCommandStep2
 import io.camunda.zeebe.client.api.command.CreateProcessInstanceCommandStep1.CreateProcessInstanceCommandStep3
-import io.camunda.zeebe.client.api.response.ActivateJobsResponse
-import io.camunda.zeebe.client.api.response.ActivatedJob
-import io.camunda.zeebe.client.api.response.ProcessInstanceEvent
-import io.camunda.zeebe.client.api.response.Topology
+import io.camunda.zeebe.client.api.response.*
 import io.camunda.zeebe.client.api.worker.JobWorkerBuilderStep1
 import java.io.InputStream
 import java.time.Duration
@@ -23,11 +20,14 @@ object FakeZeebeClient : ZeebeClient {
   var topology: Topology? = null
   var processInstance: ProcessInstanceEvent? = null
   var jobs: ActivateJobsResponse? = null
+  var completedJob: CompleteJobResponse? = null
 
   fun reset() {
     error = null
     topology = null
     processInstance = null
+    jobs = null
+    completedJob = null
   }
 
   fun onTopologyRequest(topology: Topology) {
@@ -60,12 +60,48 @@ object FakeZeebeClient : ZeebeClient {
     jobs = null
   }
 
+  fun onCompleteJobsCommand(job: CompleteJobResponse) {
+    error = null
+    completedJob = job
+  }
+
+  fun onCompleteJobsCommand(error: Throwable) {
+    this.error = error
+    completedJob = null
+  }
+
   override fun close() {
     // do nothing
   }
 
   override fun newCompleteCommand(jobKey: Long): CompleteJobCommandStep1 {
-    TODO("Not yet implemented")
+    return object : CompleteJobCommandStep1 {
+      override fun requestTimeout(
+        requestTimeout: Duration?
+      ): FinalCommandStep<CompleteJobResponse> {
+        return this
+      }
+
+      override fun send(): ZeebeFuture<CompleteJobResponse> {
+        return CompletedZeebeFuture(completedJob, error)
+      }
+
+      override fun variables(variables: InputStream?): CompleteJobCommandStep1 {
+        return this
+      }
+
+      override fun variables(variables: String?): CompleteJobCommandStep1 {
+        return this
+      }
+
+      override fun variables(variables: MutableMap<String, Any>?): CompleteJobCommandStep1 {
+        return this
+      }
+
+      override fun variables(variables: Any?): CompleteJobCommandStep1 {
+        return this
+      }
+    }
   }
 
   override fun newCompleteCommand(job: ActivatedJob?): CompleteJobCommandStep1 {
