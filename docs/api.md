@@ -116,6 +116,7 @@ On HttpStatus `200`:
   data: {
     "jobs": [{
       "key": "number",
+      "status: "activated",
       "type": "string",
       "processInstanceKey": "number",
       "bpmnProcessId": "string",
