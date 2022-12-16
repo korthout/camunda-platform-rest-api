@@ -291,18 +291,18 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
   fun putStatusShouldAcceptFailedWithRetryBackOff() {
     zeebeClient.onFailJobsCommand(fakeFailedJob)
     mvc
-            .perform(
-                    patch("/jobs/1")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(
-                                    """
+      .perform(
+        patch("/jobs/1")
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(
+            """
                {
                  "status": "failed",
                  "retries": 3,
                  "retryBackOff": "10s"
                }
                """))
-            .andExpect(status().isNoContent)
+      .andExpect(status().isNoContent)
   }
 
   @Test

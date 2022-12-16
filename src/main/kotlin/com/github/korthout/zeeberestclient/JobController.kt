@@ -120,7 +120,8 @@ class JobController {
         .join()
     } else {
       ResponseEntity.badRequest()
-        .body(Response("Expected body property `retries` to be provided, but it's null or undefined."))
+        .body(
+          Response("Expected body property `retries` to be provided, but it's null or undefined."))
     }
 
   data class UpdateJobRequest
