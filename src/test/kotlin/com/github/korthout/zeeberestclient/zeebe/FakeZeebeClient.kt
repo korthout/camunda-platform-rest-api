@@ -123,7 +123,9 @@ object FakeZeebeClient : ZeebeClient {
     return object : FailJobCommandStep1 {
       override fun retries(remainingRetries: Int): FailJobCommandStep1.FailJobCommandStep2 {
         return object : FailJobCommandStep1.FailJobCommandStep2 {
-          override fun requestTimeout(requestTimeout: Duration?): FinalCommandStep<FailJobResponse> {
+          override fun requestTimeout(
+            requestTimeout: Duration?
+          ): FinalCommandStep<FailJobResponse> {
             return this
           }
 
@@ -131,17 +133,17 @@ object FakeZeebeClient : ZeebeClient {
             return CompletedZeebeFuture(failedJob, error)
           }
 
-          override fun retryBackoff(backoffTimeout: Duration?): FailJobCommandStep1.FailJobCommandStep2 {
+          override fun retryBackoff(
+            backoffTimeout: Duration?
+          ): FailJobCommandStep1.FailJobCommandStep2 {
             return this
           }
 
           override fun errorMessage(errorMsg: String?): FailJobCommandStep1.FailJobCommandStep2 {
             return this
           }
-
         }
       }
-
     }
   }
 

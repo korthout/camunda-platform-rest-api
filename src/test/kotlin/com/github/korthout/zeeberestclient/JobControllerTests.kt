@@ -275,10 +275,10 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
     zeebeClient.onFailJobsCommand(fakeFailedJob)
     mvc
       .perform(
-         patch("/jobs/1")
-             .contentType(MediaType.APPLICATION_JSON)
-             .content(
-               """
+        patch("/jobs/1")
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(
+            """
                {
                  "status": "fail",
                  "retries": 3,
@@ -292,11 +292,11 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
   fun putStatusShouldAcceptFailedWithErrorMessage() {
     zeebeClient.onFailJobsCommand(fakeFailedJob)
     mvc
-            .perform(
-                    patch("/jobs/1")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(
-                                    """
+      .perform(
+        patch("/jobs/1")
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(
+            """
                {
                  "status": "fail",
                  "retries": 3,
@@ -304,30 +304,30 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
                  "errorMessage": "I failed"
                }
                """))
-            .andExpect(status().isNoContent)
+      .andExpect(status().isNoContent)
   }
 
   @Test
   fun putStatusShouldRejectFailedWithoutRetries() {
     zeebeClient.onFailJobsCommand(fakeFailedJob)
     mvc
-            .perform(
-                    patch("/jobs/1")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(
-                                    """
+      .perform(
+        patch("/jobs/1")
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(
+            """
                {
                  "status": "fail",
                  "retryBackOff": "10s",
                  "errorMessage": "I failed"
                }
                """))
-            .andExpect(status().isBadRequest)
-            .andExpect(content().json("""{ "data": null}"""))
-            .andExpect(
-                    content()
-                            .json(
-                                    """
+      .andExpect(status().isBadRequest)
+      .andExpect(content().json("""{ "data": null}"""))
+      .andExpect(
+        content()
+          .json(
+            """
             {
               "error": "The following properties are required: 'retries', 'retryBackoff'."
             }

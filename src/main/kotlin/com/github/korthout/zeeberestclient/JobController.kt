@@ -51,57 +51,59 @@ class JobController {
   /** Update a job. */
   @PatchMapping("/{key}")
   fun updateJob(
-          @PathVariable("key") key: Long,
-          @RequestBody body: UpdateJobRequest
+    @PathVariable("key") key: Long,
+    @RequestBody body: UpdateJobRequest
   ): ResponseEntity<Response<Nothing>> =
-          when {
-            !client.isRunning ->
-              ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-                      .body(
-                              Response(
-                                      "Unable to connect to Zeebe cluster." +
-                                              " Please try again, or check the configuration settings."))
-            else ->
-              when (body.status) {
-                "completed" ->
-                  client
-                          .newCompleteCommand(key)
-                          .variables(body.variables ?: emptyMap())
-                          .send()
-                          .thenApply { ResponseEntity.noContent().build<Response<Nothing>>() }
-                          .exceptionally { ResponseEntity.badRequest().body(Response(it.cause.toString())) }
-                          .toCompletableFuture()
-                          .join()
-                "fail" -> processFailJobRequest(key, body)
-                else ->
-                  ResponseEntity.badRequest()
-                          .body(
-                                  Response(
-                                          "Expected body property `status` to be one of `[completed]`," +
-                                                  " but it's `${body.status}`."))
-              }
-          }
+    when {
+      !client.isRunning ->
+        ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+          .body(
+            Response(
+              "Unable to connect to Zeebe cluster." +
+                " Please try again, or check the configuration settings."))
+      else ->
+        when (body.status) {
+          "completed" ->
+            client
+              .newCompleteCommand(key)
+              .variables(body.variables ?: emptyMap())
+              .send()
+              .thenApply { ResponseEntity.noContent().build<Response<Nothing>>() }
+              .exceptionally { ResponseEntity.badRequest().body(Response(it.cause.toString())) }
+              .toCompletableFuture()
+              .join()
+          "fail" -> processFailJobRequest(key, body)
+          else ->
+            ResponseEntity.badRequest()
+              .body(
+                Response(
+                  "Expected body property `status` to be one of `[completed]`," +
+                    " but it's `${body.status}`."))
+        }
+    }
   class ActivatedJobs(activatedJobs: ActivateJobsResponse) {
     // transform the response, so it better fits to JSON (specifically for variables/variablesMap)
     val jobs = activatedJobs.jobs.map { Job(it, "activated") }
   }
 
-  fun processFailJobRequest(key:Long, request:UpdateJobRequest): ResponseEntity<Response<Nothing>> =
+  fun processFailJobRequest(
+    key: Long,
+    request: UpdateJobRequest
+  ): ResponseEntity<Response<Nothing>> =
     if (request.retries != null && request.retryBackOff != null) {
       client
-              .newFailCommand(key)
-              .retries(request.retries)
-              .retryBackoff(request.retryBackOff.toDuration())
-              .errorMessage(request.errorMessage ?: "")
-              .send().thenApply { ResponseEntity.noContent().build<Response<Nothing>>() }
-              .exceptionally { ResponseEntity.badRequest().body(Response(it.cause.toString())) }
-              .toCompletableFuture()
-              .join()
+        .newFailCommand(key)
+        .retries(request.retries)
+        .retryBackoff(request.retryBackOff.toDuration())
+        .errorMessage(request.errorMessage ?: "")
+        .send()
+        .thenApply { ResponseEntity.noContent().build<Response<Nothing>>() }
+        .exceptionally { ResponseEntity.badRequest().body(Response(it.cause.toString())) }
+        .toCompletableFuture()
+        .join()
     } else {
       ResponseEntity.badRequest()
-              .body(
-                      Response(
-                              "The following properties are required: 'retries', 'retryBackoff'."))
+        .body(Response("The following properties are required: 'retries', 'retryBackoff'."))
     }
 
   class Job(activatedJob: ActivatedJob, val status: String) {
