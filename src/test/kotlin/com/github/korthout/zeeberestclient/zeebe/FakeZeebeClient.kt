@@ -21,6 +21,7 @@ object FakeZeebeClient : ZeebeClient {
   var processInstance: ProcessInstanceEvent? = null
   var jobs: ActivateJobsResponse? = null
   var completedJob: CompleteJobResponse? = null
+  var failedJob: FailJobResponse? = null
 
   fun reset() {
     error = null
@@ -70,6 +71,16 @@ object FakeZeebeClient : ZeebeClient {
     completedJob = null
   }
 
+  fun onFailJobsCommand(job: FailJobResponse) {
+    error = null
+    failedJob = job
+  }
+
+  fun onFailJobsCommand(error: Throwable) {
+    this.error = error
+    failedJob = null
+  }
+
   override fun close() {
     // do nothing
   }
@@ -109,7 +120,31 @@ object FakeZeebeClient : ZeebeClient {
   }
 
   override fun newFailCommand(jobKey: Long): FailJobCommandStep1 {
-    TODO("Not yet implemented")
+    return object : FailJobCommandStep1 {
+      override fun retries(remainingRetries: Int): FailJobCommandStep1.FailJobCommandStep2 {
+        return object : FailJobCommandStep1.FailJobCommandStep2 {
+          override fun requestTimeout(
+            requestTimeout: Duration?
+          ): FinalCommandStep<FailJobResponse> {
+            return this
+          }
+
+          override fun send(): ZeebeFuture<FailJobResponse> {
+            return CompletedZeebeFuture(failedJob, error)
+          }
+
+          override fun retryBackoff(
+            backoffTimeout: Duration?
+          ): FailJobCommandStep1.FailJobCommandStep2 {
+            return this
+          }
+
+          override fun errorMessage(errorMsg: String?): FailJobCommandStep1.FailJobCommandStep2 {
+            return this
+          }
+        }
+      }
+    }
   }
 
   override fun newFailCommand(job: ActivatedJob?): FailJobCommandStep1 {

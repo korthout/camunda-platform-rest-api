@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.camunda.zeebe.client.api.response.ActivateJobsResponse
 import io.camunda.zeebe.client.api.response.ActivatedJob
 import io.camunda.zeebe.spring.client.lifecycle.ZeebeClientLifecycle
+import java.time.Duration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -93,6 +94,7 @@ class JobController {
               .exceptionally { ResponseEntity.badRequest().body(Response(it.cause.toString())) }
               .toCompletableFuture()
               .join()
+          "failed" -> processFailJobRequest(key, body)
           else ->
             ResponseEntity.badRequest()
               .body(
@@ -102,10 +104,34 @@ class JobController {
         }
     }
 
+  fun processFailJobRequest(
+    key: Long,
+    request: UpdateJobRequest
+  ): ResponseEntity<Response<Nothing>> =
+    if (request.retries != null) {
+      client
+        .newFailCommand(key)
+        .retries(request.retries)
+        .retryBackoff(request.retryBackOff?.toDuration() ?: Duration.ZERO)
+        .errorMessage(request.errorMessage ?: "")
+        .send()
+        .thenApply { ResponseEntity.noContent().build<Response<Nothing>>() }
+        .exceptionally { ResponseEntity.badRequest().body(Response(it.cause.toString())) }
+        .toCompletableFuture()
+        .join()
+    } else {
+      ResponseEntity.badRequest()
+        .body(
+          Response("Expected body property `retries` to be provided, but it's null or undefined."))
+    }
+
   data class UpdateJobRequest
   @JsonCreator
   constructor(
     @JsonProperty("status", required = true) val status: String,
+    @JsonProperty("retries", required = false) val retries: Int?,
+    @JsonProperty("retryBackOff", required = false) val retryBackOff: String?,
+    @JsonProperty("errorMessage", required = false) val errorMessage: String?,
     @JsonProperty("variables", defaultValue = "{}") val variables: Map<String, Any>?
   )
 }
