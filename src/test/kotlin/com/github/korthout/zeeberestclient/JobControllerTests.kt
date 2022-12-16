@@ -3,6 +3,7 @@ package com.github.korthout.zeeberestclient
 import com.github.korthout.zeeberestclient.zeebe.FakeZeebeClientLifecycle
 import io.camunda.zeebe.client.api.response.ActivatedJob
 import io.camunda.zeebe.client.api.response.CompleteJobResponse
+import io.camunda.zeebe.client.api.response.FailJobResponse
 import io.camunda.zeebe.spring.client.lifecycle.ZeebeClientLifecycle
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -42,13 +43,13 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
     mvc
       .perform(get("/jobs").queryParam("type", "type"))
       .andExpect(status().isOk)
-      .andExpect(content().json("{ error: null }"))
+      .andExpect(content().json("""{ "error": null }"""))
       .andExpect(
         content()
           .json(
             """
             {
-              data: {
+              "data": {
                 "jobs": [{
                   "key": 4,
                   "type": "type",
@@ -78,13 +79,13 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
     mvc
       .perform(get("/jobs").queryParam("type", "type"))
       .andExpect(status().isServiceUnavailable)
-      .andExpect(content().json("{ data: null }"))
+      .andExpect(content().json("""{ "data": null }"""))
       .andExpect(
         content()
           .json(
             """
             {
-              error: "Unable to connect to Zeebe cluster. Please try again, or check the configuration settings."
+              "error": "Unable to connect to Zeebe cluster. Please try again, or check the configuration settings."
             }
             """))
   }
@@ -95,13 +96,13 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
     mvc
       .perform(get("/jobs"))
       .andExpect(status().isBadRequest)
-      .andExpect(content().json("{ data: null }"))
+      .andExpect(content().json("""{ "data": null }"""))
       .andExpect(
         content()
           .json(
             """
             {
-              error: "Expected query parameter `type` to be provided, but it's null or undefined."
+              "error": "Expected query parameter `type` to be provided, but it's null or undefined."
             }
             """))
   }
@@ -112,8 +113,8 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
     mvc
       .perform(get("/jobs").queryParam("type", "type"))
       .andExpect(status().is4xxClientError)
-      .andExpect(content().json("{ data: null }"))
-      .andExpect(content().json("""{ error: "java.lang.RuntimeException: bla" }"""))
+      .andExpect(content().json("""{ "data": null }"""))
+      .andExpect(content().json("""{ "error": "java.lang.RuntimeException: bla" }"""))
   }
 
   @Test
@@ -122,13 +123,13 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
     mvc
       .perform(get("/jobs").queryParam("type", "type").queryParam("maxJobsToActivate", "0"))
       .andExpect(status().isOk)
-      .andExpect(content().json("{ error: null }"))
+      .andExpect(content().json("""{ "error": null }"""))
       .andExpect(
         content()
           .json(
             """
              {
-              data: {
+              "data": {
                 "jobs": []
               }
             }
@@ -141,13 +142,13 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
     mvc
       .perform(get("/jobs").queryParam("type", "type").queryParam("worker", "worker"))
       .andExpect(status().isOk)
-      .andExpect(content().json("{ error: null }"))
+      .andExpect(content().json("""{ "error": null }"""))
       .andExpect(
         content()
           .json(
             """
              {
-              data: {
+              "data": {
                 "jobs": []
               }
             }
@@ -160,13 +161,13 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
     mvc
       .perform(get("/jobs").queryParam("type", "type").queryParam("jobTimeout", "1h30m"))
       .andExpect(status().isOk)
-      .andExpect(content().json("{ error: null }"))
+      .andExpect(content().json("""{ "error": null }"""))
       .andExpect(
         content()
           .json(
             """
              {
-              data: {
+              "data": {
                 "jobs": []
               }
             }
@@ -179,13 +180,13 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
     mvc
       .perform(get("/jobs").queryParam("type", "type").queryParam("fetchVariables", "foo"))
       .andExpect(status().isOk)
-      .andExpect(content().json("{ error: null }"))
+      .andExpect(content().json("""{ "error": null }"""))
       .andExpect(
         content()
           .json(
             """
              {
-              data: {
+              "data": {
                 "jobs": []
               }
             }
@@ -214,13 +215,13 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
     mvc
       .perform(patch("/jobs/1").contentType(MediaType.APPLICATION_JSON).content("{}"))
       .andExpect(status().isBadRequest)
-      .andExpect(content().json("{ data: null}"))
+      .andExpect(content().json("""{ "data": null}"""))
       .andExpect(
         content()
           .json(
             """
             {
-              error: "Expected body property `status` to be provided, but it's null or undefined."
+              "error": "Expected body property `status` to be provided, but it's null or undefined."
             }
             """))
   }
@@ -239,13 +240,13 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
             }
             """))
       .andExpect(status().isBadRequest)
-      .andExpect(content().json("{ data: null}"))
+      .andExpect(content().json("""{ "data": null}"""))
       .andExpect(
         content()
           .json(
             """
             {
-              error: "Expected body property `status` to be one of `[completed]`, but it's `unknown`."
+              "error": "Expected body property `status` to be one of `[completed]`, but it's `unknown`."
             }
             """))
   }
@@ -269,9 +270,74 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
       .andExpect(status().isNoContent)
   }
 
+  @Test
+  fun putStatusShouldAcceptFailed() {
+    zeebeClient.onFailJobsCommand(fakeFailedJob)
+    mvc
+      .perform(
+         patch("/jobs/1")
+             .contentType(MediaType.APPLICATION_JSON)
+             .content(
+               """
+               {
+                 "status": "fail",
+                 "retries": 3,
+                 "retryBackOff": "10s"
+               }
+               """))
+      .andExpect(status().isNoContent)
+  }
+
+  @Test
+  fun putStatusShouldAcceptFailedWithErrorMessage() {
+    zeebeClient.onFailJobsCommand(fakeFailedJob)
+    mvc
+            .perform(
+                    patch("/jobs/1")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(
+                                    """
+               {
+                 "status": "fail",
+                 "retries": 3,
+                 "retryBackOff": "10s",
+                 "errorMessage": "I failed"
+               }
+               """))
+            .andExpect(status().isNoContent)
+  }
+
+  @Test
+  fun putStatusShouldRejectFailedWithoutRetries() {
+    zeebeClient.onFailJobsCommand(fakeFailedJob)
+    mvc
+            .perform(
+                    patch("/jobs/1")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(
+                                    """
+               {
+                 "status": "fail",
+                 "retryBackOff": "10s",
+                 "errorMessage": "I failed"
+               }
+               """))
+            .andExpect(status().isBadRequest)
+            .andExpect(content().json("""{ "data": null}"""))
+            .andExpect(
+                    content()
+                            .json(
+                                    """
+            {
+              "error": "The following properties are required: 'retries', 'retryBackoff'."
+            }
+            """))
+  }
+
   val fakeActivatedJobs: List<ActivatedJob> = listOf(FakeActivatedJob)
   val emptyActivatedJobs: List<ActivatedJob> = emptyList()
   val fakeCompletedJob = object : CompleteJobResponse {}
+  val fakeFailedJob = object : FailJobResponse {}
 
   object FakeActivatedJob : ActivatedJob {
     override fun getKey(): Long {
