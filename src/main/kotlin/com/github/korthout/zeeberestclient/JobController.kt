@@ -48,6 +48,27 @@ class JobController {
           .join()
     }
 
+  class ActivatedJobs(activatedJobs: ActivateJobsResponse) {
+    // transform the response, so it better fits to JSON (specifically for variables/variablesMap)
+    val jobs = activatedJobs.jobs.map { Job(it, "activated") }
+  }
+
+  class Job(activatedJob: ActivatedJob, val status: String) {
+    val key = activatedJob.key
+    val type = activatedJob.type
+    val processInstanceKey = activatedJob.processInstanceKey
+    val bpmnProcessId = activatedJob.bpmnProcessId
+    val processDefinitionVersion = activatedJob.processDefinitionVersion
+    val processDefinitionKey = activatedJob.processDefinitionKey
+    val elementId = activatedJob.elementId
+    val elementInstanceKey = activatedJob.elementInstanceKey
+    val customHeaders = activatedJob.customHeaders
+    val worker = activatedJob.worker
+    val retries = activatedJob.retries
+    val deadline = activatedJob.deadline
+    val variables = activatedJob.variablesAsMap
+  }
+
   /** Update a job. */
   @PatchMapping("/{key}")
   fun updateJob(
@@ -81,10 +102,6 @@ class JobController {
                     " but it's `${body.status}`."))
         }
     }
-  class ActivatedJobs(activatedJobs: ActivateJobsResponse) {
-    // transform the response, so it better fits to JSON (specifically for variables/variablesMap)
-    val jobs = activatedJobs.jobs.map { Job(it, "activated") }
-  }
 
   fun processFailJobRequest(
     key: Long,
@@ -106,21 +123,6 @@ class JobController {
         .body(Response("The following properties are required: 'retries', 'retryBackoff'."))
     }
 
-  class Job(activatedJob: ActivatedJob, val status: String) {
-    val key = activatedJob.key
-    val type = activatedJob.type
-    val processInstanceKey = activatedJob.processInstanceKey
-    val bpmnProcessId = activatedJob.bpmnProcessId
-    val processDefinitionVersion = activatedJob.processDefinitionVersion
-    val processDefinitionKey = activatedJob.processDefinitionKey
-    val elementId = activatedJob.elementId
-    val elementInstanceKey = activatedJob.elementInstanceKey
-    val customHeaders = activatedJob.customHeaders
-    val worker = activatedJob.worker
-    val retries = activatedJob.retries
-    val deadline = activatedJob.deadline
-    val variables = activatedJob.variablesAsMap
-  }
   data class UpdateJobRequest
   @JsonCreator
   constructor(
