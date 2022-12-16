@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.time.Duration
 
 @RestController
 @RequestMapping("/jobs")
@@ -111,7 +112,7 @@ class JobController {
       client
         .newFailCommand(key)
         .retries(request.retries)
-        .retryBackoff(request.retryBackOff?.toDuration())
+        .retryBackoff(request.retryBackOff?.toDuration() ?: Duration.ZERO)
         .errorMessage(request.errorMessage ?: "")
         .send()
         .thenApply { ResponseEntity.noContent().build<Response<Nothing>>() }
