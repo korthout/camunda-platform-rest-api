@@ -280,12 +280,29 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
           .content(
             """
                {
-                 "status": "fail",
+                 "status": "failed",
+                 "retries": 3
+               }
+               """))
+      .andExpect(status().isNoContent)
+  }
+
+  @Test
+  fun putStatusShouldAcceptFailedWithRetryBackOff() {
+    zeebeClient.onFailJobsCommand(fakeFailedJob)
+    mvc
+            .perform(
+                    patch("/jobs/1")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(
+                                    """
+               {
+                 "status": "failed",
                  "retries": 3,
                  "retryBackOff": "10s"
                }
                """))
-      .andExpect(status().isNoContent)
+            .andExpect(status().isNoContent)
   }
 
   @Test
@@ -298,9 +315,8 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
           .content(
             """
                {
-                 "status": "fail",
+                 "status": "failed",
                  "retries": 3,
-                 "retryBackOff": "10s",
                  "errorMessage": "I failed"
                }
                """))
@@ -317,9 +333,7 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
           .content(
             """
                {
-                 "status": "fail",
-                 "retryBackOff": "10s",
-                 "errorMessage": "I failed"
+                 "status": "failed"
                }
                """))
       .andExpect(status().isBadRequest)
@@ -329,7 +343,7 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
           .json(
             """
             {
-              "error": "The following properties are required: 'retries', 'retryBackoff'."
+              "error": "Expected body property `retries` to be provided, but it's null or undefined."
             }
             """))
   }

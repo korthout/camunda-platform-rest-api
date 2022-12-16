@@ -93,7 +93,7 @@ class JobController {
               .exceptionally { ResponseEntity.badRequest().body(Response(it.cause.toString())) }
               .toCompletableFuture()
               .join()
-          "fail" -> processFailJobRequest(key, body)
+          "failed" -> processFailJobRequest(key, body)
           else ->
             ResponseEntity.badRequest()
               .body(
@@ -107,11 +107,11 @@ class JobController {
     key: Long,
     request: UpdateJobRequest
   ): ResponseEntity<Response<Nothing>> =
-    if (request.retries != null && request.retryBackOff != null) {
+    if (request.retries != null) {
       client
         .newFailCommand(key)
         .retries(request.retries)
-        .retryBackoff(request.retryBackOff.toDuration())
+        .retryBackoff(request.retryBackOff?.toDuration())
         .errorMessage(request.errorMessage ?: "")
         .send()
         .thenApply { ResponseEntity.noContent().build<Response<Nothing>>() }
@@ -120,7 +120,7 @@ class JobController {
         .join()
     } else {
       ResponseEntity.badRequest()
-        .body(Response("The following properties are required: 'retries', 'retryBackoff'."))
+        .body(Response("Expected body property `retries` to be provided, but it's null or undefined."))
     }
 
   data class UpdateJobRequest
