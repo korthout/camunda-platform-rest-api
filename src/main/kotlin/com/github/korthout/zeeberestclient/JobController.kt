@@ -95,6 +95,7 @@ class JobController {
               .toCompletableFuture()
               .join()
           "failed" -> processFailJobRequest(key, body)
+          "error_thrown" -> processThrowErrorRequest(key, body)
           else ->
             ResponseEntity.badRequest()
               .body(
@@ -125,12 +126,34 @@ class JobController {
           Response("Expected body property `retries` to be provided, but it's null or undefined."))
     }
 
+  fun processThrowErrorRequest(
+    key: Long,
+    request: UpdateJobRequest
+  ): ResponseEntity<Response<Nothing>> =
+    if (request.errorCode != null) {
+      client
+        .newThrowErrorCommand(key)
+        .errorCode(request.errorCode)
+        .errorMessage(request.errorMessage ?: "")
+        .send()
+        .thenApply { ResponseEntity.noContent().build<Response<Nothing>>() }
+        .exceptionally { ResponseEntity.badRequest().body(Response(it.cause.toString())) }
+        .toCompletableFuture()
+        .join()
+    } else {
+      ResponseEntity.badRequest()
+        .body(
+          Response(
+            "Expected body property `errorCode` to be provided, but it's null or undefined."))
+    }
+
   data class UpdateJobRequest
   @JsonCreator
   constructor(
     @JsonProperty("status", required = true) val status: String,
     @JsonProperty("retries", required = false) val retries: Int?,
     @JsonProperty("retryBackOff", required = false) val retryBackOff: String?,
+    @JsonProperty("errorCode", required = false) val errorCode: String?,
     @JsonProperty("errorMessage", required = false) val errorMessage: String?,
     @JsonProperty("variables", defaultValue = "{}") val variables: Map<String, Any>?
   )

@@ -81,6 +81,10 @@ object FakeZeebeClient : ZeebeClient {
     failedJob = null
   }
 
+  fun onThrowErrorCommand(error: Throwable) {
+    this.error = error
+  }
+
   override fun close() {
     // do nothing
   }
@@ -152,7 +156,25 @@ object FakeZeebeClient : ZeebeClient {
   }
 
   override fun newThrowErrorCommand(jobKey: Long): ThrowErrorCommandStep1 {
-    TODO("Not yet implemented")
+    return object : ThrowErrorCommandStep1 {
+      override fun errorCode(errorCode: String?): ThrowErrorCommandStep1.ThrowErrorCommandStep2 {
+        return object : ThrowErrorCommandStep1.ThrowErrorCommandStep2 {
+          override fun requestTimeout(requestTimeout: Duration?): FinalCommandStep<Void>? {
+            return this
+          }
+
+          override fun send(): ZeebeFuture<Void>? {
+            return CompletedZeebeFuture(null, error)
+          }
+
+          override fun errorMessage(
+            errorMsg: String?
+          ): ThrowErrorCommandStep1.ThrowErrorCommandStep2 {
+            return this
+          }
+        }
+      }
+    }
   }
 
   override fun newThrowErrorCommand(job: ActivatedJob?): ThrowErrorCommandStep1 {
