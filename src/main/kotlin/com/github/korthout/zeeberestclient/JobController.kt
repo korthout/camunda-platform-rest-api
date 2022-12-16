@@ -6,11 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.camunda.zeebe.client.api.response.ActivateJobsResponse
 import io.camunda.zeebe.client.api.response.ActivatedJob
 import io.camunda.zeebe.spring.client.lifecycle.ZeebeClientLifecycle
+import java.time.Duration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.time.Duration
 
 @RestController
 @RequestMapping("/jobs")
