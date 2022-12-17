@@ -14,7 +14,7 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <name>Camunda Platform REST API</name>
-  <description>REST API to interact with a Zeebe cluster</description>
+  <description>REST API to interact with Camunda Platform 8</description>
 
   <developers>
     <developer>

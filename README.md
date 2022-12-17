@@ -1,6 +1,6 @@
 # Camunda Platform REST API
 
-A REST API to interact with a [Zeebe](github.com/camunda/zeebe) cluster.
+A REST API to interact with [Camunda Platform 8](https://camunda.com/platform/).
 
 ## About
 
