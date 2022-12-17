@@ -13,7 +13,7 @@
   <artifactId>camunda-platform-rest-api</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
-  <name>Zeebe REST client</name>
+  <name>Camunda Platform REST API</name>
   <description>REST API to interact with a Zeebe cluster</description>
 
   <developers>

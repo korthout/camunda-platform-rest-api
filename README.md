@@ -1,4 +1,4 @@
-# Zeebe REST Client
+# Camunda Platform REST API
 
 A REST API to interact with a [Zeebe](github.com/camunda/zeebe) cluster.
 
@@ -8,7 +8,7 @@ Zeebe only has a gRPC API.
 Users can either use one of the existing client implementations, or implement their own.
 For most programming languages this is possible, but gRPC is not available to all languages.
 In addition, not all common programming languages have a dedicated Zeebe client.
-The Zeebe REST Client aims to provide a simple but flexible REST API, to use Zeebe from all code.
+The Camunda Platform REST API aims to provide a simple but flexible REST API, to use Zeebe from all code.
 
 ### API
 
@@ -24,14 +24,14 @@ You can find the full API reference documentation under [`docs/api.md`](docs/api
 
 ## Getting Started
 
-The easiest way to start the Zeebe REST Client is using Docker.
+The easiest way to start the Camunda Platform REST API is using Docker.
 
 ```shell
 docker pull ghcr.io/korthout/camunda-platform-rest-api:latest
 ```
 
-Using the provided [Docker Compose file](./docker/docker-compose.yml) you can start a new local Zeebe cluster and connect the Zeebe REST Client to it.
-This is a great way to try out the Zeebe REST Client before connecting it to your production Zeebe cluster.
+Using the provided [Docker Compose file](./docker/docker-compose.yml) you can start a new local Zeebe cluster and connect the Camunda Platform REST API to it.
+This is a great way to try out the Camunda Platform REST API before connecting it to your production Zeebe cluster.
 
 ```shell
 docker compose -f ./docker/docker-compose.yml up -d
@@ -89,7 +89,7 @@ docker run -p 8080:8080 \
 
 ### Secure Communication using TLS
 
-By default, the Zeebe REST Client communicates securely with the Zeebe Gateway over TLS.
+By default, the Camunda Platform REST API communicates securely with the Zeebe Gateway over TLS.
 Without any configuration, the client looks in the system's certificate store for a CA certificate with which to validate the gateway's certificate chain.
 If you wish to use TLS without having to install a certificate in client's system, you can specify a CA certificate using `ZEEBE_CA_CERTIFICATE_PATH`.
 
@@ -129,4 +129,4 @@ This project is build using:
 
 ## License
 
-Zeebe REST Client is Open Source software released under the [Apache 2.0 license](https://www.apache.org/licenses/LICENSE-2.0.html).
+Camunda Platform REST API is Open Source software released under the [Apache 2.0 license](https://www.apache.org/licenses/LICENSE-2.0.html).
