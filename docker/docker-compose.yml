@@ -18,9 +18,9 @@ services:
     networks:
       - camunda-platform
 
-  zeebe-rest-client:
-    container_name: zeebe-rest-client
-    image: ghcr.io/korthout/zeebe-rest-client:${ZEEBE_REST_CLIENT_VERSION:-latest}
+  camunda-platform-rest-api:
+    container_name: camunda-platform-rest-api
+    image: ghcr.io/korthout/camunda-platform-rest-api:${ZEEBE_REST_CLIENT_VERSION:-latest}
     ports:
       - "8080:8080"
     environment:

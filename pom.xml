@@ -10,7 +10,7 @@
   </parent>
 
   <groupId>com.github.korthout</groupId>
-  <artifactId>zeebe-rest-client</artifactId>
+  <artifactId>camunda-platform-rest-api</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
   <name>Zeebe REST client</name>
@@ -26,15 +26,15 @@
   </developers>
 
   <scm>
-    <connection>scm:git:https://github.com/korthout/zeebe-rest-client.git</connection>
-    <developerConnection>scm:git:https://github.com/korthout/zeebe-rest-client.git</developerConnection>
+    <connection>scm:git:https://github.com/korthout/camunda-platform-rest-api.git</connection>
+    <developerConnection>scm:git:https://github.com/korthout/camunda-platform-rest-api.git</developerConnection>
     <tag>HEAD</tag>
-    <url>https://github.com/korthout/zeebe-rest-client</url>
+    <url>https://github.com/korthout/camunda-platform-rest-api</url>
   </scm>
 
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/korthout/zeebe-rest-client/issues</url>
+    <url>https://github.com/korthout/camunda-platform-rest-api/issues</url>
   </issueManagement>
 
   <distributionManagement>
@@ -183,7 +183,7 @@
         <version>${jib-maven-plugin.version}</version>
         <configuration>
           <to>
-            <image>ghcr.io/korthout/zeebe-rest-client</image>
+            <image>ghcr.io/korthout/camunda-platform-rest-api</image>
             <tags>${project.version}</tags>
           </to>
           <container>

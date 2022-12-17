@@ -27,7 +27,7 @@ You can find the full API reference documentation under [`docs/api.md`](docs/api
 The easiest way to start the Zeebe REST Client is using Docker.
 
 ```shell
-docker pull ghcr.io/korthout/zeebe-rest-client:latest
+docker pull ghcr.io/korthout/camunda-platform-rest-api:latest
 ```
 
 Using the provided [Docker Compose file](./docker/docker-compose.yml) you can start a new local Zeebe cluster and connect the Zeebe REST Client to it.
@@ -56,7 +56,7 @@ Simply pass the file to Docker when you start up the container.
 ```shell
 docker run -p 8080:8080 \
   --env-file /path-to-credentials-spring-boot-file \
-  ghcr.io/korthout/zeebe-rest-client:latest
+  ghcr.io/korthout/camunda-platform-rest-api:latest
 ```
 
 > **Note**
@@ -81,7 +81,7 @@ Simply pass the address of the Zeebe Gateway as `ZEEBE_CLIENT_BROKER_GATEWAYADDR
 # Example connecting to Self-Managed Zeebe Gateway at 192.168.50.118
 docker run -p 8080:8080 \
   -e ZEEBE_CLIENT_BROKER_GATEWAYADDRESS=192.168.50.118:26500 \
-  ghcr.io/korthout/zeebe-rest-client:latest
+  ghcr.io/korthout/camunda-platform-rest-api:latest
 ```
 
 > **Note**
@@ -98,7 +98,7 @@ If you wish to use TLS without having to install a certificate in client's syste
 docker run -p 8080:8080 \
   -e ZEEBE_CLIENT_BROKER_GATEWAYADDRESS=192.168.50.118:26500 \
   -e ZEEBE_CA_CERTIFICATE_PATH=/path-to-ca-certificate \
-  ghcr.io/korthout/zeebe-rest-client:latest
+  ghcr.io/korthout/camunda-platform-rest-api:latest
 ```
 
 ### Disabling TLS
@@ -111,7 +111,7 @@ then you can use `ZEEBE_INSECURE_CONNECTION` to disable the secure communication
 docker run -p 8080:8080 \
   -e ZEEBE_CLIENT_BROKER_GATEWAYADDRESS=192.168.50.118:26500 \
   -e ZEEBE_INSECURE_CONNECTION=true \
-  ghcr.io/korthout/zeebe-rest-client:latest
+  ghcr.io/korthout/camunda-platform-rest-api:latest
 ```
 
 ## Configuration
