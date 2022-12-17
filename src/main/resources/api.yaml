@@ -1,0 +1,7 @@
+openapi: 3.0.0
+info:
+  title: Camunda Platform REST API
+  description: REST API to interact with Camunda Platform 8
+  version: 0.0.1
+
+paths: {}
