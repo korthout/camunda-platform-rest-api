@@ -12,16 +12,15 @@ class CompletedZeebeFuture<T>(private val value: T? = null, private val error: T
   ZeebeFuture<T>, CompletableFuture<T>() {
 
   init {
-    if (value != null) {
-      complete(value)
-    } else {
+    if (error != null) {
       completeExceptionally(error)
+    } else if (value == null) {
+      complete(null)
+    } else {
+      complete(value)
     }
   }
 
-  override fun complete(value: T): Boolean {
-    return super.complete(value)
-  }
   override fun join(timeout: Long, unit: TimeUnit?): T {
     if (value != null) {
       return value

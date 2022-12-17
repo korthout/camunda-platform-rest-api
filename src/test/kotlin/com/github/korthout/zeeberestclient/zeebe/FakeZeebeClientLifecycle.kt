@@ -62,6 +62,10 @@ class FakeZeebeClientLifecycle :
     FakeZeebeClient.onFailJobsCommand(error)
   }
 
+  fun onThrowErrorCommand(error: Throwable) {
+    FakeZeebeClient.onThrowErrorCommand(error)
+  }
+
   fun isRunning(value: Boolean) {
     this.running = value
   }

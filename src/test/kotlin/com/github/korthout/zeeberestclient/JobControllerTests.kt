@@ -348,10 +348,68 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
             """))
   }
 
+  @Test
+  fun putStatusShouldAcceptErrorThrown() {
+    mvc
+      .perform(
+        patch("/jobs/1")
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(
+            """
+               {
+                 "status": "error_thrown",
+                 "errorCode": "123"
+               }
+               """))
+      .andExpect(status().isNoContent)
+  }
+
+  @Test
+  fun putStatusShouldAcceptErrorThrownWithErrorMessage() {
+    mvc
+      .perform(
+        patch("/jobs/1")
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(
+            """
+               {
+                 "status": "error_thrown",
+                 "errorCode": "123",
+                 "errorMessage": "I failed"
+               }
+               """))
+      .andExpect(status().isNoContent)
+  }
+
+  @Test
+  fun putStatusShouldRejectErrorThrownWithoutErrorCode() {
+    mvc
+      .perform(
+        patch("/jobs/1")
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(
+            """
+               {
+                 "status": "error_thrown"
+               }
+               """))
+      .andExpect(status().isBadRequest)
+      .andExpect(content().json("""{ "data": null}"""))
+      .andExpect(
+        content()
+          .json(
+            """
+            {
+              "error": "Expected body property `errorCode` to be provided, but it's null or undefined."
+            }
+            """))
+  }
+
   val fakeActivatedJobs: List<ActivatedJob> = listOf(FakeActivatedJob)
   val emptyActivatedJobs: List<ActivatedJob> = emptyList()
   val fakeCompletedJob = object : CompleteJobResponse {}
   val fakeFailedJob = object : FailJobResponse {}
+  val throwError = null
 
   object FakeActivatedJob : ActivatedJob {
     override fun getKey(): Long {
