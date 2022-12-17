@@ -1,6 +1,6 @@
-package com.github.korthout.zeeberestclient
+package com.github.korthout.camundarestapi
 
-import com.github.korthout.zeeberestclient.zeebe.FakeZeebeClientLifecycle
+import com.github.korthout.camundarestapi.zeebe.FakeZeebeClientLifecycle
 import io.camunda.zeebe.client.api.response.*
 import io.camunda.zeebe.spring.client.lifecycle.ZeebeClientLifecycle
 import java.lang.RuntimeException

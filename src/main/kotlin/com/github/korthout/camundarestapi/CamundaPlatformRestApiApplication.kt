@@ -1,11 +1,11 @@
-package com.github.korthout.zeeberestclient
+package com.github.korthout.camundarestapi
 
 import io.camunda.zeebe.spring.client.EnableZeebeClient
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
-@SpringBootApplication @EnableZeebeClient class ZeebeRestClientApplication
+@SpringBootApplication @EnableZeebeClient class CamundaPlatformRestApiApplication
 
 fun main(args: Array<String>) {
-  runApplication<ZeebeRestClientApplication>(*args)
+  runApplication<CamundaPlatformRestApiApplication>(*args)
 }

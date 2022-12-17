@@ -1,10 +1,10 @@
-package com.github.korthout.zeeberestclient
+package com.github.korthout.camundarestapi
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class ZeebeRestClientApplicationTests {
+class CamundaPlatformRestApiApplicationTests {
 
   @Test fun contextLoads() {}
 }

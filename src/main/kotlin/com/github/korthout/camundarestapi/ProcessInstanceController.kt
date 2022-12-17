@@ -1,4 +1,4 @@
-package com.github.korthout.zeeberestclient
+package com.github.korthout.camundarestapi
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import io.camunda.zeebe.client.api.command.CreateProcessInstanceCommandStep1.CreateProcessInstanceCommandStep3

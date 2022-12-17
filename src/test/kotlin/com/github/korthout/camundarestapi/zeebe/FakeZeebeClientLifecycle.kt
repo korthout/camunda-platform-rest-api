@@ -1,4 +1,4 @@
-package com.github.korthout.zeeberestclient.zeebe
+package com.github.korthout.camundarestapi.zeebe
 
 import io.camunda.zeebe.client.api.response.ActivatedJob
 import io.camunda.zeebe.client.api.response.CompleteJobResponse

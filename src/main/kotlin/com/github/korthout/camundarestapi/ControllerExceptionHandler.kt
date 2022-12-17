@@ -1,4 +1,4 @@
-package com.github.korthout.zeeberestclient
+package com.github.korthout.camundarestapi
 
 import com.fasterxml.jackson.databind.exc.MismatchedInputException
 import java.lang.Exception
