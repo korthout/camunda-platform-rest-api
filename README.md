@@ -123,9 +123,16 @@ offered by spring-zeebe.
 
 ## Acknowledgements
 
-This project is build using:
+This software would not be possible without these awesome projects:
 
 - [Spring Zeebe](https://github.com/camunda-community-hub/spring-zeebe)
+  \- Easily use the Zeebe Java Client in your Spring or Spring Boot projects
+- [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator)
+  \- Generate clients, servers, and documentation from OpenAPI 2.0/3.x documents
+- [kotlin-duration-string](https://github.com/blueanvil/kotlin-duration-string)
+  \- A tiny Kotlin library for dealing with human-readable duration strings like `2h 45m 50s`
+
+A full list of projects we depend on can be found in the [pom file](pom.xml).
 
 ## License
 
