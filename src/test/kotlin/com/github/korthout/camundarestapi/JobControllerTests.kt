@@ -1,6 +1,6 @@
-package com.github.korthout.zeeberestclient
+package com.github.korthout.camundarestapi
 
-import com.github.korthout.zeeberestclient.zeebe.FakeZeebeClientLifecycle
+import com.github.korthout.camundarestapi.zeebe.FakeZeebeClientLifecycle
 import io.camunda.zeebe.client.api.response.ActivatedJob
 import io.camunda.zeebe.client.api.response.CompleteJobResponse
 import io.camunda.zeebe.client.api.response.FailJobResponse

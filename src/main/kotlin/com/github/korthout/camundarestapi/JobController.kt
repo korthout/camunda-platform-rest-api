@@ -1,4 +1,4 @@
-package com.github.korthout.zeeberestclient
+package com.github.korthout.camundarestapi
 
 import com.blueanvil.toDuration
 import com.fasterxml.jackson.annotation.JsonCreator

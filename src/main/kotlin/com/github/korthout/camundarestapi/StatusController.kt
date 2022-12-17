@@ -1,4 +1,4 @@
-package com.github.korthout.zeeberestclient
+package com.github.korthout.camundarestapi
 
 import io.camunda.zeebe.client.api.response.Topology
 import io.camunda.zeebe.spring.client.lifecycle.ZeebeClientLifecycle

@@ -1,4 +1,4 @@
-package com.github.korthout.zeeberestclient
+package com.github.korthout.camundarestapi
 
 import io.camunda.zeebe.spring.client.EnableZeebeClient
 import org.springframework.boot.autoconfigure.SpringBootApplication
