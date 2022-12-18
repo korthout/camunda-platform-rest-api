@@ -43,6 +43,8 @@ Once running, you can try it out the REST API.
 curl localhost:8080/status
 ```
 
+Or, explore the API in Swagger UI running at [/swagger-ui](http://localhost:8080/swagger-ui.html).
+
 ## Connecting to your Camunda Platform SaaS cluster
 
 Connecting to your own cluster can be achieved using environment variables.
