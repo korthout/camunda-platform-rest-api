@@ -53,7 +53,7 @@
     <kotlin.version>1.7.22</kotlin.version>
     <kotlin-duration-string.version>1.2</kotlin-duration-string.version>
     <spotless.version>2.28.0</spotless.version>
-    <spring-zeebe-starter.version>8.1.11</spring-zeebe-starter.version>
+    <spring-zeebe-starter.version>8.1.12</spring-zeebe-starter.version>
     <jib-maven-plugin.version>3.3.1</jib-maven-plugin.version>
     <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
     <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
