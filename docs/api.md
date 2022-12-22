@@ -10,6 +10,7 @@ This document tries to provide full reference documentation on the REST API.
 | `POST`  | `/process-instances` | Create a new Process Instance            |
 | `GET`   | `/jobs`              | Activate Jobs                            |
 | `PATCH` | `/jobs/{key}`        | Update a Job                             |
+| `POST`  | `/messages`          | Publish a Message                        |
 | ..      | ..                   | Not yet implemented                      |
 
 ## `GET /status`
@@ -176,6 +177,54 @@ On HttpStatus `400`, `503`:
 ```json5
 {
   "data": null,
+  "error": "string"
+}
+```
+
+## `POST /messages`
+
+Publish a message.
+
+Can be used to:
+- Correlate a message to a message start event, and start a new process instance.
+- Correlate a message to a message boundary event, or an Event SubProcess message start event, and continue the execution of a process instance.
+
+**Required:**
+- body containing:
+
+```json5
+{
+  // required
+  "name": "string",
+  
+  // optional
+  "correlationKey": "string",
+
+  // optional
+  "messageId": "string",
+
+  // optional
+  "timeToLive": "string",
+
+  // optional
+  "variables": "object or null"
+}
+```
+
+On HttpStatus `200`:
+
+```json5
+{
+  "key": "number",
+  "error": null
+}
+```
+
+On HttpStatus `400`, `503`:
+
+```json5
+{
+  "key": null,
   "error": "string"
 }
 ```
