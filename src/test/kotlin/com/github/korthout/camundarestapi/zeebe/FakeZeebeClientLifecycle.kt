@@ -4,6 +4,7 @@ import io.camunda.zeebe.client.api.response.ActivatedJob
 import io.camunda.zeebe.client.api.response.CompleteJobResponse
 import io.camunda.zeebe.client.api.response.FailJobResponse
 import io.camunda.zeebe.client.api.response.ProcessInstanceEvent
+import io.camunda.zeebe.client.api.response.PublishMessageResponse
 import io.camunda.zeebe.client.api.response.Topology
 import io.camunda.zeebe.spring.client.annotation.processor.ZeebeAnnotationProcessorRegistry
 import io.camunda.zeebe.spring.client.lifecycle.ZeebeClientLifecycle
@@ -68,5 +69,13 @@ class FakeZeebeClientLifecycle :
 
   fun isRunning(value: Boolean) {
     this.running = value
+  }
+
+  fun onPublishMessageCommand(message: PublishMessageResponse) {
+    FakeZeebeClient.onPublishMessageCommand(message)
+  }
+
+  fun onPublishMessageCommand(error: Throwable) {
+    FakeZeebeClient.onPublishMessageCommand(error)
   }
 }

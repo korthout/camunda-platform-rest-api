@@ -93,7 +93,6 @@ paths:
                 $ref: '#/components/schemas/ActivatedJobsResponse'
         '503':
           description: Unable to connect to Zeebe cluster
-
   /jobs/{key}:
     patch:
       summary: Update a Job
@@ -138,6 +137,22 @@ paths:
                 $ref: '#/components/schemas/UpdateJobResponse'
         '503':
           description: Unable to connect to Zeebe cluster
+  /messages:
+    post:
+      summary: Publish a single message
+      description: ''
+      operationId: publishMessage
+      responses:
+        '200':
+          description: successfully published
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishMessageResponse'
+        '503':
+          description: Unable to connect to Zeebe cluster
+      requestBody:
+        $ref: '#/components/requestBodies/PublishMessageRequest'
 
 components:
   requestBodies:
@@ -154,6 +169,13 @@ components:
           schema:
             $ref: '#/components/schemas/UpdateJobRequest'
       description: A request to update a job
+      required: true
+    PublishMessageRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PublishMessageRequest'
+      description: A request to publish a new message for correlation
       required: true
 
   schemas:
@@ -321,6 +343,39 @@ components:
         data: {}
         error:
           type: string
+    PublishMessageResponse:
+      title: A response to PublishMessageRequest
+      description: A response to PublishMessageRequest
+      type: object
+      properties:
+        key:
+          type: integer
+          format: int64
+          description: The unique ID of the message that was published
+        error:
+          type: string
+    PublishMessageRequest:
+      title: A request to publish a new message
+      description: A request to publish a new message
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the message
+        correlationKey:
+          type: string
+          description: The correlation key of the message
+          default: ""
+        messageId:
+          type: string
+          description: The unique ID of the message. Only useful to ensure only one message with the given ID will ever be published (during its lifetime)
+          default: ""
+        timeToLive:
+          type: string
+          description: Define how long the message should be buffered on the broker, in milliseconds
+          default: "0ms"
+        variables:
+          description: The message variables as a JSON document
 
   examples:
     durationTenSeconds:

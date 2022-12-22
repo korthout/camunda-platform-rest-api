@@ -8,6 +8,8 @@ import io.camunda.zeebe.client.api.command.ActivateJobsCommandStep1.ActivateJobs
 import io.camunda.zeebe.client.api.command.ActivateJobsCommandStep1.ActivateJobsCommandStep3
 import io.camunda.zeebe.client.api.command.CreateProcessInstanceCommandStep1.CreateProcessInstanceCommandStep2
 import io.camunda.zeebe.client.api.command.CreateProcessInstanceCommandStep1.CreateProcessInstanceCommandStep3
+import io.camunda.zeebe.client.api.command.PublishMessageCommandStep1.PublishMessageCommandStep2
+import io.camunda.zeebe.client.api.command.PublishMessageCommandStep1.PublishMessageCommandStep3
 import io.camunda.zeebe.client.api.response.*
 import io.camunda.zeebe.client.api.worker.JobWorkerBuilderStep1
 import java.io.InputStream
@@ -22,6 +24,7 @@ object FakeZeebeClient : ZeebeClient {
   var jobs: ActivateJobsResponse? = null
   var completedJob: CompleteJobResponse? = null
   var failedJob: FailJobResponse? = null
+  var messageResponse: PublishMessageResponse? = null
 
   fun reset() {
     error = null
@@ -29,6 +32,8 @@ object FakeZeebeClient : ZeebeClient {
     processInstance = null
     jobs = null
     completedJob = null
+    failedJob = null
+    messageResponse = null
   }
 
   fun onTopologyRequest(topology: Topology) {
@@ -83,6 +88,16 @@ object FakeZeebeClient : ZeebeClient {
 
   fun onThrowErrorCommand(error: Throwable) {
     this.error = error
+  }
+
+  fun onPublishMessageCommand(message: PublishMessageResponse) {
+    error = null
+    this.messageResponse = message
+  }
+
+  fun onPublishMessageCommand(error: Throwable) {
+    this.error = error
+    messageResponse = null
   }
 
   override fun close() {
@@ -283,7 +298,55 @@ object FakeZeebeClient : ZeebeClient {
   }
 
   override fun newPublishMessageCommand(): PublishMessageCommandStep1 {
-    TODO("Not yet implemented")
+    return object : PublishMessageCommandStep1 {
+      override fun messageName(
+        messageName: String?
+      ): PublishMessageCommandStep1.PublishMessageCommandStep2 {
+        return object : PublishMessageCommandStep2 {
+          override fun correlationKey(
+            correlationKey: String?
+          ): PublishMessageCommandStep1.PublishMessageCommandStep3 {
+            return object : PublishMessageCommandStep3 {
+              override fun requestTimeout(
+                requestTimeout: Duration?
+              ): FinalCommandStep<PublishMessageResponse> {
+                return this
+              }
+
+              override fun send(): ZeebeFuture<PublishMessageResponse> {
+                return CompletedZeebeFuture(messageResponse, error)
+              }
+
+              override fun messageId(messageId: String?): PublishMessageCommandStep3 {
+                return this
+              }
+
+              override fun timeToLive(timeToLive: Duration?): PublishMessageCommandStep3 {
+                return this
+              }
+
+              override fun variables(variables: InputStream?): PublishMessageCommandStep3 {
+                return this
+              }
+
+              override fun variables(variables: String?): PublishMessageCommandStep3 {
+                return this
+              }
+
+              override fun variables(
+                variables: MutableMap<String, Any>?
+              ): PublishMessageCommandStep3 {
+                return this
+              }
+
+              override fun variables(variables: Any?): PublishMessageCommandStep3 {
+                return this
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   override fun newResolveIncidentCommand(incidentKey: Long): ResolveIncidentCommandStep1 {
