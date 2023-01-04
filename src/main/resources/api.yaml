@@ -1,0 +1,78 @@
+openapi: 3.0.0
+info:
+  title: Camunda Platform REST API
+  description: REST API to interact with Camunda Platform 8
+  version: 0.0.1
+
+paths:
+  /process-instances:
+    post:
+      summary: Create a new Process Instance
+      description: ''
+      operationId: createProcessInstance
+      responses:
+        '200':
+          description: successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessInstanceResponse'
+        '503':
+          description: Unable to connect to Zeebe cluster
+      requestBody:
+        $ref: '#/components/requestBodies/CreateProcessInstanceRequest'
+
+components:
+  requestBodies:
+    CreateProcessInstanceRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateProcessInstanceRequest'
+      description: A request to create a new process instance
+      required: true
+
+  schemas:
+    CreateProcessInstanceRequest:
+      title: A request to create a new process instance
+      description: A request to create a new process instance
+      type: object
+      properties:
+        # todo: make these properties oneOf
+        bpmnProcessId:
+          type: string
+          description: BPMN process id of the process to instantiate
+        processDefinitionKey:
+          type: integer
+          format: int64
+          description: Key of the process to instantiate
+        variables:
+          description: Variables to instantiate the process with
+    ProcessInstanceResponse:
+      title: A response to a CreateProcessInstanceRequest
+      description: A response to a CreateProcessInstanceRequest
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/ProcessInstance'
+        error:
+          type: string
+    ProcessInstance:
+      title: A process instance
+      description: A process instance
+      type: object
+      properties:
+        processDefinitionKey:
+          type: integer
+          format: int64
+          description: Key of the process which this instance was created for
+        bpmnProcessId:
+          type: string
+          description: BPMN process id of the process which this instance was created for
+        version:
+          type: integer
+          description: Version of the process which this instance was created for
+        processInstanceKey:
+          type: integer
+          format: int64
+          description: Unique key of the created process instance on the partition

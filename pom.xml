@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.7.4</version>
+    <version>2.6.7</version>
     <relativePath/>
     <!-- lookup parent from repository -->
   </parent>
@@ -51,12 +51,14 @@
   <properties>
     <java.version>17</java.version>
     <kotlin.version>1.7.22</kotlin.version>
-    <kotlin-duration-string.version>1.2</kotlin-duration-string.version>
-    <spotless.version>2.28.0</spotless.version>
-    <spring-zeebe-starter.version>8.1.13</spring-zeebe-starter.version>
-    <jib-maven-plugin.version>3.3.1</jib-maven-plugin.version>
-    <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
-    <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
+    <version.dep.kotlin-duration-string>1.2</version.dep.kotlin-duration-string>
+    <version.dep.spring-zeebe-starter>8.1.13</version.dep.spring-zeebe-starter>
+    <version.dep.springdoc-openapi-ui>1.6.8</version.dep.springdoc-openapi-ui>
+    <version.plugin.jib-maven-plugin>3.3.1</version.plugin.jib-maven-plugin>
+    <version.plugin.maven-gpg-plugin>3.0.1</version.plugin.maven-gpg-plugin>
+    <version.plugin.nexus-staging-maven-plugin>1.6.13</version.plugin.nexus-staging-maven-plugin>
+    <version.plugin.openapi-generator-maven-plugin>6.2.1</version.plugin.openapi-generator-maven-plugin>
+    <version.plugin.spotless>2.28.0</version.plugin.spotless>
   </properties>
 
   <dependencies>
@@ -67,21 +69,29 @@
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-reflect</artifactId>
+      <version>${kotlin.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-stdlib-jdk8</artifactId>
+      <version>${kotlin.version}</version>
     </dependency>
     <dependency>
       <groupId>io.camunda</groupId>
       <artifactId>spring-zeebe-starter</artifactId>
-      <version>${spring-zeebe-starter.version}</version>
+      <version>${version.dep.spring-zeebe-starter}</version>
     </dependency>
 
     <dependency>
       <groupId>com.github.blueanvil</groupId>
       <artifactId>kotlin-duration-string</artifactId>
-      <version>${kotlin-duration-string.version}</version>
+      <version>${version.dep.kotlin-duration-string}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-ui</artifactId>
+      <version>${version.dep.springdoc-openapi-ui}</version>
     </dependency>
 
     <dependency>
@@ -103,7 +113,7 @@
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
-        <version>${spotless.version}</version>
+        <version>${version.plugin.spotless}</version>
         <configuration>
           <pom>
             <sortPom>
@@ -135,6 +145,31 @@
       </plugin>
 
       <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>${version.plugin.openapi-generator-maven-plugin}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/api.yaml</inputSpec>
+              <generatorName>kotlin-spring</generatorName>
+              <templateDirectory>src/main/resources/templates/kotlin-spring</templateDirectory>
+              <configOptions>
+                <sourceFolder>src/main/kotlin</sourceFolder>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>camunda-platform-rest-api-openapi</artifactId>
+                <packageName>com.github.korthout.camundarestapi</packageName>
+                <interfaceOnly>true</interfaceOnly>
+              </configOptions>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
@@ -157,6 +192,22 @@
             <version>${kotlin.version}</version>
           </dependency>
         </dependencies>
+        <executions>
+          <execution>
+            <id>compile</id>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <phase>compile</phase>
+          </execution>
+          <execution>
+            <id>test-compile</id>
+            <goals>
+              <goal>test-compile</goal>
+            </goals>
+            <phase>test-compile</phase>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>
@@ -180,7 +231,7 @@
       <plugin>
         <groupId>com.google.cloud.tools</groupId>
         <artifactId>jib-maven-plugin</artifactId>
-        <version>${jib-maven-plugin.version}</version>
+        <version>${version.plugin.jib-maven-plugin}</version>
         <configuration>
           <to>
             <image>ghcr.io/korthout/camunda-platform-rest-api</image>
@@ -216,7 +267,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>${maven-gpg-plugin.version}</version>
+            <version>${version.plugin.maven-gpg-plugin}</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
@@ -238,7 +289,7 @@
           <plugin>
             <groupId>org.sonatype.plugins</groupId>
             <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>${nexus-staging-maven-plugin.version}</version>
+            <version>${version.plugin.nexus-staging-maven-plugin}</version>
             <extensions>true</extensions>
             <configuration>
               <serverId>ossrh</serverId>
