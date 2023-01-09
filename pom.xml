@@ -127,6 +127,11 @@
             <flexmark/>
           </markdown>
           <kotlin>
+            <includes>
+              <include>src/main/kotlin/**/*.kt</include>
+              <include>src/test/kotlin/**/*.kt</include>
+              <include>target/generated-sources/**/*.kt</include>
+            </includes>
             <ktfmt>
               <version>0.41</version>
               <!-- optional, other options are DROPBOX, GOOGLE and KOTLINLANG -->
