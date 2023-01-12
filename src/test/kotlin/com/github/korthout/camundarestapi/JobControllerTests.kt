@@ -244,7 +244,7 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
           .json(
             """
             {
-              "error": "Expected body property `status` to be one of `[completed]`, but it's `unknown`."
+              "error": "Expected body property `status` to be one of `[completed,failed,error_thrown]`, but it's `unknown`."
             }
             """))
   }

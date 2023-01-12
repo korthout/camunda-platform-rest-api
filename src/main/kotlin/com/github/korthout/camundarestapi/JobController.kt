@@ -97,8 +97,11 @@ class JobController : JobsApi {
               .body(
                 UpdateJobResponse(
                   error =
-                    "Expected body property `status` to be one of `[completed]`," +
-                      " but it's `${body.status}`."))
+                    """Expected body property `status` to be one of
+                      | `[completed,failed,error_thrown]`,
+                      | but it's `${body.status}`."""
+                      .trimMargin()
+                      .replace(System.lineSeparator(), "")))
         }
     }
 
