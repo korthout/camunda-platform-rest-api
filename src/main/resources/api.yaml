@@ -296,8 +296,7 @@ components:
           type: integer
           format: int32
           description: Number of retries for the job when it `failed`
-        # todo: rename to retryBackoff
-        retryBackOff:
+        retryBackoff:
           type: string
           default: "0ms"
           example: "2s 500ms"

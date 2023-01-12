@@ -110,7 +110,7 @@ class JobController : JobsApi {
       client
         .newFailCommand(key)
         .retries(request.retries)
-        .retryBackoff(request.retryBackOff?.toDuration() ?: Duration.ZERO)
+        .retryBackoff(request.retryBackoff?.toDuration() ?: Duration.ZERO)
         .errorMessage(request.errorMessage ?: "")
         .send()
         .thenApply { ResponseEntity.noContent().build<UpdateJobResponse>() }
