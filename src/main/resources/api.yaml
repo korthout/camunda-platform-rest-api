@@ -10,6 +10,9 @@ paths:
       summary: Create a new Process Instance
       description: ''
       operationId: createProcessInstance
+      requestBody:
+        $ref: '#/components/requestBodies/CreateProcessInstanceRequest'
+      x-codegen-request-body-name: body
       responses:
         '200':
           description: successfully created
@@ -19,8 +22,6 @@ paths:
                 $ref: '#/components/schemas/ProcessInstanceResponse'
         '503':
           description: Unable to connect to Zeebe cluster
-      requestBody:
-        $ref: '#/components/requestBodies/CreateProcessInstanceRequest'
   /jobs:
     get:
       summary: Activate Jobs of a specific type
@@ -127,7 +128,6 @@ paths:
             format: int64
       requestBody:
         $ref: '#/components/requestBodies/UpdateJobRequest'
-      # todo: apply this also to create process instance request
       x-codegen-request-body-name: body
       responses:
         '204':
