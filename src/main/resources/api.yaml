@@ -21,6 +21,77 @@ paths:
           description: Unable to connect to Zeebe cluster
       requestBody:
         $ref: '#/components/requestBodies/CreateProcessInstanceRequest'
+  /jobs:
+    get:
+      summary: Activate Jobs of a specific type
+      description: |-
+        Will activate available jobs of the specific type, and returns the activated jobs.
+        
+        If no jobs of this type are available, then the connection may be kept open until one or
+        more jobs become available, or the request times out due to long polling.
+      operationId: activateJobs
+      parameters:
+        - name: type
+          description: The type of the job to activate
+          in: query
+          style: form
+          required: true
+          schema:
+            type: string
+        - name: maxJobsToActivate
+          description: The maximum number of jobs to activate in this request
+          in: query
+          style: form
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 32
+        - name: worker
+          description: The name of the worker requesting to activate the jobs
+          in: query
+          style: form
+          required: false
+          schema:
+            type: string
+            default: "default"
+        - name: jobTimeout
+          description: Duration during which the activated jobs are claimed by this worker
+          in: query
+          style: form
+          required: false
+          schema:
+            type: string
+            default: "5m"
+          examples:
+            durationTenSeconds:
+              $ref: '#/components/examples/durationTenSeconds'
+            durationFiveMin:
+              $ref: '#/components/examples/durationFiveMin'
+            durationOneAndAHalfHour:
+              $ref: '#/components/examples/durationOneAndAHalfHour'
+        - name: fetchVariables
+          description: |-
+            Names of the variables to fetch with each job.
+            
+            If empty, all visible variables at the time of activation for the scope of the job will
+            be returned.
+          in: query
+          style: form
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Zero or more jobs activated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivatedJobsResponse'
+        '503':
+          description: Unable to connect to Zeebe cluster
 
 components:
   requestBodies:
@@ -76,3 +147,94 @@ components:
           type: integer
           format: int64
           description: Unique key of the created process instance on the partition
+    ActivatedJobsResponse:
+      title: A response to a request to Activate Jobs
+      description: A response to a request to Activate Jobs
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            jobs:
+              type: array
+              items:
+                $ref: '#/components/schemas/Job'
+        error:
+          type: string
+    Job:
+      title: A unit of work within a process
+      description: |-
+        A job represents a distinct unit of work within a business process.
+        
+        Service tasks represent such jobs in your process and are identified by a unique id.
+        A job has a type to allow specific job workers to find jobs that they can work on.
+      type: object
+      properties:
+        key:
+          type: integer
+          format: int64
+          description: Key of the job
+        status:
+          type: string
+          description: The status of the job
+          enum:
+            - activatable
+            - activated
+            - failed
+            - error_thrown
+            - completed
+        type:
+          type: string
+          description: Type of the job
+        processInstanceKey:
+          type: integer
+          format: int64
+          description: Key of the process instance which this job belongs to
+        bpmnProcessId:
+          type: string
+          description: BPMN process id of the process which this job belongs to
+        processDefinitionVersion:
+          type: integer
+          format: int32
+          description: Version number of the process which this job belongs to
+        processDefinitionKey:
+          type: integer
+          format: int64
+          description: Key of the process which this job belongs to
+        elementId:
+          type: string
+          description: Id of the element in the process which this job belongs to
+        elementInstanceKey:
+          type: integer
+          format: int64
+          description: Key of the element instance which this job belongs to
+        customHeaders:
+          type: object
+          description: |
+            Set of custom headers defined during modelling; returned as a serialized JSON document
+        worker:
+          type: string
+          description: Name of the worker that activated this job
+        retries:
+          type: integer
+          format: int32
+          description: Number of retries left for this job
+        deadline:
+          type: integer
+          format: int64
+          description: UNIX epoch timestamp specifying when the job can be activated again
+        variables:
+          type: object
+          description: |
+            JSON document consisting of all variables visible to the task scope at the time of job
+            activation
+  examples:
+    durationTenSeconds:
+      summary: Duration of ten seconds
+      value: "10s"
+    durationFiveMin:
+      summary: Duration of five minutes
+      value: "5m"
+    durationOneAndAHalfHour:
+      summary: Duration of one hour and thirty minutes
+      value: "1h30m"

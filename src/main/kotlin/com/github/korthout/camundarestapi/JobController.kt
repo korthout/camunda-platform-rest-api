@@ -3,8 +3,10 @@ package com.github.korthout.camundarestapi
 import com.blueanvil.toDuration
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import io.camunda.zeebe.client.api.response.ActivateJobsResponse
-import io.camunda.zeebe.client.api.response.ActivatedJob
+import com.github.korthout.camundarestapi.apis.JobsApi
+import com.github.korthout.camundarestapi.models.ActivatedJobsResponse
+import com.github.korthout.camundarestapi.models.ActivatedJobsResponseData
+import com.github.korthout.camundarestapi.models.Job
 import io.camunda.zeebe.spring.client.lifecycle.ZeebeClientLifecycle
 import java.time.Duration
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,65 +15,65 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/jobs")
-class JobController {
+class JobController : JobsApi {
 
   @Autowired lateinit var client: ZeebeClientLifecycle
 
-  /** Activate Jobs of a specific type. */
-  @GetMapping
-  fun activateJobs(
-    @RequestParam("type", required = true) type: String,
-    @RequestParam("maxJobsToActivate", defaultValue = "32") maxJobsToActivate: Int,
-    @RequestParam("worker", defaultValue = "default") worker: String,
-    @RequestParam("jobTimeout", defaultValue = "5m") timeout: String,
-    @RequestParam("fetchVariables", defaultValue = "[]") fetchVariables: List<String>
-  ): ResponseEntity<Response<ActivatedJobs>> =
+  override fun activateJobs(
+    type: String,
+    maxJobsToActivate: Int,
+    worker: String,
+    jobTimeout: String,
+    fetchVariables: List<String>?
+  ): ResponseEntity<ActivatedJobsResponse> =
     when {
       !client.isRunning ->
         ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
           .body(
-            Response(
-              "Unable to connect to Zeebe cluster." +
-                " Please try again, or check the configuration settings."))
+            ActivatedJobsResponse(
+              error =
+                "Unable to connect to Zeebe cluster." +
+                  " Please try again, or check the configuration settings."))
       else ->
         client
           .newActivateJobsCommand()
           .jobType(type)
           .maxJobsToActivate(maxJobsToActivate)
           .workerName(worker)
-          .timeout(timeout.toDuration())
-          .fetchVariables(fetchVariables)
+          .timeout(jobTimeout.toDuration())
+          .fetchVariables(fetchVariables ?: emptyList())
           .send()
-          .thenApply { ResponseEntity.ok(Response(ActivatedJobs(it))) }
-          .exceptionally { ResponseEntity.badRequest().body(Response(it.cause.toString())) }
+          .thenApply { response ->
+            ResponseEntity.ok(
+              ActivatedJobsResponse(
+                ActivatedJobsResponseData(
+                  response.jobs.map {
+                    Job(
+                      key = it.key,
+                      status = Job.Status.activated,
+                      type = it.type,
+                      processInstanceKey = it.processInstanceKey,
+                      bpmnProcessId = it.bpmnProcessId,
+                      processDefinitionVersion = it.processDefinitionVersion,
+                      processDefinitionKey = it.processDefinitionKey,
+                      elementId = it.elementId,
+                      elementInstanceKey = it.elementInstanceKey,
+                      customHeaders = it.customHeaders,
+                      worker = it.worker,
+                      retries = it.retries,
+                      deadline = it.deadline,
+                      variables = it.variablesAsMap)
+                  })))
+          }
+          .exceptionally {
+            ResponseEntity.badRequest().body(ActivatedJobsResponse(error = it.cause.toString()))
+          }
           .toCompletableFuture()
           .join()
     }
 
-  class ActivatedJobs(activatedJobs: ActivateJobsResponse) {
-    // transform the response, so it better fits to JSON (specifically for variables/variablesMap)
-    val jobs = activatedJobs.jobs.map { Job(it, "activated") }
-  }
-
-  class Job(activatedJob: ActivatedJob, val status: String) {
-    val key = activatedJob.key
-    val type = activatedJob.type
-    val processInstanceKey = activatedJob.processInstanceKey
-    val bpmnProcessId = activatedJob.bpmnProcessId
-    val processDefinitionVersion = activatedJob.processDefinitionVersion
-    val processDefinitionKey = activatedJob.processDefinitionKey
-    val elementId = activatedJob.elementId
-    val elementInstanceKey = activatedJob.elementInstanceKey
-    val customHeaders = activatedJob.customHeaders
-    val worker = activatedJob.worker
-    val retries = activatedJob.retries
-    val deadline = activatedJob.deadline
-    val variables = activatedJob.variablesAsMap
-  }
-
   /** Update a job. */
-  @PatchMapping("/{key}")
+  @PatchMapping("/jobs/{key}")
   fun updateJob(
     @PathVariable("key") key: Long,
     @RequestBody body: UpdateJobRequest
