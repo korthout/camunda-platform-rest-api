@@ -93,6 +93,52 @@ paths:
         '503':
           description: Unable to connect to Zeebe cluster
 
+  /jobs/{key}:
+    patch:
+      summary: Update a Job
+      description: |-
+        Can be used to:
+
+        ## Complete the job
+
+        Set the `status` of the job to `completed`, with:
+          - (optionally) `variables`
+
+        ## Fail the job
+
+        Set the `status` of the job to `failed`, with:
+          - `retries`
+          - (optionally) `retryBackoff`
+          - (optionally) `errorMessage`
+
+        ## Throw an error for the job
+
+        Set the `status` of the job to `error_thrown`, with:
+          - `errorCode`
+          - (optionally) `errorMessage`
+      operationId: updateJob
+      parameters:
+        - name: key
+          description: Key (unique identifier) of the job to update
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateJobRequest'
+      # todo: apply this also to create process instance request
+      x-codegen-request-body-name: body
+      responses:
+        '204':
+          description: Successfully updated the job
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateJobResponse'
+        '503':
+          description: Unable to connect to Zeebe cluster
+
 components:
   requestBodies:
     CreateProcessInstanceRequest:
@@ -101,6 +147,13 @@ components:
           schema:
             $ref: '#/components/schemas/CreateProcessInstanceRequest'
       description: A request to create a new process instance
+      required: true
+    UpdateJobRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateJobRequest'
+      description: A request to update a job
       required: true
 
   schemas:
@@ -228,6 +281,48 @@ components:
           description: |
             JSON document consisting of all variables visible to the task scope at the time of job
             activation
+    UpdateJobRequest:
+      title: A request to update a job
+      description: A request to update a job
+      type: object
+      # todo: consider using oneOf/anyOf
+      properties:
+        status:
+          type: string
+          example: completed
+          description: |-
+            Requested state for the job, either one of `completed`, `failed`, or `error_thrown`
+        retries:
+          type: integer
+          format: int32
+          description: Number of retries for the job when it `failed`
+        # todo: rename to retryBackoff
+        retryBackOff:
+          type: string
+          default: "0ms"
+          example: "2s 500ms"
+          description: Duration after which the job becomes `activatable` again when it `failed`
+        errorCode:
+          type: string
+          description: Code to match an error catch event when job state `error_thrown` requested
+        errorMessage:
+          type: string
+          description: Message to describe the error when job state `error_thrown` requested
+        variables:
+          type: object
+          additionalProperties: true
+          description: Variables to set for the job
+      required:
+        - status
+    UpdateJobResponse:
+      title: A response to an UpdateJobRequest
+      description: A response to an UpdateJobRequest
+      type: object
+      properties:
+        data: {}
+        error:
+          type: string
+
   examples:
     durationTenSeconds:
       summary: Duration of ten seconds
