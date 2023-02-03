@@ -122,8 +122,6 @@
               <include>target/generated-sources/**/*.kt</include>
             </includes>
             <ktfmt>
-              <version>0.41</version>
-              <!-- optional, other options are DROPBOX, GOOGLE and KOTLINLANG -->
               <style>DEFAULT</style>
             </ktfmt>
           </kotlin>
