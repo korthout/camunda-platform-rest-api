@@ -5,6 +5,7 @@ import io.camunda.zeebe.client.api.response.ActivatedJob
 import io.camunda.zeebe.client.api.response.CompleteJobResponse
 import io.camunda.zeebe.client.api.response.FailJobResponse
 import io.camunda.zeebe.spring.client.lifecycle.ZeebeClientLifecycle
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -212,18 +213,15 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
   @Test
   fun putStatusShouldRejectCompletedWithoutStatus() {
     zeebeClient.onCompleteJobsCommand(fakeCompletedJob)
-    mvc
-      .perform(patch("/jobs/1").contentType(MediaType.APPLICATION_JSON).content("{}"))
-      .andExpect(status().isBadRequest)
-      .andExpect(content().json("""{ "data": null}"""))
-      .andExpect(
-        content()
-          .json(
-            """
-            {
-              "error": "Expected body property `status` to be provided, but it's null or undefined."
-            }
-            """))
+    val response =
+      mvc
+        .perform(patch("/jobs/1").contentType(MediaType.APPLICATION_JSON).content("{}"))
+        .andExpect(status().isBadRequest)
+        .andExpect(content().json("""{ "data": null}"""))
+        .andReturn()
+        .response
+    assertThat(response.contentAsString).contains("Parameter specified as non-null is null")
+    assertThat(response.contentAsString).contains("parameter status")
   }
 
   @Test
@@ -246,7 +244,7 @@ class JobControllerTests(@Autowired val mvc: MockMvc) {
           .json(
             """
             {
-              "error": "Expected body property `status` to be one of `[completed]`, but it's `unknown`."
+              "error": "Expected body property `status` to be one of `[completed,failed,error_thrown]`, but it's `unknown`."
             }
             """))
   }

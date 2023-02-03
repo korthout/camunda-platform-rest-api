@@ -17,7 +17,7 @@ class ProcessInstanceController : ProcessInstancesApi {
   @Autowired lateinit var client: ZeebeClientLifecycle
 
   override fun createProcessInstance(
-    createProcessInstanceRequest: CreateProcessInstanceRequest
+    body: CreateProcessInstanceRequest
   ): ResponseEntity<ProcessInstanceResponse> =
     when {
       !client.isRunning ->
@@ -27,26 +27,25 @@ class ProcessInstanceController : ProcessInstancesApi {
               error =
                 "Unable to connect to Zeebe cluster." +
                   " Please try again, or check the configuration settings."))
-      createProcessInstanceRequest.bpmnProcessId != null &&
-        createProcessInstanceRequest.processDefinitionKey != null ->
+      body.bpmnProcessId != null && body.processDefinitionKey != null ->
         ResponseEntity.badRequest()
           .body(
             ProcessInstanceResponse(
               error =
                 "Expected body to contain either `bpmnProcessId` or `processDefinitionKey`, but found both."))
-      createProcessInstanceRequest.bpmnProcessId != null ->
+      body.bpmnProcessId != null ->
         send(
           client
             .newCreateInstanceCommand()
-            .bpmnProcessId(createProcessInstanceRequest.bpmnProcessId)
+            .bpmnProcessId(body.bpmnProcessId)
             .latestVersion()
-            .variables(createProcessInstanceRequest.variables))
-      createProcessInstanceRequest.processDefinitionKey != null ->
+            .variables(body.variables))
+      body.processDefinitionKey != null ->
         send(
           client
             .newCreateInstanceCommand()
-            .processDefinitionKey(createProcessInstanceRequest.processDefinitionKey)
-            .variables(createProcessInstanceRequest.variables))
+            .processDefinitionKey(body.processDefinitionKey)
+            .variables(body.variables))
       else ->
         ResponseEntity.badRequest()
           .body(
