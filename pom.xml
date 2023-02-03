@@ -240,12 +240,11 @@
           </container>
         </configuration>
         <executions>
-          <execution>
-            <goals>
-              <goal>build</goal>
-            </goals>
-            <phase>deploy</phase>
-          </execution>
+          <!--
+          Purposely left empty
+          To build image, run: mvn jib:dockerBuild
+          To build image and push to registry, run: mvn jib:build
+           -->
         </executions>
       </plugin>
     </plugins>
