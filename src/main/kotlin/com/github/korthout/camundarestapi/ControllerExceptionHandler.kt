@@ -1,6 +1,7 @@
 package com.github.korthout.camundarestapi
 
 import com.fasterxml.jackson.databind.exc.MismatchedInputException
+import com.fasterxml.jackson.databind.exc.ValueInstantiationException
 import java.lang.Exception
 import org.springframework.http.*
 import org.springframework.http.converter.HttpMessageNotReadableException
@@ -24,6 +25,9 @@ class ControllerExceptionHandler : ResponseEntityExceptionHandler() {
       when {
         ex is MissingServletRequestParameterException ->
           "Expected query parameter `${ex.parameterName}` to be provided, but it's null or undefined."
+        ex is HttpMessageNotReadableException && ex.cause is ValueInstantiationException -> {
+          ex.message ?: "Unexpected error occurred."
+        }
         ex is HttpMessageNotReadableException && ex.cause is MismatchedInputException -> {
           val property = (ex.cause as MismatchedInputException).path[0]?.fieldName ?: "<unknown>"
           "Expected body property `${property}` to be provided, but it's null or undefined."
