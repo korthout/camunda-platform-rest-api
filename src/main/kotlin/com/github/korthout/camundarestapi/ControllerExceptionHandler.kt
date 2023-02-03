@@ -2,10 +2,7 @@ package com.github.korthout.camundarestapi
 
 import com.fasterxml.jackson.databind.exc.MismatchedInputException
 import java.lang.Exception
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
+import org.springframework.http.*
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.MissingServletRequestParameterException
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -20,7 +17,7 @@ class ControllerExceptionHandler : ResponseEntityExceptionHandler() {
     ex: Exception,
     body: Any?,
     headers: HttpHeaders,
-    status: HttpStatus,
+    statusCode: HttpStatusCode,
     request: WebRequest
   ): ResponseEntity<Any> {
     val message =
@@ -33,7 +30,7 @@ class ControllerExceptionHandler : ResponseEntityExceptionHandler() {
         }
         else -> body?.toString() ?: ex.message ?: "Unexpected error occurred."
       }
-    return ResponseEntity.status(status)
+    return ResponseEntity.status(statusCode)
       .contentType(MediaType.APPLICATION_JSON)
       .body(Response<Any>(message))
   }
