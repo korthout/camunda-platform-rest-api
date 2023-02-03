@@ -168,6 +168,7 @@
                 <artifactId>camunda-platform-rest-api-openapi</artifactId>
                 <packageName>com.github.korthout.camundarestapi</packageName>
                 <interfaceOnly>true</interfaceOnly>
+                <useSpringBoot3>true</useSpringBoot3>
               </configOptions>
             </configuration>
           </execution>
