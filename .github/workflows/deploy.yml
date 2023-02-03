@@ -12,11 +12,12 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+          cache: maven
       - name: Login to Docker
         run: |
           # new login with new container registry url and PAT
           echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
       - name: Build Package
-        run: mvn -B package -DskipTests
+        run: mvn -B clean package -DskipTests
       - name: Publish Package
         run: mvn -B jib:build

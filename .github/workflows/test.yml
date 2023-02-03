@@ -13,6 +13,6 @@ jobs:
           java-version: 17
           cache: maven
       - name: Build Package
-        run: mvn -B package -DskipTests
+        run: mvn -B clean package -DskipTests
       - name: Verify Package
         run: mvn -B verify
