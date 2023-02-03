@@ -53,7 +53,7 @@
     <kotlin.version>1.8.10</kotlin.version>
     <version.dep.kotlin-duration-string>1.2</version.dep.kotlin-duration-string>
     <version.dep.spring-zeebe-starter>8.1.15</version.dep.spring-zeebe-starter>
-    <version.dep.springdoc-openapi-ui>1.6.14</version.dep.springdoc-openapi-ui>
+    <version.dep.springdoc-openapi-ui>2.0.2</version.dep.springdoc-openapi-ui>
     <version.plugin.jib-maven-plugin>3.3.1</version.plugin.jib-maven-plugin>
     <version.plugin.maven-gpg-plugin>3.0.1</version.plugin.maven-gpg-plugin>
     <version.plugin.nexus-staging-maven-plugin>1.6.13</version.plugin.nexus-staging-maven-plugin>
@@ -90,7 +90,7 @@
 
     <dependency>
       <groupId>org.springdoc</groupId>
-      <artifactId>springdoc-openapi-ui</artifactId>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
       <version>${version.dep.springdoc-openapi-ui}</version>
     </dependency>
 
