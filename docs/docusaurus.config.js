@@ -12,7 +12,7 @@ const config = {
   baseUrl: "/korthout/camunda-platform-rest-api",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
-  favicon: "img/favicon.ico",
+  favicon: "img/favicon.png",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -28,18 +28,12 @@ const config = {
           sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
+          //editUrl:
+          //  "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
           docLayoutComponent: "@theme/DocPage",
           docItemComponent: "@theme/ApiItem" // Derived from docusaurus-theme-openapi
         },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/"
-        },
+        blog: false,
         theme: {
           customCss: require.resolve("./src/css/custom.css")
         }
@@ -56,27 +50,26 @@ const config = {
         }
       },
       navbar: {
-        title: "C8 REST API",
+        title: "Camunda Platform REST API",
         logo: {
-          alt: "My Site Logo",
-          src: "img/logo.svg"
+          alt: "Logo",
+          src: "img/logo-dark.png"
         },
         items: [
           {
+            label: "Getting Started",
             type: "doc",
-            docId: "intro",
-            position: "left",
-            label: "Tutorial"
-          },
-          { to: "/blog", label: "Blog", position: "left" },
-          {
-            label: "Petstore API",
-            position: "left",
-            to: "/docs/category/petstore-api"
+            docId: "guides/intro",
+            position: "left"
           },
           {
-            href: "https://github.com/facebook/docusaurus",
+            label: "API Reference",
+            position: "left",
+            to: "/docs/api"
+          },
+          {
             label: "GitHub",
+            href: "https://github.com/korthout/camunda-platform-rest-api",
             position: "right"
           }
         ]
@@ -88,8 +81,12 @@ const config = {
             title: "Docs",
             items: [
               {
-                label: "Tutorial",
+                label: "Getting Started",
                 to: "/docs/intro"
+              },
+              {
+                label: "API Reference",
+                to: "/docs/api"
               }
             ]
           },
@@ -97,16 +94,29 @@ const config = {
             title: "Community",
             items: [
               {
-                label: "Stack Overflow",
-                href: "https://stackoverflow.com/questions/tagged/docusaurus"
+                label: "GitHub Issues",
+                href: "https://github.com/korthout/camunda-platform-rest-api/issues"
               },
               {
-                label: "Discord",
-                href: "https://discordapp.com/invite/docusaurus"
+                label: "Forum",
+                href: "https://forum.camunda.io/"
               },
               {
-                label: "Twitter",
-                href: "https://twitter.com/docusaurus"
+                label: "Slack",
+                href: "https://camunda-slack-invite.herokuapp.com/"
+              }
+            ]
+          },
+          {
+            title: "Camunda SaaS",
+            items: [
+              {
+                label: "Console",
+                href: "https://camunda.io/"
+              },
+              {
+                label: "Status",
+                href: "https://status.camunda.io/"
               }
             ]
           },
@@ -114,23 +124,56 @@ const config = {
             title: "More",
             items: [
               {
-                label: "Blog",
-                to: "/blog"
-              },
-              {
                 label: "GitHub",
-                href: "https://github.com/facebook/docusaurus"
+                href: "https://github.com/korthout/camunda-platform-rest-api"
               }
             ]
           }
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`
+        copyright: `Copyright © ${new Date().getFullYear()} Nico Korthout. Built with Docusaurus.`
       },
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
-        additionalLanguages: ["ruby", "csharp", "php"]
-      }
+        additionalLanguages: ["java"]
+      },
+      languageTabs: [
+        {
+            highlight: "bash",
+            language: "curl",
+            logoClass: "bash",
+        },
+        {
+            highlight: "python",
+            language: "python",
+            logoClass: "python",
+        },
+        {
+            highlight: "go",
+            language: "go",
+            logoClass: "go",
+        },
+        {
+            highlight: "javascript",
+            language: "nodejs",
+            logoClass: "nodejs",
+        },
+        //{
+        //  highlight: "ruby",
+        //  language: "ruby",
+        //  logoClass: "ruby",
+        //},
+        // {
+        //     highlight: "csharp",
+        //     language: "csharp",
+        //     logoClass: "csharp",
+        // },
+        // {
+        //   highlight: "php",
+        //   language: "php",
+        //   logoClass: "php",
+        // },
+    ],
     }),
 
   plugins: [
@@ -140,14 +183,15 @@ const config = {
         id: "openapi",
         docsPluginId: "classic",
         config: {
-          petstore: {
+          openapi: {
             specPath: "../openapi.yaml",
             outputDir: "docs/api",
             downloadUrl:
               "https://github.com/korthout/camunda-platform-rest-api/blob/main/openapi.yaml",
             sidebarOptions: {
               groupPathsBy: "tag",
-              categoryLinkSource: "tag"
+              categoryLinkSource: "tag",
+              // sidebarCollapsible: false
             }
           }
         }
