@@ -146,7 +146,7 @@
               <goal>generate</goal>
             </goals>
             <configuration>
-              <inputSpec>${project.basedir}/src/main/resources/api.yaml</inputSpec>
+              <inputSpec>${project.basedir}/openapi.yaml</inputSpec>
               <generatorName>kotlin-spring</generatorName>
               <templateDirectory>src/main/resources/templates/kotlin-spring</templateDirectory>
               <configOptions>
