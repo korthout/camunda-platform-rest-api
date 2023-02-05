@@ -6,9 +6,9 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "My Site",
-  tagline: "Dinosaurs are cool",
-  url: "https://your-docusaurus-test-site.com",
+  title: "Camunda Platform REST API",
+  tagline: "Interact with Camunda Platform 8",
+  url: "https://github.com/korthout/camunda-platform-rest-api",
   baseUrl: "/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
@@ -16,8 +16,8 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: "facebook", // Usually your GitHub org/user name.
-  projectName: "docusaurus", // Usually your repo name.
+  organizationName: "korthout", // Usually your GitHub org/user name.
+  projectName: "camunda-platform-rest-api", // Usually your repo name.
 
   presets: [
     [
@@ -56,7 +56,7 @@ const config = {
         }
       },
       navbar: {
-        title: "My Site",
+        title: "C8 REST API",
         logo: {
           alt: "My Site Logo",
           src: "img/logo.svg"
@@ -141,10 +141,10 @@ const config = {
         docsPluginId: "classic",
         config: {
           petstore: {
-            specPath: "examples/petstore.yaml",
-            outputDir: "docs/petstore",
+            specPath: "../openapi.yaml",
+            outputDir: "docs/api",
             downloadUrl:
-              "https://raw.githubusercontent.com/PaloAltoNetworks/docusaurus-template-openapi-docs/main/examples/petstore.yaml",
+              "https://github.com/korthout/camunda-platform-rest-api/blob/main/openapi.yaml",
             sidebarOptions: {
               groupPathsBy: "tag",
               categoryLinkSource: "tag"
