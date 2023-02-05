@@ -18,6 +18,7 @@ The Camunda Platform REST API aims to provide a simple but flexible REST API, to
 | `POST`  | `/process-instances` | Create a new Process Instance            |
 | `GET`   | `/jobs`              | Activate Jobs                            |
 | `PATCH` | `/jobs/{key}`        | Update a Job                             |
+| `POST`  | `/messages`          | Publish a Message                        |
 | ..      | ..                   | Not yet implemented                      |
 
 You can find the full API reference documentation under [`docs/api.md`](docs/api.md).
