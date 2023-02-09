@@ -1,27 +1,6 @@
-# Template
+# Camunda Platform REST API Documentation
 
-This template is built for [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
-
-### Usage
-
-```bash
-npx create-docusaurus@2.2.0 my-website --package-manager yarn
-```
-
-> When prompted to select a template choose `Git repository`.
-
-Template Repository URL:
-
-```bash
-https://github.com/PaloAltoNetworks/docusaurus-template-openapi-docs.git
-```
-
-> When asked how the template repo should be cloned choose "copy" (unless you know better).
-
-```bash
-cd my-website
-yarn
-```
+This is the documentation of Camunda Platform REST API.
 
 ### Local Development
 
