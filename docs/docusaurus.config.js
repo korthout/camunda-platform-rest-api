@@ -63,7 +63,7 @@ const config = {
             position: "left"
           },
           {
-            label: "API Reference",
+            label: "API",
             position: "left",
             to: "/docs/api"
           },
@@ -85,7 +85,7 @@ const config = {
                 to: "/docs/guides/getting-started"
               },
               {
-                label: "API Reference",
+                label: "API",
                 to: "/docs/api"
               }
             ]
