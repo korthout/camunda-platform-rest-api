@@ -85,6 +85,14 @@ const config = {
                 to: "/docs/guides/getting-started"
               },
               {
+                label: "Connect to a cluster",
+                to: "/docs/guides/connection"
+              },
+              {
+                label: "Configuration",
+                to: "/docs/guides/config"
+              },
+              {
                 label: "API",
                 to: "/docs/api"
               }
