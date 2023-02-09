@@ -1,7 +1,14 @@
 openapi: 3.0.0
 info:
   title: Camunda Platform REST API
-  description: REST API to interact with Camunda Platform 8
+  description: |-
+    REST API to interact with Camunda Platform 8.
+    
+    :::caution
+
+    This API is not yet stable - we may break backward compatibility in newer releases of `v0`.
+
+    :::
   version: 0.0.1
 
 paths:
