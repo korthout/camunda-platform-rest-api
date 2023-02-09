@@ -5,7 +5,7 @@ import styles from './styles.module.css';
 const FeatureList = [
   {
     title: 'Get Started Quickly',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    Svg: require('@site/static/img/time-speed_orange.svg').default,
     description: (
       <>
         Camunda Platform REST API was designed to be easily installed,
@@ -15,7 +15,7 @@ const FeatureList = [
   },
   {
     title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    Svg: require('@site/static/img/API_orange.svg').default,
     description: (
       <>
         <span>Thanks to a consistent API design and an </span>
@@ -26,7 +26,7 @@ const FeatureList = [
   },
   {
     title: 'Community Driven',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    Svg: require('@site/static/img/people_orange.svg').default,
     description: (
       <>
         <span>This project is community maintained. We welcome </span>
