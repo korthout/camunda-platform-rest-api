@@ -51,3 +51,9 @@ docker run -p 8080:8080 \
   -e ZEEBE_INSECURE_CONNECTION=true \
   ghcr.io/korthout/camunda-platform-rest-api:latest
 ```
+
+## Next steps
+
+- [configure the connection](/docs/guides/config)
+- explore the [API docs](/docs/api)
+- play around with the API in Swagger UI (running at [/swagger-ui](http://localhost:8080/swagger-ui.html/)).

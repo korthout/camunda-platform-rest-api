@@ -25,8 +25,8 @@ const sidebars = {
       link: {
         type: "generated-index",
         title: "Connect to a cluster",
-        description: "There are two ways to connect to a cluster.",
-        slug: "connection"
+        description: "There are two ways to connect to a Camunda Platform 8 cluster.",
+        slug: "guides/connection"
       }
     },{ 
       type: "doc",

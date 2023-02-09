@@ -34,3 +34,9 @@ zeebe.client.cloud.base-url=zeebe.camunda.io
 zeebe.client.cloud.port=443
 zeebe.client.cloud.auth-url=https://login.cloud.camunda.io/oauth/token
 ```
+
+## Next steps
+
+- [configure the connection](/docs/guides/config)
+- explore the [API docs](/docs/api)
+- play around with the API in Swagger UI (running at [/swagger-ui](http://localhost:8080/swagger-ui.html/)).

@@ -26,4 +26,9 @@ Once running, you can try it out the REST API.
 curl localhost:8080/status
 ```
 
-Or, explore the API in Swagger UI running at [/swagger-ui](http://localhost:8080/swagger-ui.html/).
+## Next steps
+
+- [connect to cluster](/docs/guides/connection)
+- explore the [API docs](/docs/api)
+- play around with the API in Swagger UI (running at [/swagger-ui](http://localhost:8080/swagger-ui.html/)).
+
