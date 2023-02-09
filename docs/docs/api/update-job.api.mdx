@@ -1,0 +1,64 @@
+---
+id: update-job
+title: "Update a Job"
+description: "Can be used to:"
+sidebar_label: "Update a Job"
+hide_title: true
+hide_table_of_contents: true
+api: {"description":"Can be used to:\n\n### Complete the job\n\nSet the `status` of the job to `completed`, with:\n  - (optionally) `variables`\n\n### Fail the job\n\nSet the `status` of the job to `failed`, with:\n  - `retries`\n  - (optionally) `retryBackoff`\n  - (optionally) `errorMessage`\n\n### Throw an error for the job\n\nSet the `status` of the job to `error_thrown`, with:\n  - `errorCode`\n  - (optionally) `errorMessage`","operationId":"updateJob","parameters":[{"name":"key","description":"Key (unique identifier) of the job to update","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"requestBody":{"content":{"application/json":{"schema":{"title":"A request to update a job","description":"A request to update a job","type":"object","properties":{"status":{"type":"string","example":"completed","description":"Requested state for the job, either one of `completed`, `failed`, or `error_thrown`"},"retries":{"type":"integer","format":"int32","description":"Number of retries for the job when it `failed`"},"retryBackoff":{"type":"string","default":"0ms","example":"2s 500ms","description":"Duration after which the job becomes `activatable` again when it `failed`"},"errorCode":{"type":"string","description":"Code to match an error catch event when job state `error_thrown` requested"},"errorMessage":{"type":"string","description":"Message to describe the error when job state `error_thrown` requested"},"variables":{"type":"object","additionalProperties":true,"description":"Variables to set for the job"}},"required":["status"]}}},"description":"A request to update a job","required":true},"x-codegen-request-body-name":"body","responses":{"204":{"description":"Successfully updated the job","content":{"application/json":{"schema":{"title":"A response to an UpdateJobRequest","description":"A response to an UpdateJobRequest","type":"object","properties":{"data":{},"error":{"type":"string"}}}}}},"503":{"description":"Unable to connect to Zeebe cluster"}},"tags":["Process-Automation"],"method":"patch","path":"/jobs/{key}","jsonRequestBodyExample":{"status":"completed","retries":0,"retryBackoff":"2s 500ms","errorCode":"string","errorMessage":"string","variables":{}},"info":{"title":"Camunda Platform REST API","description":"REST API to interact with Camunda Platform 8.\n\n:::caution\n\nThis API is not yet stable - we may break backward compatibility in newer releases of `v0`.\n\n:::","version":"0.0.1"},"postman":{"name":"Update a Job","description":{"content":"Can be used to:\n\n### Complete the job\n\nSet the `status` of the job to `completed`, with:\n  - (optionally) `variables`\n\n### Fail the job\n\nSet the `status` of the job to `failed`, with:\n  - `retries`\n  - (optionally) `retryBackoff`\n  - (optionally) `errorMessage`\n\n### Throw an error for the job\n\nSet the `status` of the job to `error_thrown`, with:\n  - `errorCode`\n  - (optionally) `errorMessage`","type":"text/plain"},"url":{"path":["jobs",":key"],"host":["{{baseUrl}}"],"query":[],"variable":[{"disabled":false,"description":{"content":"(Required) Key (unique identifier) of the job to update","type":"text/plain"},"type":"any","value":"","key":"key"}]},"header":[{"key":"Content-Type","value":"application/json"},{"key":"Accept","value":"application/json"}],"method":"PATCH","body":{"mode":"raw","raw":"\"\"","options":{"raw":{"language":"json"}}}}}
+sidebar_class_name: "patch api-method"
+info_path: docs/api/camunda-platform-rest-api
+custom_edit_url: null
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import TabItem from "@theme/TabItem";
+
+## Update a Job
+
+
+
+Can be used to:
+
+### Complete the job
+
+Set the `status` of the job to `completed`, with:
+  - (optionally) `variables`
+
+### Fail the job
+
+Set the `status` of the job to `failed`, with:
+  - `retries`
+  - (optionally) `retryBackoff`
+  - (optionally) `errorMessage`
+
+### Throw an error for the job
+
+Set the `status` of the job to `error_thrown`, with:
+  - `errorCode`
+  - (optionally) `errorMessage`
+
+<details style={{"marginBottom":"1rem"}} data-collapsed={false} open={true}><summary style={{}}><strong>Path Parameters</strong></summary><div><ul><ParamsItem className={"paramsItem"} param={{"name":"key","description":"Key (unique identifier) of the job to update","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}}></ParamsItem></ul></div></details><MimeTabs><TabItem label={"application/json"} value={"application/json-schema"}><details style={{}} data-collapsed={false} open={true}><summary style={{"textAlign":"left"}}><strong>Request Body</strong><strong style={{"fontSize":"var(--ifm-code-font-size)","color":"var(--openapi-required)"}}> required</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}><div style={{"marginTop":"1rem","marginBottom":"1rem"}}>
+
+A request to update a job
+
+</div></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"status"} required={true} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","example":"completed","description":"Requested state for the job, either one of `completed`, `failed`, or `error_thrown`"}}></SchemaItem><SchemaItem collapsible={false} name={"retries"} required={false} schemaName={"int32"} qualifierMessage={undefined} schema={{"type":"integer","format":"int32","description":"Number of retries for the job when it `failed`"}}></SchemaItem><SchemaItem collapsible={false} name={"retryBackoff"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","default":"0ms","example":"2s 500ms","description":"Duration after which the job becomes `activatable` again when it `failed`"}}></SchemaItem><SchemaItem collapsible={false} name={"errorCode"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Code to match an error catch event when job state `error_thrown` requested"}}></SchemaItem><SchemaItem collapsible={false} name={"errorMessage"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Message to describe the error when job state `error_thrown` requested"}}></SchemaItem><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}}><summary style={{}}><strong>variables</strong><span style={{"opacity":"0.6"}}> object</span></summary><div style={{"marginLeft":"1rem"}}><div style={{"marginTop":".5rem","marginBottom":".5rem"}}>
+
+Variables to set for the job
+
+</div></div></details></SchemaItem></ul></details></TabItem></MimeTabs><div><ApiTabs><TabItem label={"204"} value={"204"}><div>
+
+Successfully updated the job
+
+</div><div><MimeTabs schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs><TabItem label={"Schema"} value={"Schema"}><details style={{}} data-collapsed={false} open={true}><summary style={{"textAlign":"left"}}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"data"} required={false} schemaName={""} qualifierMessage={undefined} schema={{}}></SchemaItem><SchemaItem collapsible={false} name={"error"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string"}}></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"data\": {},\n  \"error\": \"string\"\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem><TabItem label={"503"} value={"503"}><div>
+
+Unable to connect to Zeebe cluster
+
+</div><div></div></TabItem></ApiTabs></div>
+      

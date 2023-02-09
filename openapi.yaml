@@ -1,7 +1,14 @@
 openapi: 3.0.0
 info:
   title: Camunda Platform REST API
-  description: REST API to interact with Camunda Platform 8
+  description: |-
+    REST API to interact with Camunda Platform 8.
+    
+    :::caution
+
+    This API is not yet stable - we may break backward compatibility in newer releases of `v0`.
+
+    :::
   version: 0.0.1
 
 paths:
@@ -19,10 +26,14 @@ paths:
                 $ref: '#/components/schemas/StatusResponse'
         '503':
           description: Unable to connect to Zeebe cluster
+      tags:
+        - Cluster
   /process-instances:
     post:
       summary: Create a new Process Instance
-      description: ''
+      description: |-
+        Creates a new process instance. This does not await for the process instance to complete,
+        i.e. it will be executed asynchronously.
       operationId: createProcessInstance
       requestBody:
         $ref: '#/components/requestBodies/CreateProcessInstanceRequest'
@@ -36,6 +47,8 @@ paths:
                 $ref: '#/components/schemas/ProcessInstanceResponse'
         '503':
           description: Unable to connect to Zeebe cluster
+      tags:
+        - Process-Automation
   /jobs:
     get:
       summary: Activate Jobs of a specific type
@@ -107,6 +120,8 @@ paths:
                 $ref: '#/components/schemas/ActivatedJobsResponse'
         '503':
           description: Unable to connect to Zeebe cluster
+      tags:
+        - Process-Automation
 
   /jobs/{key}:
     patch:
@@ -114,19 +129,19 @@ paths:
       description: |-
         Can be used to:
 
-        ## Complete the job
+        ### Complete the job
 
         Set the `status` of the job to `completed`, with:
           - (optionally) `variables`
 
-        ## Fail the job
+        ### Fail the job
 
         Set the `status` of the job to `failed`, with:
           - `retries`
           - (optionally) `retryBackoff`
           - (optionally) `errorMessage`
 
-        ## Throw an error for the job
+        ### Throw an error for the job
 
         Set the `status` of the job to `error_thrown`, with:
           - `errorCode`
@@ -152,6 +167,14 @@ paths:
                 $ref: '#/components/schemas/UpdateJobResponse'
         '503':
           description: Unable to connect to Zeebe cluster
+      tags:
+        - Process-Automation
+
+tags:
+  - name: Cluster
+    description: Find out the status of your cluster.
+  - name: Process-Automation
+    description: Everything to automate your processes.
 
 components:
   requestBodies:
