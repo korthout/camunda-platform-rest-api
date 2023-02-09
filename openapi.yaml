@@ -31,7 +31,9 @@ paths:
   /process-instances:
     post:
       summary: Create a new Process Instance
-      description: ''
+      description: |-
+        Creates a new process instance. This does not await for the process instance to complete,
+        i.e. it will be executed asynchronously.
       operationId: createProcessInstance
       requestBody:
         $ref: '#/components/requestBodies/CreateProcessInstanceRequest'
