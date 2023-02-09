@@ -4,32 +4,34 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
+    title: 'Get Started Quickly',
+    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    description: (
+      <>
+        Camunda Platform REST API was designed to be easily installed,
+        to get you connected to <a href="https://camunda.com/platform/">Camunda Platform 8</a> quickly.
+      </>
+    ),
+  },
+  {
     title: 'Easy to Use',
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        <span>Thanks to a consistent API design and an </span>
+        <a href="https://www.openapis.org/">OpenAPI</a>
+        <span> specification, you can focus on interacting with Camunda Platform 8.</span>
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: 'Community Driven',
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
-      </>
-    ),
-  },
-  {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
-    description: (
-      <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        <span>This project is community maintained. We welcome </span>
+        <a href="https://github.com/korthout/camunda-platform-rest-api/blob/main/CONTRIBUTING.md">contributions</a>
+        <span> for feature requests and bug reports, as well as for docs and code changes.</span>
       </>
     ),
   },

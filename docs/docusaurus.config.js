@@ -182,6 +182,13 @@ const config = {
         //   logoClass: "php",
         // },
     ],
+    announcementBar: {
+      id: "announcementBar_1", // Increment on change
+      content:
+        `📢 <strong>Public Beta</strong>: We want your <a href="https://github.com/korthout/camunda-platform-rest-api/issues">feedback</a>! 📢
+        &nbsp;&nbsp;&nbsp;
+        🚧 <strong>Warning:</strong> This API is not yet stable - we might break backward compatibility in newer releases of <code>v0</code>. 🚧`,
+    },
     }),
 
   plugins: [

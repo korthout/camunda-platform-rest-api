@@ -75,3 +75,15 @@
   content: "patch";
   background-color: var(--openapi-code-orange);
 }
+
+div[class^='announcementBar_'] {
+  --site-announcement-bar-stripe-color1: #fff8e6;
+  --site-announcement-bar-stripe-color2: #fff8e64e;
+  background: repeating-linear-gradient(
+    -35deg,
+    var(--site-announcement-bar-stripe-color1),
+    var(--site-announcement-bar-stripe-color1) 20px,
+    var(--site-announcement-bar-stripe-color2) 10px,
+    var(--site-announcement-bar-stripe-color2) 40px
+  );
+}
