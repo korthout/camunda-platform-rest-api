@@ -113,6 +113,9 @@
             <includes>
               <include>**/*.md</include>
             </includes>
+            <excludes>
+              <exclude>docs/</exclude>
+            </excludes>
             <flexmark/>
           </markdown>
           <kotlin>
