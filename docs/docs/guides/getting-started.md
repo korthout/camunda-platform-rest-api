@@ -20,7 +20,7 @@ This is a great way to try out the Camunda Platform REST API before connecting i
 docker compose -f ./docker/docker-compose.yml up -d
 ```
 
-Once running, you can try it out the REST API.
+Once running, you can try out the REST API.
 
 ```shell
 curl localhost:8080/status
