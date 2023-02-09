@@ -1,8 +1,8 @@
 ---
 id: self-managed
 sidebar_position: 2.2
-title: Camunda Platform SM
-description: Camunda Platform Self-Managed connection
+title: Camunda Platform 8 SM
+description: Connect to Camunda Platform 8 Self-Managed
 tags:
   - guides
   - connection

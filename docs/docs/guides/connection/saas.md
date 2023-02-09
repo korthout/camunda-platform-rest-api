@@ -1,8 +1,8 @@
 ---
 id: saas
 sidebar_position: 2.1
-title: Camunda Platform SaaS
-description: Camunda Platform SaaS connection
+title: Camunda Platform 8 SaaS
+description: Connect to Camunda Platform 8 SaaS
 tags:
   - guides
   - connection
