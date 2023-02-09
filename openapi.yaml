@@ -127,19 +127,19 @@ paths:
       description: |-
         Can be used to:
 
-        ## Complete the job
+        ### Complete the job
 
         Set the `status` of the job to `completed`, with:
           - (optionally) `variables`
 
-        ## Fail the job
+        ### Fail the job
 
         Set the `status` of the job to `failed`, with:
           - `retries`
           - (optionally) `retryBackoff`
           - (optionally) `errorMessage`
 
-        ## Throw an error for the job
+        ### Throw an error for the job
 
         Set the `status` of the job to `error_thrown`, with:
           - `errorCode`
