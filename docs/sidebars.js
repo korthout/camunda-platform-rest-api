@@ -42,7 +42,7 @@ const sidebars = {
       link: {
         type: "generated-index",
         title: "Camunda Platform REST API",
-        description: "Here you can learn all the details of this API!",
+        description: `Explore the API docs, or download the OpenApi Spec in the Introduction (click Export).`,
         slug: "/api"
       },
       // @ts-ignore
