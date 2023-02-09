@@ -26,6 +26,8 @@ paths:
                 $ref: '#/components/schemas/StatusResponse'
         '503':
           description: Unable to connect to Zeebe cluster
+      tags:
+        - Cluster
   /process-instances:
     post:
       summary: Create a new Process Instance
@@ -43,6 +45,8 @@ paths:
                 $ref: '#/components/schemas/ProcessInstanceResponse'
         '503':
           description: Unable to connect to Zeebe cluster
+      tags:
+        - Process-Automation
   /jobs:
     get:
       summary: Activate Jobs of a specific type
@@ -114,6 +118,8 @@ paths:
                 $ref: '#/components/schemas/ActivatedJobsResponse'
         '503':
           description: Unable to connect to Zeebe cluster
+      tags:
+        - Process-Automation
 
   /jobs/{key}:
     patch:
@@ -159,6 +165,14 @@ paths:
                 $ref: '#/components/schemas/UpdateJobResponse'
         '503':
           description: Unable to connect to Zeebe cluster
+      tags:
+        - Process-Automation
+
+tags:
+  - name: Cluster
+    description: Find out the status of your cluster.
+  - name: Process-Automation
+    description: Everything to automate your processes.
 
 components:
   requestBodies:
