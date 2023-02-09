@@ -4,30 +4,385 @@
  * work well for content-centric websites.
  */
 
+/* ---------------- */
+/* Camunda Docs CSS */
+/* ---------------- */
+
+/* stylelint-disable docusaurus/copyright-header */
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  --ifm-color-primary: #ff1f00;
+  --ifm-color-primary-dark: #ff3800;
+  --ifm-color-primary-darker: #ff4700;
+  --ifm-color-primary-darkest: #ff5400;
+  --ifm-color-primary-light: #ff7000;
+  --ifm-color-primary-lighter: #ff7d00;
+  --ifm-color-primary-lightest: #ff8b00;
   --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
-[data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+.docusaurus-highlight-code-line {
+  background-color: rgb(72, 77, 91);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
 }
+
+body {
+  font-family: IBM Plex Sans, -apple-system, blinkmacsystemfont, Segoe UI,
+    roboto, oxygen-sans, ubuntu, cantarell, Helvetica Neue, sans-serif;
+}
+
+.alert--primary {
+  background-color: #14d890;
+}
+
+.hero--primary {
+  background-color: #000;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.button--hero {
+  background-color: #fc5d0d;
+  border-color: #fc5d0d;
+  color: #fff !important;
+  transition: all 0.3s;
+}
+
+.button--hero:hover {
+  background-color: transparent;
+  border-color: #fc5d0d;
+  color: #fff !important;
+  transform: translateY(-8px);
+  transition: all 0.3s;
+}
+
+.sign-up {
+  color: #fff !important;
+  border-color: #fc5d0d;
+  margin: 1em;
+  transition: all 0.3s;
+}
+
+.sign-up:hover {
+  color: #fff !important;
+  background-color: #fc5d0d;
+  transform: translateY(-8px);
+  transition: all 0.3s ease;
+}
+
+.osano-footer-link-docu {
+  color: var(--ifm-color-link-footer);
+}
+
+.hero--secondary {
+  background-color: #14d890;
+  background-size: 100%;
+  color: #000;
+}
+
+/* Osano Styles  */
+.osano-cm-widget {
+  display: none;
+}
+.osano-cm-widget:focus,
+.osano-cm-widget:hover {
+  opacity: 1;
+  transform: none;
+}
+.osano-cm-widget:active {
+  transform: translateY(1px);
+}
+div.osano-cm-info__info-views.osano-cm-info-views.osano-cm-info-views--position_0
+  > div
+  > ul
+  > li:last-of-type {
+  display: none;
+}
+.osano-cm-button--type_accept {
+  border-radius: 30px;
+  border: 1px solid #000000;
+}
+.osano-cm-button--type_deny {
+  border-radius: 30px;
+}
+.osano-cm-button--type_save {
+  color: #434343;
+  background-color: #f7f7f7;
+  border-radius: 30px;
+  border: 1px solid #434343;
+}
+.osano-cm-button--type_denyAll {
+  color: #434343;
+  background-color: #f7f7f7;
+  border-radius: 30px;
+  border: 1px solid #434343;
+}
+.osano-cm-button--type_deny:hover {
+  color: #434343;
+}
+.osano-cm-button--type_denyAll:hover {
+  color: #434343;
+  background-color: #e6e6e6;
+}
+.osano-cm-button--type_save:hover {
+  color: #434343;
+  background-color: #e6e6e6;
+}
+
+/* style SVG images of the BPMN coverage page */
+svg.implemented [fill="#333"] {
+  fill: #11c399;
+}
+
+svg.implemented [stroke="#333"] {
+  stroke: #11c399;
+}
+
+svg.implemented:hover [fill="#333"] {
+  fill: #14d890;
+}
+
+svg.implemented:hover [stroke="#333"] {
+  stroke: #14d890;
+}
+
+.bpmn-symbol-container a {
+  padding-right: 5px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.bpmn-coverage-event-table td {
+  text-align: center;
+}
+
+.badge--beginner {
+  background-color: #ff8b00;
+  color: #ffffff;
+}
+
+.badge--intermediate {
+  background-color: #ff5400;
+  color: #ffffff;
+}
+
+.badge--advanced {
+  background-color: #ff1f00;
+  color: #ffffff;
+}
+
+.badge--short {
+  background-color: #14d890;
+  color: #ffffff;
+}
+
+.badge--medium {
+  background-color: #0ba7b9;
+  color: #ffffff;
+}
+
+.badge--long {
+  background-color: #0075ff;
+  color: #ffffff;
+}
+
+.badge--platform {
+  background-color: #fc5d0d;
+  color: #ffffff;
+  margin-bottom: 1em;
+}
+.badge--cloud {
+  background-color: #26d07c;
+  color: #000000;
+  margin-bottom: 1em;
+}
+
+.badge--beta {
+  background-color: #26d07c;
+  color: #000000;
+}
+
+/*
+navbar .navbar .navbar__link[href*="self-managed"] {
+  font-size: 0;
+  padding: 4px;
+  margin: 0 4px;
+}
+
+.menu__link[href*="self-managed"]:hover {
+  color: #14d890;
+}
+
+.navbar .navbar__link[href*="self-managed"]:hover {
+  color: #14d890;
+}
+
+.navbar .navbar__link[href*="self-managed"]:before {
+  content: "";
+  display: block;
+  width: 25px;
+  height: 25px;
+  background-size: cover;
+  float: left;
+}
+
+.navbar .navbar__link[href*="self-managed"]:before {
+  background-image: url("../../static/img/self-managed.png");
+  margin-right: 2px;
+} */
+
+/*
+ Between mobile and desktop sizes, the nav bar gets a little scrunchy. Scale things down a bit to make more space.
+@media screen and (min-width: 996px) and (max-width: 1140px) {
+  .navbar .navbar__title,
+  .navbar .navbar__link {
+    font-size: 0.9em;
+  }
+
+  .navbar .navbar__item {
+    padding: var(--ifm-navbar-item-padding-vertical)
+      calc(0.5 * var(--ifm-navbar-item-padding-horizontal));
+  }
+
+  .navbar .navbar__link[href*="self-managed"]:before {
+    width: 23px;
+    height: 23px;
+  }
+}
+*/
+
+/*
+.get-started-use-case {
+  background-color: #042b1d;
+  color: #fff;
+  border-color: #042b1d;
+  transition: all 0.3s ease;
+}
+
+.get-started-use-case:hover {
+  background-color: transparent;
+  color: #000 !important;
+  border-color: #000;
+  transform: translateY(-8px);
+  transition: all 0.3s ease;
+}
+
+.get-started-use-case-2 {
+  background-color: transparent;
+  color: #042b1d !important;
+  border-color: #042b1d;
+  margin: 1em;
+  transition: all 0.3s ease;
+}
+
+.get-started-use-case-2:hover {
+  background-color: #000;
+  color: #fff !important;
+  border-color: #000;
+  transform: translateY(-8px);
+  transition: all 0.3s ease;
+}
+*/
+
+.component-title {
+  text-align: center;
+}
+
+.component-desc {
+  text-align: center;
+}
+
+.component-block {
+  transition: all 0.3s ease;
+}
+
+.component-block:hover {
+  transform: translateY(-8px);
+  transition: all 0.3s ease;
+}
+
+div[class^="announcementBar_"] {
+  font-size: 120%;
+  padding: 1em 0;
+}
+div[class^="announcementBar_"] button {
+  align-self: center;
+}
+
+/* Styles for BPMN.io integration and callouts in these models */
+.bpmn-model {
+  position: relative;
+  background-color: #f9f9f9;
+  margin-bottom: 15px;
+  padding: 10px;
+  overflow: hidden;
+}
+.callout {
+  display: inline-block;
+  color: #fff !important;
+  background-color: rgba(0, 0, 0, 0.8);
+  -webkit-border-radius: 100px;
+  border-radius: 100px;
+  text-align: center;
+  font-size: 0.75em;
+  width: 1.67em;
+  height: 1.67em;
+  line-height: 1.67em;
+  font-style: normal;
+  font-weight: bold;
+  /*margin-block-end: 1em; leads to wired effects when callout has multiple lines*/
+  margin-inline-end: 0.75em;
+}
+.thumbs-down-example {
+  border: 3px solid #bd0100;
+  padding-bottom: 0px;
+}
+.thumbs-down {
+  color: #bd0100 !important;
+  font-size: xx-large;
+  position: absolute;
+  z-index: 10;
+}
+span.callout + p {
+  display: inline;
+  margin: 0 0 1.25rem;
+}
+span.callout + p::after {
+  content: "\a";
+  white-space: pre;
+}
+
+/* I needed to overwrite this, otherwise the DMN table is super small */
+.dmn-decision-table-container .tjs-container {
+  width: 100%;
+}
+.dmn-decision-table-container .tjs-table {
+  width: 100%;
+}
+
+.theme-doc-markdown img {
+  border-style: solid;
+  border-color: lightgray;
+  border-width: 1px;
+  box-shadow: 4px 4px 4px 1px lightgray;
+}
+
+.theme-doc-markdown table img {
+  border: none;
+  box-shadow: none;
+}
+
+ /* ---------------------------------------------- */
+ /* CSS provided by docusaurus-plugin-openapi-docs */
+ /* ---------------------------------------------- */
 
 /* Sidebar Method labels */
 .api-method>.menu__link {
@@ -53,7 +408,7 @@
 
 .get>.menu__link::before {
   content: "get";
-  background-color: var(--ifm-color-primary);
+  background-color: #0075ff;
 }
 
 .put>.menu__link::before {
@@ -76,9 +431,37 @@
   background-color: var(--openapi-code-orange);
 }
 
+/* ---------- */
+/* Custom CSS */
+/* ---------- */
+
+/*
+These colors are produced using #fc5d0d in the primary color shades tool
+See: https://docusaurus.io/docs/styling-layout#styling-your-site-with-infima
+*/
+:root {
+  --ifm-color-primary: #fc5d0d;
+  --ifm-color-primary-dark: #ec5103;
+  --ifm-color-primary-darker: #de4c03;
+  --ifm-color-primary-darkest: #b73f02;
+  --ifm-color-primary-light: #fc6f27;
+  --ifm-color-primary-lighter: #fc7734;
+  --ifm-color-primary-lightest: #fd925c;
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #fc5d0d;
+  --ifm-color-primary-dark: #ec5103;
+  --ifm-color-primary-darker: #de4c03;
+  --ifm-color-primary-darkest: #b73f02;
+  --ifm-color-primary-light: #fc6f27;
+  --ifm-color-primary-lighter: #fc7734;
+  --ifm-color-primary-lightest: #fd925c;
+}
+
 div[class^='announcementBar_'] {
   --site-announcement-bar-stripe-color1: #fff8e6;
-  --site-announcement-bar-stripe-color2: #fff8e64e;
+  --site-announcement-bar-stripe-color2: #fffdf9;
   background: repeating-linear-gradient(
     -35deg,
     var(--site-announcement-bar-stripe-color1),
@@ -86,4 +469,19 @@ div[class^='announcementBar_'] {
     var(--site-announcement-bar-stripe-color2) 10px,
     var(--site-announcement-bar-stripe-color2) 40px
   );
+}
+
+.badge--primary {
+  background-color: #0075ff;
+  color: #ffffff;
+  --ifm-badge-border-color: inherit;
+}
+
+li.tabs__item {
+  border-color: var(--ifm-color-emphasis-300);
+}
+
+[data-theme='dark'] .hero--primary {
+  background-color: #303846;
+  color: #ffffff
 }

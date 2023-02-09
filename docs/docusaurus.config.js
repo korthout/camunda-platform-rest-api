@@ -141,8 +141,8 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} Nico Korthout. Built with Docusaurus.`
       },
       prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
+        // theme: lightCodeTheme,
+        // darkTheme: darkCodeTheme,
         additionalLanguages: ["java"]
       },
       languageTabs: [
