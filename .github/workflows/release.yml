@@ -1,0 +1,62 @@
+name: Release
+on:
+  workflow_dispatch:
+    inputs:
+      releaseVersion:
+        description: 'releaseVersion: The new version to release, e.g. 1.0.0'
+        type: string
+        required: true
+      nextDevelopmentVersion:
+        description: 'nextDevelopmentVersion: The new version to use during development e.g. 1.1.0-SNAPSHOT'
+        type: string
+        required: true
+      dryRun:
+        description: 'dryRun: Don't push commits and don't publish artifacts'
+        type: boolean
+        required: true
+        default: false
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Java env
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: maven
+
+      - name: Set release version in openapi.yaml
+        uses: endaft/action-yamler@v1.0.5
+        with:
+          file: ./openapi.yaml
+          path: info.version
+          set: ${{ inputs.releaseVersion }}
+
+      - name: Set release version in pom.xml
+        run: mvn versions:set -DnewVersion=${{ inputs.releaseVersion }} -DgenerateBackupPoms=false
+
+      - name: Commit new release version
+        run: git commit -m 'dist: release ${{ inputs.releaseVersion }}'
+      
+      - if: ${{ inputs.dryRun == false }}
+        name: Push commit
+        run: git push
+
+      - name: Set next development version in openapi.yaml
+        uses: endaft/action-yamler@v1.0.5
+        with:
+          file: ./openapi.yaml
+          path: info.version
+          set: ${{ inputs.nextDevelopmentVersion }}
+
+      - name: Set next development version in pom.xml
+        run: mvn versions:set -DnewVersion=${{ inputs.nextDevelopmentVersion }} -DgenerateBackupPoms=false
+
+      - name: Commit next development version
+        run: git commit -m 'dist: next dev version ${{ inputs.nextDevelopmentVersion }}'
+
+      - if: ${{ inputs.dryRun == false }}
+        name: Push commit
+        run: git push
