@@ -4,9 +4,10 @@
 
 <p align="center">
   <a href="https://github.com/camunda-community-hub/community"><img src="https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700" alt="Community Extension" /></a>
+  <br/>
   <a href="https://camunda.com/platform/"><img src="https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%208-0072Ce" alt="Compatible with: Camunda Platform 8" /></a>
   <a href="https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#incubating-"><img src="https://img.shields.io/badge/Lifecycle-Incubating-blue" alt="Lifecycle: Incubating" /></a>
-  <img alt="GitHub" src="https://img.shields.io/github/license/korthout/camunda-platform-rest-api" alt="Licence: Apache-2.0">
+  <img alt="GitHub" src="https://img.shields.io/github/license/korthout/camunda-platform-rest-api?label=License" alt="Licence: Apache-2.0">
 </p>
 
 > **Note**
