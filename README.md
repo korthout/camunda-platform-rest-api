@@ -1,14 +1,48 @@
-# Camunda Platform REST API
+<h1 align="center">
+  <p align="center">Camunda Platform REST API</p>
+</h1>
 
-A REST API to interact with [Camunda Platform 8](https://camunda.com/platform/).
+<p align="center">
+  <a href="https://github.com/camunda-community-hub/community"><img src="https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700" alt="Community Extension" /></a>
+  <a href="https://camunda.com/platform/"><img src="https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%208-0072Ce" alt="Compatible with: Camunda Platform 8" /></a>
+  <a href="https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#incubating-"><img src="https://img.shields.io/badge/Lifecycle-Incubating-blue" alt="Lifecycle: Incubating" /></a>
+  <img alt="GitHub" src="https://img.shields.io/github/license/korthout/camunda-platform-rest-api" alt="Licence: Apache-2.0">
+</p>
 
-## About
+> **Note**
+> **Public Beta** - We want your feedback!
+> Give it a star on GitHub if you like the project.
+> Or please tell us what you'd like to see added or changed in a [GitHub Issue](https://github.com/korthout/camunda-platform-rest-api/issues).
+>
+> **Warning**
+> **This project is incubating** - While it is ready to be used,
+> it does not offer operations for all parts of Camunda Platform 8 yet.
+> Have a look at [API](#api) to see what operations are already available.
+> [Let us know](https://github.com/korthout/camunda-platform-rest-api/issues/10) what operations you'd like to see next.
+>
+> **Warning**
+> **This API is not yet stable** - We might break backward compatibility in newer releases of `v0`.
 
-Zeebe only has a gRPC API.
-Users can either use one of the existing client implementations, or implement their own.
-For most programming languages this is possible, but gRPC is not available to all languages.
-In addition, not all common programming languages have a dedicated Zeebe client.
-The Camunda Platform REST API aims to provide a simple but flexible REST API, to use Zeebe from all code.
+## Introduction
+
+Camunda Platform REST API is a REST API to interact with [Camunda Platform 8](https://camunda.com/platform/).
+
+Camunda Platform 8 has multiple different APIs.
+Typically, one for each component.
+There are gRPC, GraphQL, and REST APIs for you to connect to and learn, which can be difficult and time consuming.
+Camunda Platform REST API offers a single consistent REST API to interact with Camunda Platform 8.
+
+- Get Started Quickly
+
+> Camunda Platform REST API was designed to be easily installed, to get you connected to [Camunda Platform 8](https://camunda.com/platform/) quickly.
+
+- Easy to Use
+
+> Thanks to a consistent API design and an [OpenAPI](https://www.openapis.org/) specification, you can focus on interacting with Camunda Platform 8.
+
+- Community Driven
+
+> This project is community maintained. We welcome [contributions](https://github.com/korthout/camunda-platform-rest-api/blob/main/CONTRIBUTING.md) for feature requests and bug reports, as well as for docs and code changes.
 
 ### API
 
@@ -20,7 +54,7 @@ The Camunda Platform REST API aims to provide a simple but flexible REST API, to
 | `PATCH` | `/jobs/{key}`        | Update a Job                             |
 | ..      | ..                   | Not yet implemented                      |
 
-You can find the full API reference documentation under [`docs/api.md`](docs/api.md).
+You can find the full API reference documentation in the [`openapi.yaml`](openapi.yaml) specification.
 
 ## Getting Started
 
