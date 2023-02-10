@@ -166,6 +166,8 @@ This software would not be possible without these awesome projects:
   \- Easily use the Zeebe Java Client in your Spring or Spring Boot projects
 - [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator)
   \- Generate clients, servers, and documentation from OpenAPI 2.0/3.x documents
+- [Docusaurus OpenAPI Doc Generator](https://github.com/PaloAltoNetworks/docusaurus-openapi-docs)
+  \- OpenAPI plugin for generating API reference docs in Docusaurus v2.
 - [kotlin-duration-string](https://github.com/blueanvil/kotlin-duration-string)
   \- A tiny Kotlin library for dealing with human-readable duration strings like `2h 45m 50s`
 
