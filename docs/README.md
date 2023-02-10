@@ -2,6 +2,15 @@
 
 This is the documentation of Camunda Platform REST API.
 
+### Getting Started
+
+```
+yarn install --frozen-lockfile
+```
+
+This command installs the necessary dependencies to your local `node_modules`.
+You need these to be able to run any of the other commands.
+
 ### Local Development
 
 ```bash
