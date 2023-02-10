@@ -26,3 +26,12 @@ yarn build
 ```
 
 This command generates static content into the `build` directory and can be served using any static contents hosting service.
+
+### Update the OpenAPI docs
+
+```bash
+yarn run clean-api-docs all
+yarn run gen-api-docs all
+```
+
+This command re-generates the `/docs/api` folder, containing any changes made to the `openapi.yaml` file.
