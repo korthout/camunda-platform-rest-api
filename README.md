@@ -13,13 +13,13 @@
 > **Public Beta** - We want your feedback!
 > Give it a star on GitHub if you like the project.
 > Or please tell us what you'd like to see added or changed in a [GitHub Issue](https://github.com/korthout/camunda-platform-rest-api/issues).
-
+>
 > **Warning**
 > **This project is incubating** - While it is ready to be used,
 > it does not offer operations for all parts of Camunda Platform 8 yet.
 > Have a look at [API](#api) to see what operations are already available.
 > [Let us know](https://github.com/korthout/camunda-platform-rest-api/issues/10) what operations you'd like to see next.
-
+>
 > **Warning**
 > **This API is not yet stable** - We might break backward compatibility in newer releases of `v0`.
 
@@ -32,17 +32,17 @@ Typically, one for each component.
 There are gRPC, GraphQL, and REST APIs for you to connect to and learn, which can be difficult and time consuming.
 Camunda Platform REST API offers a single consistent REST API to interact with Camunda Platform 8.
 
- - Get Started Quickly
+- Get Started Quickly
 
- > Camunda Platform REST API was designed to be easily installed, to get you connected to [Camunda Platform 8](https://camunda.com/platform/) quickly.
+> Camunda Platform REST API was designed to be easily installed, to get you connected to [Camunda Platform 8](https://camunda.com/platform/) quickly.
 
- - Easy to Use
+- Easy to Use
 
- > Thanks to a consistent API design and an [OpenAPI](https://www.openapis.org/) specification, you can focus on interacting with Camunda Platform 8.
+> Thanks to a consistent API design and an [OpenAPI](https://www.openapis.org/) specification, you can focus on interacting with Camunda Platform 8.
 
- - Community Driven
+- Community Driven
 
- > This project is community maintained. We welcome [contributions](https://github.com/korthout/camunda-platform-rest-api/blob/main/CONTRIBUTING.md) for feature requests and bug reports, as well as for docs and code changes.
+> This project is community maintained. We welcome [contributions](https://github.com/korthout/camunda-platform-rest-api/blob/main/CONTRIBUTING.md) for feature requests and bug reports, as well as for docs and code changes.
 
 ### API
 
