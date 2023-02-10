@@ -44,7 +44,7 @@ Camunda Platform REST API offers a single consistent REST API to interact with C
 | `PATCH` | `/jobs/{key}`        | Update a Job                             |
 | ..      | ..                   | Not yet implemented                      |
 
-You can find the full API reference documentation under [`docs/api.md`](docs/api.md).
+You can find the full API reference documentation in the [`openapi.yaml`](openapi.yaml) specification.
 
 ## Getting Started
 
