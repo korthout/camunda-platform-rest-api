@@ -11,7 +11,7 @@ on:
         type: string
         required: true
       dryRun:
-        description: 'dryRun: Don't push commits and don't publish artifacts'
+        description: "dryRun: Don't push commits and don't publish artifacts"
         type: boolean
         required: true
         default: false
