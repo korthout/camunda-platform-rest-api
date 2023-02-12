@@ -27,15 +27,15 @@ jobs:
           java-version: 17
           cache: maven
 
+      - name: Set release version in pom.xml
+        run: mvn versions:set -DnewVersion=${{ inputs.releaseVersion }} -DgenerateBackupPoms=false
+
       - name: Set release version in openapi.yaml
         uses: endaft/action-yamler@v1.0.5
         with:
           file: ./openapi.yaml
           path: info.version
           set: ${{ inputs.releaseVersion }}
-
-      - name: Set release version in pom.xml
-        run: mvn versions:set -DnewVersion=${{ inputs.releaseVersion }} -DgenerateBackupPoms=false
 
       - name: Commit new release version
         run: echo ${{ inputs.releaseVersion }} | git commit -F- --no-edit
@@ -47,15 +47,15 @@ jobs:
         name: Push commit
         run: git push
 
+      - name: Set next development version in pom.xml
+        run: mvn versions:set -DnewVersion=${{ inputs.nextDevelopmentVersion }} -DgenerateBackupPoms=false
+
       - name: Set next development version in openapi.yaml
         uses: endaft/action-yamler@v1.0.5
         with:
           file: ./openapi.yaml
           path: info.version
           set: ${{ inputs.nextDevelopmentVersion }}
-
-      - name: Set next development version in pom.xml
-        run: mvn versions:set -DnewVersion=${{ inputs.nextDevelopmentVersion }} -DgenerateBackupPoms=false
 
       - name: Commit next development version
         run: echo ${{ inputs.nextDevelopmentVersion }} | git commit -F- --no-edit
