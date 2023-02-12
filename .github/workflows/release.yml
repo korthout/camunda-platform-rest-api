@@ -58,7 +58,7 @@ jobs:
           commit: --signoff
           default_author: github_actions
           fetch: false
-          message: 'dist:\ {{ inputs.releaseVersion }}'
+          message: 'dist:\ ${{ inputs.releaseVersion }}'
           push: ${{ inputs.dryRun == false }}
 
       - name: Print new release version commit
@@ -84,7 +84,7 @@ jobs:
           commit: --signoff
           default_author: github_actions
           fetch: false
-          message: 'dist:\ {{ inputs.nextDevelopmentVersion }}'
+          message: 'dist:\ ${{ inputs.nextDevelopmentVersion }}'
           push: ${{ inputs.dryRun == false }}
 
       - name: Print next development version commit
