@@ -8,8 +8,8 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 const config = {
   title: "Camunda Platform REST API",
   tagline: "Interact with Camunda Platform 8",
-  url: "https://github.com",
-  baseUrl: "/korthout/camunda-platform-rest-api",
+  url: "https://korthout.github.io",
+  baseUrl: "/camunda-platform-rest-api",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.png",
