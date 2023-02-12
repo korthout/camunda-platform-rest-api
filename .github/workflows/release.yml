@@ -15,6 +15,7 @@ on:
         type: boolean
         required: true
         default: false
+concurrency: release
 jobs:
   release:
     runs-on: ubuntu-latest

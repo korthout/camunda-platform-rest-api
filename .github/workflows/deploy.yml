@@ -5,6 +5,7 @@ on:
 env:
   REGISTRY: ghcr.io
   GHCR_USER: korthout
+concurrency: deploy
 jobs:
   publish:
     runs-on: ubuntu-latest
