@@ -63,13 +63,18 @@ jobs:
           fetch: false
           message: 'dist: ${{ inputs.releaseVersion }}'
           push: ${{ inputs.dryRun == false }}
+          tag: v${{ inputs.releaseVersion }}
 
       - name: Print new release version commit
         run: git show ${{ steps.commit-new-release.outputs.commit_sha }} | cat
-      
+
       - if: ${{ inputs.dryRun == false }}
         name: Push commit
         run: git push
+
+      - if: ${{ inputs.dryRun == false }}
+        name: Push tag
+        run: git push v${{ inputs.releaseVersion }}
 
       - name: Set next development version in pom.xml
         run: mvn versions:set -DnewVersion=${{ inputs.nextDevelopmentVersion }} -DgenerateBackupPoms=false
