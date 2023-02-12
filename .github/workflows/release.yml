@@ -53,6 +53,7 @@ jobs:
         working-directory: docs
 
       - name: Commit new release version
+        id: commit-new-release
         uses: EndBug/add-and-commit@v9
         with:
           commit: --signoff
@@ -62,7 +63,7 @@ jobs:
           push: ${{ inputs.dryRun == false }}
 
       - name: Print new release version commit
-        run: git show head | cat
+        run: git show ${{ steps.commit-new-release.outputs.commit_sha }} | cat
       
       - if: ${{ inputs.dryRun == false }}
         name: Push commit
@@ -79,6 +80,7 @@ jobs:
           set: ${{ inputs.nextDevelopmentVersion }}
 
       - name: Commit next development version
+        id: commit-next-dev
         uses: EndBug/add-and-commit@v9
         with:
           commit: --signoff
@@ -88,7 +90,7 @@ jobs:
           push: ${{ inputs.dryRun == false }}
 
       - name: Print next development version commit
-        run: git show head | cat
+        run: git show ${{ steps.commit-next-dev.outputs.commit_sha }} | cat
 
       - if: ${{ inputs.dryRun == false }}
         name: Push commit
