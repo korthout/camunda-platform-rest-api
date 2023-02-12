@@ -38,7 +38,7 @@ jobs:
           set: ${{ inputs.releaseVersion }}
 
       - name: Commit new release version
-        run: echo ${{ inputs.releaseVersion }} | git commit -F- --no-edit
+        run: echo "dist:\ ${{ inputs.releaseVersion }}" | git commit -F- --no-edit
 
       - name: Print new release version commit
         run: git show head | cat
@@ -58,7 +58,7 @@ jobs:
           set: ${{ inputs.nextDevelopmentVersion }}
 
       - name: Commit next development version
-        run: echo ${{ inputs.nextDevelopmentVersion }} | git commit -F- --no-edit
+        run: echo "dist:\ ${{ inputs.nextDevelopmentVersion }}" | git commit -F- --no-edit
 
       - name: Print next development version commit
         run: git show head | cat
