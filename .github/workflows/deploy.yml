@@ -2,6 +2,9 @@ name: Publish container
 on:
   push:
     branches: [ main ]
+env:
+  REGISTRY: ghcr.io
+  GHCR_USER: korthout
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -15,9 +18,11 @@ jobs:
           cache: maven
       - name: Build Package
         run: mvn -B clean package -DskipTests
-      - name: Login to Docker
-        run: |
-          # new login with new container registry url and PAT
-          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ env.GHCR_USER }}
+          password: ${{ secrets.GHCR_PAT }}
       - name: Publish Package
         run: mvn -B jib:build
