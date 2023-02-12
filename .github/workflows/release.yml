@@ -38,7 +38,10 @@ jobs:
         run: mvn versions:set -DnewVersion=${{ inputs.releaseVersion }} -DgenerateBackupPoms=false
 
       - name: Commit new release version
-        run: git commit -m 'dist: release ${{ inputs.releaseVersion }}'
+        run: echo ${{ inputs.releaseVersion }} | git commit -F- --no-edit
+
+      - name: Print new release version commit
+        run: git show head | cat
       
       - if: ${{ inputs.dryRun == false }}
         name: Push commit
@@ -55,7 +58,10 @@ jobs:
         run: mvn versions:set -DnewVersion=${{ inputs.nextDevelopmentVersion }} -DgenerateBackupPoms=false
 
       - name: Commit next development version
-        run: git commit -m 'dist: next dev version ${{ inputs.nextDevelopmentVersion }}'
+        run: echo ${{ inputs.nextDevelopmentVersion }} | git commit -F- --no-edit
+
+      - name: Print next development version commit
+        run: git show head | cat
 
       - if: ${{ inputs.dryRun == false }}
         name: Push commit
