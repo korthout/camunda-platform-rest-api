@@ -26,6 +26,15 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: maven
+      - name: Set up Yarn env
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: yarn
+          cache-dependency-path: docs/yarn.lock
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+        working-directory: docs
 
       - name: Set release version in pom.xml
         run: mvn versions:set -DnewVersion=${{ inputs.releaseVersion }} -DgenerateBackupPoms=false
@@ -36,6 +45,12 @@ jobs:
           file: ./openapi.yaml
           path: info.version
           set: ${{ inputs.releaseVersion }}
+
+      - name: Generate docs for new release version
+        run: |
+          yarn run clean-api-docs all
+          yarn run gen-api-docs all
+        working-directory: docs
 
       - name: Commit new release version
         run: echo "dist:\ ${{ inputs.releaseVersion }}" | git commit -F- --no-edit
