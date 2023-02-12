@@ -1,61 +1,69 @@
 openapi: 3.0.0
 info:
   title: Camunda Platform REST API
-  description: |-
+  description: >-
     REST API to interact with Camunda Platform 8.
-    
+
+
     :::caution
+
 
     This API is not yet stable - we may break backward compatibility in newer releases of `v0`.
 
-    :::
-  version: 0.0.1
 
+    :::
+  version: 0.1.0
 paths:
   /status:
     get:
       summary: Retrieve the Zeebe cluster status
-      description: Retrieves the Topology of a Zeebe cluster from the Gateway. This provides insights into the current status of the cluster
+      description: Retrieves the Topology of a Zeebe cluster from the Gateway. This
+        provides insights into the current status of the cluster
       operationId: getStatus
       responses:
-        '200':
+        "200":
           description: successfully retrieved
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StatusResponse'
-        '503':
+                $ref: "#/components/schemas/StatusResponse"
+        "503":
           description: Unable to connect to Zeebe cluster
       tags:
         - Cluster
   /process-instances:
     post:
       summary: Create a new Process Instance
-      description: |-
-        Creates a new process instance. This does not await for the process instance to complete,
+      description: >-
+        Creates a new process instance. This does not await for the process
+        instance to complete,
+
         i.e. it will be executed asynchronously.
       operationId: createProcessInstance
       requestBody:
-        $ref: '#/components/requestBodies/CreateProcessInstanceRequest'
+        $ref: "#/components/requestBodies/CreateProcessInstanceRequest"
       x-codegen-request-body-name: body
       responses:
-        '200':
+        "200":
           description: successfully created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProcessInstanceResponse'
-        '503':
+                $ref: "#/components/schemas/ProcessInstanceResponse"
+        "503":
           description: Unable to connect to Zeebe cluster
       tags:
         - Process-Automation
   /jobs:
     get:
       summary: Activate Jobs of a specific type
-      description: |-
-        Will activate available jobs of the specific type, and returns the activated jobs.
-        
+      description: >-
+        Will activate available jobs of the specific type, and returns the
+        activated jobs.
+
+
         If no jobs of this type are available, then the connection may be kept open until one or
+
         more jobs become available, or the request times out due to long polling.
       operationId: activateJobs
       parameters:
@@ -82,7 +90,7 @@ paths:
           required: false
           schema:
             type: string
-            default: "default"
+            default: default
         - name: jobTimeout
           description: Duration during which the activated jobs are claimed by this worker
           in: query
@@ -90,19 +98,21 @@ paths:
           required: false
           schema:
             type: string
-            default: "5m"
+            default: 5m
           examples:
             durationTenSeconds:
-              $ref: '#/components/examples/durationTenSeconds'
+              $ref: "#/components/examples/durationTenSeconds"
             durationFiveMin:
-              $ref: '#/components/examples/durationFiveMin'
+              $ref: "#/components/examples/durationFiveMin"
             durationOneAndAHalfHour:
-              $ref: '#/components/examples/durationOneAndAHalfHour'
+              $ref: "#/components/examples/durationOneAndAHalfHour"
         - name: fetchVariables
-          description: |-
+          description: >-
             Names of the variables to fetch with each job.
-            
+
+
             If empty, all visible variables at the time of activation for the scope of the job will
+
             be returned.
           in: query
           style: form
@@ -112,18 +122,17 @@ paths:
             items:
               type: string
       responses:
-        '200':
+        "200":
           description: Zero or more jobs activated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ActivatedJobsResponse'
-        '503':
+                $ref: "#/components/schemas/ActivatedJobsResponse"
+        "503":
           description: Unable to connect to Zeebe cluster
       tags:
         - Process-Automation
-
-  /jobs/{key}:
+  "/jobs/{key}":
     patch:
       summary: Update a Job
       description: |-
@@ -156,43 +165,40 @@ paths:
             type: integer
             format: int64
       requestBody:
-        $ref: '#/components/requestBodies/UpdateJobRequest'
+        $ref: "#/components/requestBodies/UpdateJobRequest"
       x-codegen-request-body-name: body
       responses:
-        '204':
+        "204":
           description: Successfully updated the job
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UpdateJobResponse'
-        '503':
+                $ref: "#/components/schemas/UpdateJobResponse"
+        "503":
           description: Unable to connect to Zeebe cluster
       tags:
         - Process-Automation
-
 tags:
   - name: Cluster
     description: Find out the status of your cluster.
   - name: Process-Automation
     description: Everything to automate your processes.
-
 components:
   requestBodies:
     CreateProcessInstanceRequest:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CreateProcessInstanceRequest'
+            $ref: "#/components/schemas/CreateProcessInstanceRequest"
       description: A request to create a new process instance
       required: true
     UpdateJobRequest:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/UpdateJobRequest'
+            $ref: "#/components/schemas/UpdateJobRequest"
       description: A request to update a job
       required: true
-
   schemas:
     StatusResponse:
       title: A response to GET /status
@@ -200,7 +206,7 @@ components:
       type: object
       properties:
         data:
-          $ref: '#/components/schemas/Topology'
+          $ref: "#/components/schemas/Topology"
         error:
           type: string
     Topology:
@@ -226,7 +232,7 @@ components:
         brokers:
           type: array
           items:
-            $ref: '#/components/schemas/TopologyBroker'
+            $ref: "#/components/schemas/TopologyBroker"
           description: The list of brokers that are part of the cluster
     TopologyBroker:
       type: object
@@ -247,7 +253,7 @@ components:
         partitions:
           type: array
           items:
-            $ref: '#/components/schemas/TopologyPartition'
+            $ref: "#/components/schemas/TopologyPartition"
           description: The list of partitions managed or replicated on this broker
         nodeId:
           type: integer
@@ -262,21 +268,26 @@ components:
           description: The unique (within a cluster) ID of the partition
         role:
           type: string
-          enum: ["LEADER", "FOLLOWER", "INACTIVE"]
+          enum:
+            - LEADER
+            - FOLLOWER
+            - INACTIVE
           description: The RAFT role of the broker for the partition
         leader:
-          type:  boolean
+          type: boolean
           description: Whether the broker is leader for the partition, or not
         health:
           type: string
-          enum: ["HEALTHY", "UNHEALTHY", "DEAD"]
+          enum:
+            - HEALTHY
+            - UNHEALTHY
+            - DEAD
           description: The health of the partition on the broker
     CreateProcessInstanceRequest:
       title: A request to create a new process instance
       description: A request to create a new process instance
       type: object
       properties:
-        # todo: make these properties oneOf
         bpmnProcessId:
           type: string
           description: BPMN process id of the process to instantiate
@@ -292,7 +303,7 @@ components:
       type: object
       properties:
         data:
-          $ref: '#/components/schemas/ProcessInstance'
+          $ref: "#/components/schemas/ProcessInstance"
         error:
           type: string
     ProcessInstance:
@@ -325,15 +336,17 @@ components:
             jobs:
               type: array
               items:
-                $ref: '#/components/schemas/Job'
+                $ref: "#/components/schemas/Job"
         error:
           type: string
     Job:
       title: A unit of work within a process
-      description: |-
+      description: >-
         A job represents a distinct unit of work within a business process.
-        
+
+
         Service tasks represent such jobs in your process and are identified by a unique id.
+
         A job has a type to allow specific job workers to find jobs that they can work on.
       type: object
       properties:
@@ -377,8 +390,9 @@ components:
           description: Key of the element instance which this job belongs to
         customHeaders:
           type: object
-          description: |
-            Set of custom headers defined during modelling; returned as a serialized JSON document
+          description: >
+            Set of custom headers defined during modelling; returned as a
+            serialized JSON document
         worker:
           type: string
           description: Name of the worker that activated this job
@@ -392,32 +406,35 @@ components:
           description: UNIX epoch timestamp specifying when the job can be activated again
         variables:
           type: object
-          description: |
-            JSON document consisting of all variables visible to the task scope at the time of job
+          description: >
+            JSON document consisting of all variables visible to the task scope
+            at the time of job
+
             activation
     UpdateJobRequest:
       title: A request to update a job
       description: A request to update a job
       type: object
-      # todo: consider using oneOf/anyOf
       properties:
         status:
           type: string
           example: completed
-          description: |-
-            Requested state for the job, either one of `completed`, `failed`, or `error_thrown`
+          description: Requested state for the job, either one of `completed`, `failed`,
+            or `error_thrown`
         retries:
           type: integer
           format: int32
           description: Number of retries for the job when it `failed`
         retryBackoff:
           type: string
-          default: "0ms"
-          example: "2s 500ms"
-          description: Duration after which the job becomes `activatable` again when it `failed`
+          default: 0ms
+          example: 2s 500ms
+          description: Duration after which the job becomes `activatable` again when it
+            `failed`
         errorCode:
           type: string
-          description: Code to match an error catch event when job state `error_thrown` requested
+          description: Code to match an error catch event when job state `error_thrown`
+            requested
         errorMessage:
           type: string
           description: Message to describe the error when job state `error_thrown` requested
@@ -435,14 +452,13 @@ components:
         data: {}
         error:
           type: string
-
   examples:
     durationTenSeconds:
       summary: Duration of ten seconds
-      value: "10s"
+      value: 10s
     durationFiveMin:
       summary: Duration of five minutes
-      value: "5m"
+      value: 5m
     durationOneAndAHalfHour:
       summary: Duration of one hour and thirty minutes
-      value: "1h30m"
+      value: 1h30m

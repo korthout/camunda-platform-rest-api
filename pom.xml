@@ -11,7 +11,7 @@
 
   <groupId>com.github.korthout</groupId>
   <artifactId>camunda-platform-rest-api</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.1.0</version>
 
   <name>Camunda Platform REST API</name>
   <description>REST API to interact with Camunda Platform 8</description>
