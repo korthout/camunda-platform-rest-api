@@ -43,7 +43,7 @@ jobs:
         run: mvn versions:set -DnewVersion=${{ inputs.releaseVersion }} -DgenerateBackupPoms=false
 
       - name: Set release version in openapi.yaml
-        uses: endaft/action-yamler@v1.0.5
+        uses: endaft/action-yamler@v1.1.0
         with:
           file: ./openapi.yaml
           path: info.version
@@ -73,7 +73,7 @@ jobs:
         run: mvn versions:set -DnewVersion=${{ inputs.nextDevelopmentVersion }} -DgenerateBackupPoms=false
 
       - name: Set next development version in openapi.yaml
-        uses: endaft/action-yamler@v1.0.5
+        uses: endaft/action-yamler@v1.1.0
         with:
           file: ./openapi.yaml
           path: info.version
