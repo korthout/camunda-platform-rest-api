@@ -184,7 +184,7 @@ const config = {
     announcementBar: {
       id: "announcementBar_1", // Increment on change
       content:
-        `📢 <strong>Public Beta</strong>: We want your <a href="https://github.com/korthout/camunda-platform-rest-api/issues">feedback</a>! 📢
+        `📢 <strong>Public Beta</strong>: We want your <a href="https://forum.camunda.io/t/camunda-platform-rest-api-a-rest-api-for-camunda-platform-8/42610">feedback</a>! 📢
         &nbsp;&nbsp;&nbsp;
         🚧 <strong>Warning:</strong> This API is not yet stable - we might break backward compatibility in newer releases of <code>v0</code>. 🚧`,
     },
