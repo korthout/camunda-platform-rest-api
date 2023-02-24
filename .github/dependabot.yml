@@ -23,3 +23,15 @@ updates:
       prefix: "deps(.github): "
     labels:
       - "dependencies"
+
+  # Enable version updates for the docs
+  - package-ecosystem: "npm"
+    directory: "/docs"
+    schedule:
+      interval: "daily"
+      time: "13:00"
+      timezone: "UTC"
+    commit-message:
+      prefix: "deps(docs): "
+    labels:
+      - "dependencies"
