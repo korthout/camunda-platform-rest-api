@@ -6,6 +6,7 @@ import io.camunda.operate.auth.SaasAuthentication;
 import io.camunda.operate.auth.SelfManagedAuthentication;
 import io.camunda.operate.auth.SimpleAuthentication;
 import io.camunda.operate.exception.OperateException;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,49 +54,58 @@ public class OperateClientFactory {
     @Value("${camunda.operate.client.keycloak-realm:#{null}}")
     private String operateKeycloakRealm;
 
-    private String getOperateUrl() {
+    public Optional<CamundaOperateClient> camundaOperateClient() {
+        record Config(String url, AuthInterface auth) { }
+        return getOperateUrl()
+            .flatMap(url -> getAuthentication(url).map(auth -> new Config(url, auth)))
+            .map(config -> {
+                try {
+                    return new CamundaOperateClient.Builder()
+                        .operateUrl(config.url)
+                        .authentication(config.auth)
+                        .build();
+                } catch (OperateException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+    }
+
+    private Optional<String> getOperateUrl() {
         if (clusterId!=null) {
             String url = "https://" + region + ".operate.camunda.io/" + clusterId + "/";
             LOG.debug("Connecting to Camunda Operate SaaS via URL: " + url);
-            return url;
+            return Optional.of(url);
         } else if (operateUrl!=null) {
             LOG.debug("Connecting to Camunda Operate on URL: " + operateUrl);
-            return operateUrl;
+            return Optional.ofNullable(operateUrl);
         }
-        throw new IllegalArgumentException("In order to connect to Camunda Operate you need to specify either a SaaS clusterId or an Operate URL.");
+        return Optional.empty();
     }
 
-    public AuthInterface getAuthentication(String operateUrl) {
+    public Optional<AuthInterface> getAuthentication(String operateUrl) {
         if (operateKeycloakUrl!=null) {
             if (operateClientId!=null) {
                 LOG.debug("Authenticating with Camunda Operate using Keycloak on " + operateKeycloakUrl);
-                return new SelfManagedAuthentication(operateClientId, operateClientSecret)
-                        .keycloakUrl(operateKeycloakUrl).keycloakRealm(operateKeycloakRealm);
+                return Optional.ofNullable(
+                    new SelfManagedAuthentication(operateClientId, operateClientSecret)
+                        .keycloakUrl(operateKeycloakUrl).keycloakRealm(operateKeycloakRealm));
             } else if (clientId!=null) {
                 LOG.debug("Authenticating with Camunda Operate using Keycloak on " + operateKeycloakUrl);
-                return new SelfManagedAuthentication(clientId, clientSecret)
-                        .keycloakUrl(operateKeycloakUrl).keycloakRealm(operateKeycloakRealm);
+                return Optional.ofNullable(new SelfManagedAuthentication(clientId, clientSecret)
+                    .keycloakUrl(operateKeycloakUrl).keycloakRealm(operateKeycloakRealm));
             }
         } else {
             if (operateClientId!=null) {
                 LOG.debug("Authenticating with Camunda Operate using client id and secret");
-                return new SaasAuthentication(operateClientId, operateClientSecret);
+                return Optional.of(new SaasAuthentication(operateClientId, operateClientSecret));
             } else if (clientId!=null) {
                 LOG.debug("Authenticating with Camunda Operate using client id and secret");
-                return new SaasAuthentication(clientId, clientSecret);
+                return Optional.of(new SaasAuthentication(clientId, clientSecret));
             } else if (operateUsername!=null){
                 LOG.debug("Authenticating with Camunda Operate using username and password");
-                return new SimpleAuthentication("demo", "demo", operateUrl);
+                return Optional.of(new SimpleAuthentication("demo", "demo", operateUrl));
             }
         }
-        throw new IllegalArgumentException("In order to connect to Camunda Operate you need to configure authentication properly.");
-    }
-
-    public CamundaOperateClient camundaOperateClient() throws OperateException {
-        String operateUrl = getOperateUrl();
-        return new CamundaOperateClient.Builder()
-                .operateUrl(operateUrl)
-                .authentication(getAuthentication(operateUrl))
-                .build();
+        return Optional.empty();
     }
 }

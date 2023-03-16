@@ -47,14 +47,14 @@ public class OperateClientLifecycle extends CamundaOperateClient implements Smar
     @Override
     public void start() {
         if (factory!=null) {
-            try {
-                delegate = factory.camundaOperateClient();
-            } catch (OperateException e) {
-                throw new RuntimeException("Could not start Camunda Operate Client: "+ e.getMessage(), e);
+            final var camundaOperateClient = factory.camundaOperateClient();
+            if (camundaOperateClient.isPresent() ) {
+                delegate = camundaOperateClient.get();
+                this.running = true;
             }
-            this.running = true;
         } else {
             // in test cases we have injected a delegate already
+            this.running = true;
             runningInTestContext = true;
         }
     }
@@ -97,86 +97,86 @@ public class OperateClientLifecycle extends CamundaOperateClient implements Smar
 
     @Override
     public ProcessDefinition getProcessDefinition(Long key) throws OperateException {
-        return delegate.getProcessDefinition(key);
+        return get().getProcessDefinition(key);
     }
 
     @Override
     public List<ProcessDefinition> searchProcessDefinitions(SearchQuery query) throws OperateException {
-        return delegate.searchProcessDefinitions(query);
+        return get().searchProcessDefinitions(query);
     }
 
     @Override
     public String getProcessDefinitionXml(Long key) throws OperateException {
-        return delegate.getProcessDefinitionXml(key);
+        return get().getProcessDefinitionXml(key);
     }
 
     @Override
     public BpmnModelInstance getProcessDefinitionModel(Long key) throws OperateException {
-        return delegate.getProcessDefinitionModel(key);
+        return get().getProcessDefinitionModel(key);
     }
 
     @Override
     public ProcessInstance getProcessInstance(Long key) throws OperateException {
-        return delegate.getProcessInstance(key);
+        return get().getProcessInstance(key);
     }
 
     @Override
     public List<ProcessInstance> searchProcessInstances(SearchQuery query) throws OperateException {
-        return delegate.searchProcessInstances(query);
+        return get().searchProcessInstances(query);
     }
 
     @Override
     public FlownodeInstance getFlownodeInstance(Long key) throws OperateException {
-        return delegate.getFlownodeInstance(key);
+        return get().getFlownodeInstance(key);
     }
 
     @Override
     public List<FlownodeInstance> searchFlownodeInstances(SearchQuery query) throws OperateException {
-        return delegate.searchFlownodeInstances(query);
+        return get().searchFlownodeInstances(query);
     }
 
     @Override
     public Incident getIncident(Long key) throws OperateException {
-        return delegate.getIncident(key);
+        return get().getIncident(key);
     }
 
     @Override
     public List<Incident> searchIncidents(SearchQuery query) throws OperateException {
-        return delegate.searchIncidents(query);
+        return get().searchIncidents(query);
     }
 
     @Override
     public Variable getVariable(Long key) throws OperateException {
-        return delegate.getVariable(key);
+        return get().getVariable(key);
     }
 
     @Override
     public List<Variable> searchVariables(SearchQuery query) throws OperateException {
-        return delegate.searchVariables(query);
+        return get().searchVariables(query);
     }
 
     @Override
     public String getOperateUrl() {
-        return delegate.getOperateUrl();
+        return get().getOperateUrl();
     }
 
     @Override
     public void setOperateUrl(String operateUrl) {
-        delegate.setOperateUrl(operateUrl);
+        get().setOperateUrl(operateUrl);
     }
 
     @Override
     public Header getAuthHeader() {
-        return delegate.getAuthHeader();
+        return get().getAuthHeader();
     }
 
     @Override
     public void setAuthHeader(Header authHeader) {
-        delegate.setAuthHeader(authHeader);
+        get().setAuthHeader(authHeader);
     }
 
     @Override
     public void setTokenExpiration(int tokenExpiration) {
-        delegate.setTokenExpiration(tokenExpiration);
+        get().setTokenExpiration(tokenExpiration);
     }
 }
