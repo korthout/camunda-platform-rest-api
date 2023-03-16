@@ -1,0 +1,50 @@
+---
+id: get-process-instance
+title: "Retrieve the details of a process instance"
+description: "Retrieve the details of a process instance."
+sidebar_label: "Retrieve the details of a process instance"
+hide_title: true
+hide_table_of_contents: true
+api: {"description":"Retrieve the details of a process instance.\nNote that this data may lag behind the actual process instance's status, but is eventually consistent.","operationId":"getProcessInstance","parameters":[{"name":"key","description":"Key (unique identifier) of the process instance","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"The details of the process instance.","content":{"application/json":{"schema":{"title":"A response to a request to retrieve ProcessInstanceDetails","description":"A response to a request to retrieve ProcessInstanceDetails","type":"object","properties":{"data":{"title":"A process instance","description":"A process instance","type":"object","properties":{"processDefinitionKey":{"type":"integer","format":"int64","description":"Key of the process which this instance belongs to"},"bpmnProcessId":{"type":"string","description":"BPMN process id of the process which this instance belongs to"},"version":{"type":"integer","description":"Version of the process which this instance belongs to"},"processInstanceKey":{"type":"integer","format":"int64","description":"Unique key of the process instance on the partition"},"parentInstanceKey":{"type":"integer","format":"int64","description":"Unique key of the process instance which this instance is a part of (e.g. called from call activity), or null if it has no parent instance"},"status":{"type":"string","description":"The status of the process instance","enum":["activated","has_incident","completed","terminated"]},"startedAt":{"type":"string","description":"Timestamp when the process instance was started, in ISO 8601 representation"},"endedAt":{"type":"string","description":"Timestamp when the process instance was ended, in ISO 8601 representation, or null if it has yet ended"}}},"error":{"type":"string"}}}}}},"404":{"description":"Unable to find the process instance. Are you sure an instance with this key was created? Note that this data may lag behind due to eventual consistency. Please try this request again in a few moments."},"503":{"description":"Unable to connect to Operate"}},"tags":["Insights"],"method":"get","path":"/process-instances/{key}","info":{"title":"Camunda Platform REST API","description":"REST API to interact with Camunda Platform 8.\n\n:::caution\n\nThis API is not yet stable - we may break backward compatibility in newer releases of `v0`.\n\n:::","version":"0.2.0-SNAPSHOT","externalDocs":{"description":"Find out more","url":"https://korthout.github.io/camunda-platform-rest-api/"}},"postman":{"name":"Retrieve the details of a process instance","description":{"content":"Retrieve the details of a process instance.\nNote that this data may lag behind the actual process instance's status, but is eventually consistent.","type":"text/plain"},"url":{"path":["process-instances",":key"],"host":["{{baseUrl}}"],"query":[],"variable":[{"disabled":false,"description":{"content":"(Required) Key (unique identifier) of the process instance","type":"text/plain"},"type":"any","value":"","key":"key"}]},"header":[{"key":"Accept","value":"application/json"}],"method":"GET"}}
+sidebar_class_name: "get api-method"
+info_path: docs/api/camunda-platform-rest-api
+custom_edit_url: null
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiDemoPanel/MethodEndpoint";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import TabItem from "@theme/TabItem";
+
+<h1 className={"openapi__heading"}>Retrieve the details of a process instance</h1>
+
+<MethodEndpoint method={"get"} path={"/process-instances/{key}"}></MethodEndpoint>
+
+
+
+Retrieve the details of a process instance.
+Note that this data may lag behind the actual process instance's status, but is eventually consistent.
+
+<details style={{"marginBottom":"1rem"}} className={"openapi-markdown__details"} data-collapsed={false} open={true}><summary style={{}}><strong>Path Parameters</strong></summary><div><ul><ParamsItem className={"paramsItem"} param={{"name":"key","description":"Key (unique identifier) of the process instance","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}}></ParamsItem></ul></div></details><div><div><ApiTabs><TabItem label={"200"} value={"200"}><div>
+
+The details of the process instance.
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details"} data-collapsed={false} open={true}><summary style={{"textAlign":"left"}}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}} className={"openapi-markdown__details"}><summary style={{}}><strong>data</strong><span style={{"opacity":"0.6"}}> object</span></summary><div style={{"marginLeft":"1rem"}}><div style={{"marginTop":".5rem","marginBottom":".5rem"}}>
+
+A process instance
+
+</div><SchemaItem collapsible={false} name={"processDefinitionKey"} required={false} schemaName={"int64"} qualifierMessage={undefined} schema={{"type":"integer","format":"int64","description":"Key of the process which this instance belongs to"}}></SchemaItem><SchemaItem collapsible={false} name={"bpmnProcessId"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"BPMN process id of the process which this instance belongs to"}}></SchemaItem><SchemaItem collapsible={false} name={"version"} required={false} schemaName={"integer"} qualifierMessage={undefined} schema={{"type":"integer","description":"Version of the process which this instance belongs to"}}></SchemaItem><SchemaItem collapsible={false} name={"processInstanceKey"} required={false} schemaName={"int64"} qualifierMessage={undefined} schema={{"type":"integer","format":"int64","description":"Unique key of the process instance on the partition"}}></SchemaItem><SchemaItem collapsible={false} name={"parentInstanceKey"} required={false} schemaName={"int64"} qualifierMessage={undefined} schema={{"type":"integer","format":"int64","description":"Unique key of the process instance which this instance is a part of (e.g. called from call activity), or null if it has no parent instance"}}></SchemaItem><SchemaItem collapsible={false} name={"status"} required={false} schemaName={"string"} qualifierMessage={"**Possible values:** [`activated`, `has_incident`, `completed`, `terminated`]"} schema={{"type":"string","description":"The status of the process instance","enum":["activated","has_incident","completed","terminated"]}}></SchemaItem><SchemaItem collapsible={false} name={"startedAt"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Timestamp when the process instance was started, in ISO 8601 representation"}}></SchemaItem><SchemaItem collapsible={false} name={"endedAt"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Timestamp when the process instance was ended, in ISO 8601 representation, or null if it has yet ended"}}></SchemaItem></div></details></SchemaItem><SchemaItem collapsible={false} name={"error"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string"}}></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"data\": {\n    \"processDefinitionKey\": 0,\n    \"bpmnProcessId\": \"string\",\n    \"version\": 0,\n    \"processInstanceKey\": 0,\n    \"parentInstanceKey\": 0,\n    \"status\": \"activated\",\n    \"startedAt\": \"string\",\n    \"endedAt\": \"string\"\n  },\n  \"error\": \"string\"\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem><TabItem label={"404"} value={"404"}><div>
+
+Unable to find the process instance. Are you sure an instance with this key was created? Note that this data may lag behind due to eventual consistency. Please try this request again in a few moments.
+
+</div><div></div></TabItem><TabItem label={"503"} value={"503"}><div>
+
+Unable to connect to Operate
+
+</div><div></div></TabItem></ApiTabs></div></div>
+      
