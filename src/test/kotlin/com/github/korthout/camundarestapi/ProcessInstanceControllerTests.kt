@@ -266,6 +266,7 @@ class ProcessInstanceControllerTests(@Autowired val mvc: MockMvc) {
 
   @Test
   fun getByKeyShouldRespondNotFound() {
+    operateClient.onGetProcessInstance(OperateException("Authentication error : 404"))
     mvc
       .perform(get("/process-instances/2").accept(MediaType.APPLICATION_JSON))
       .andExpect(status().isNotFound)

@@ -73,6 +73,9 @@ class ProcessInstanceController : ProcessInstancesApi {
       try {
         operateClient.getProcessInstance(key) ?: return ResponseEntity.notFound().build()
       } catch (e: OperateException) {
+        if (e.message?.contains("404") == true) {
+          return ResponseEntity.notFound().build()
+        }
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
           .body(
             ProcessInstanceDetailsResponse(
