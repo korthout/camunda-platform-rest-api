@@ -20,6 +20,10 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - name: Determine current date
+        id: date
+        run: echo "today=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
       - uses: actions/checkout@v3
         with:
           token: ${{ secrets.RELEASE_PAT }}
@@ -48,6 +52,27 @@ jobs:
           file: ./openapi.yaml
           path: info.version
           set: ${{ inputs.releaseVersion }}
+
+      - name: Add release version section to CHANGELOG.md
+        uses: jacobtomlinson/gha-find-replace@v3
+        with:
+          include: CHANGELOG.md
+          find: '## \[Unreleased\]'
+          replace: |-
+            ## [Unreleased]
+            
+            ## [${{ inputs.releaseVersion }}] - ${{ steps.date.outputs.today }}
+          regex: true
+
+      - name: Add release version reference to CHANGELOG.md
+        uses: jacobtomlinson/gha-find-replace@v3
+        with:
+          include: CHANGELOG.md
+          find: '\[unreleased\]: https://github\.com/korthout/camunda-platform-rest-api/compare/v([\d\.]+)\.\.\.main'
+          replace: |-
+            [unreleased]: https://github.com/korthout/camunda-platform-rest-api/compare/v${{ inputs.releaseVersion }}...main
+            [${{ inputs.releaseVersion }}]: https://github.com/korthout/camunda-platform-rest-api/compare/v$1...v${{ inputs.releaseVersion }}
+          regex: true
 
       - name: Generate docs for new release version
         run: |
