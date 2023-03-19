@@ -13,6 +13,9 @@ info:
 
     :::
   version: 0.2.0-SNAPSHOT
+externalDocs:
+  description: Find out more
+  url: https://korthout.github.io/camunda-platform-rest-api/
 paths:
   /status:
     get:
@@ -53,7 +56,40 @@ paths:
         "503":
           description: Unable to connect to Zeebe cluster
       tags:
-        - Process-Automation
+        - Automation
+  "/process-instances/{key}":
+    get:
+      summary: Retrieve the details of a process instance
+      description: >-
+        Retrieve the details of a process instance.
+
+        Note that this data may lag behind the actual process instance's status, but is eventually consistent.
+      operationId: getProcessInstance
+      parameters:
+        - name: key
+          description: Key (unique identifier) of the process instance
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: The details of the process instance.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProcessInstanceDetailsResponse"
+        "404":
+          description: >-
+            Unable to find the process instance.
+            Are you sure an instance with this key was created?
+            Note that this data may lag behind due to eventual consistency.
+            Please try this request again in a few moments.
+        "503":
+          description: Unable to connect to Operate
+      tags:
+        - Insights
   /jobs:
     get:
       summary: Activate Jobs of a specific type
@@ -131,7 +167,7 @@ paths:
         "503":
           description: Unable to connect to Zeebe cluster
       tags:
-        - Process-Automation
+        - Automation
   "/jobs/{key}":
     patch:
       summary: Update a Job
@@ -177,12 +213,14 @@ paths:
         "503":
           description: Unable to connect to Zeebe cluster
       tags:
-        - Process-Automation
+        - Automation
 tags:
   - name: Cluster
     description: Find out the status of your cluster.
-  - name: Process-Automation
+  - name: Automation
     description: Everything to automate your processes.
+  - name: Insights
+    description: Insights into your processes.
 components:
   requestBodies:
     CreateProcessInstanceRequest:
@@ -325,6 +363,52 @@ components:
           type: integer
           format: int64
           description: Unique key of the created process instance on the partition
+    ProcessInstanceDetailsResponse:
+      title: A response to a request to retrieve ProcessInstanceDetails
+      description: A response to a request to retrieve ProcessInstanceDetails
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/ProcessInstanceDetails"
+        error:
+          type: string
+    ProcessInstanceDetails:
+      title: A process instance
+      description: A process instance
+      type: object
+      properties:
+        processDefinitionKey:
+          type: integer
+          format: int64
+          description: Key of the process which this instance belongs to
+        bpmnProcessId:
+          type: string
+          description: BPMN process id of the process which this instance belongs to
+        version:
+          type: integer
+          description: Version of the process which this instance belongs to
+        processInstanceKey:
+          type: integer
+          format: int64
+          description: Unique key of the process instance on the partition
+        parentInstanceKey:
+          type: integer
+          format: int64
+          description: Unique key of the process instance which this instance is a part of (e.g. called from call activity), or null if it has no parent instance
+        status:
+          type: string
+          description: The status of the process instance
+          enum:
+            - activated
+            - has_incident
+            - completed
+            - terminated
+        startedAt:
+          type: string
+          description: Timestamp when the process instance was started, in ISO 8601 representation
+        endedAt:
+          type: string
+          description: Timestamp when the process instance was ended, in ISO 8601 representation, or null if it has yet ended
     ActivatedJobsResponse:
       title: A response to a request to Activate Jobs
       description: A response to a request to Activate Jobs

@@ -47,13 +47,14 @@ Camunda Platform REST API offers a single consistent REST API to interact with C
 
 ### API
 
-| Method  |       Resource       |               Description                |
-|---------|----------------------|------------------------------------------|
-| `GET`   | `/status`            | Retrieve the Topology of a Zeebe cluster |
-| `POST`  | `/process-instances` | Create a new Process Instance            |
-| `GET`   | `/jobs`              | Activate Jobs                            |
-| `PATCH` | `/jobs/{key}`        | Update a Job                             |
-| ..      | ..                   | Not yet implemented                      |
+| Method  |          Resource          |                Description                 |
+|---------|----------------------------|--------------------------------------------|
+| `GET`   | `/status`                  | Retrieve the Topology of a Zeebe cluster   |
+| `POST`  | `/process-instances`       | Create a new Process Instance              |
+| `GET`   | `/process-instances/{key}` | Retrieve the details of a Process Instance |
+| `GET`   | `/jobs`                    | Activate Jobs                              |
+| `PATCH` | `/jobs/{key}`              | Update a Job                               |
+| ..      | ..                         | Not yet implemented                        |
 
 You can find the full API reference documentation in the [`openapi.yaml`](openapi.yaml) specification, and in the [Docs](https://korthout.github.io/camunda-platform-rest-api/).
 
@@ -65,8 +66,8 @@ The easiest way to start the Camunda Platform REST API is using Docker.
 docker pull ghcr.io/korthout/camunda-platform-rest-api:latest
 ```
 
-Using the provided [Docker Compose file](./docker/docker-compose.yml) you can start a new local Zeebe cluster and connect the Camunda Platform REST API to it.
-This is a great way to try out the Camunda Platform REST API before connecting it to your production Zeebe cluster.
+Using the provided [Docker Compose file](./docker/docker-compose.yml) you can start a new local Camunda Platform 8 cluster and connect the Camunda Platform REST API to it.
+This is a great way to try out the Camunda Platform REST API before connecting it to your production cluster.
 
 ```shell
 docker compose -f ./docker/docker-compose.yml up -d
@@ -80,83 +81,12 @@ curl localhost:8080/status
 
 Or, explore the API in Swagger UI running at [/swagger-ui](http://localhost:8080/swagger-ui.html).
 
-## Connecting to your Camunda Platform SaaS cluster
+## Documentation
 
-Connecting to your own cluster can be achieved using environment variables.
-In order to connect to a Camunda Platform SaaS cluster, you'll need to
-[create an API Client](https://docs.camunda.io/docs/components/console/manage-clusters/manage-api-clients/)
-first. Make sure to select the `Zeebe` scope.
-Once created, download the credentials as Spring Boot file.
-These Spring Boot properties can be directly used as environment variables.
-Simply pass the file to Docker when you start up the container.
-
-```shell
-docker run -p 8080:8080 \
-  --env-file /path-to-credentials-spring-boot-file \
-  ghcr.io/korthout/camunda-platform-rest-api:latest
-```
-
-> **Note**
-> You'll need to open port 8080, so you can reach the API from your local machine, and it can reach the cluster.
-
-If you don't connect to the Camunda Platform SaaS production environment you may also have to adjust these properties:
-
-```shell
-zeebe.client.cloud.base-url=zeebe.camunda.io
-zeebe.client.cloud.port=443
-zeebe.client.cloud.auth-url=https://login.cloud.camunda.io/oauth/token
-```
-
-## Connecting to your Camunda Platform Self-Managed cluster
-
-Connecting to your own cluster can be achieved using environment variables.
-In order to connect to a Camunda Platform Self-Managed cluster, you'll need to know the IP address
-of the Zeebe Gateway.
-Simply pass the address of the Zeebe Gateway as `ZEEBE_CLIENT_BROKER_GATEWAYADDRESS` to Docker when you start up the container.
-
-```shell
-# Example connecting to Self-Managed Zeebe Gateway at 192.168.50.118
-docker run -p 8080:8080 \
-  -e ZEEBE_CLIENT_BROKER_GATEWAYADDRESS=192.168.50.118:26500 \
-  ghcr.io/korthout/camunda-platform-rest-api:latest
-```
-
-> **Note**
-> You'll need to open port 8080, so you can reach the API from your local machine, and it can reach the cluster.
-
-### Secure Communication using TLS
-
-By default, the Camunda Platform REST API communicates securely with the Zeebe Gateway over TLS.
-Without any configuration, the client looks in the system's certificate store for a CA certificate with which to validate the gateway's certificate chain.
-If you wish to use TLS without having to install a certificate in client's system, you can specify a CA certificate using `ZEEBE_CA_CERTIFICATE_PATH`.
-
-```shell
-# Example connecting to Self-Managed Zeebe Gateway at 192.168.50.118 with a specific CA certificate
-docker run -p 8080:8080 \
-  -e ZEEBE_CLIENT_BROKER_GATEWAYADDRESS=192.168.50.118:26500 \
-  -e ZEEBE_CA_CERTIFICATE_PATH=/path-to-ca-certificate \
-  ghcr.io/korthout/camunda-platform-rest-api:latest
-```
-
-### Disabling TLS
-
-If your Zeebe Gateway does not have [TLS enabled](https://docs.camunda.io/docs/self-managed/zeebe-deployment/security/secure-client-communication/#gateway),
-then you can use `ZEEBE_INSECURE_CONNECTION` to disable the secure communication with the Zeebe Gateway over TLS.
-
-```shell
-# Example connecting to Self-Managed Zeebe Gateway at 192.168.50.118 without TLS
-docker run -p 8080:8080 \
-  -e ZEEBE_CLIENT_BROKER_GATEWAYADDRESS=192.168.50.118:26500 \
-  -e ZEEBE_INSECURE_CONNECTION=true \
-  ghcr.io/korthout/camunda-platform-rest-api:latest
-```
-
-## Configuration
-
-You can configure the underlying spring-zeebe client using any of the
-[Zeebe Client environment variables](https://docs.camunda.io/docs/apis-clients/java-client/#bootstrapping)
-and the [additional configuration options](https://github.com/camunda-community-hub/spring-zeebe#additional-configuration-options)
-offered by spring-zeebe.
+Read the [docs](https://korthout.github.io/camunda-platform-rest-api/) for any further information:
+- [Connect to a cluster](https://korthout.github.io/camunda-platform-rest-api/docs/guides/connection)
+- [Configuration](https://korthout.github.io/camunda-platform-rest-api/docs/guides/config)
+- [API](https://korthout.github.io/camunda-platform-rest-api/docs/api)
 
 ## Acknowledgements
 
@@ -164,6 +94,8 @@ This software would not be possible without these awesome projects:
 
 - [Spring Zeebe](https://github.com/camunda-community-hub/spring-zeebe)
   \- Easily use the Zeebe Java Client in your Spring or Spring Boot projects
+- [Camunda Operate Client](https://github.com/camunda-community-hub/camunda-operate-client-java)
+  \- Simplified Java client for the Operate API of Camunda Platform 8
 - [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator)
   \- Generate clients, servers, and documentation from OpenAPI 2.0/3.x documents
 - [Docusaurus OpenAPI Doc Generator](https://github.com/PaloAltoNetworks/docusaurus-openapi-docs)

@@ -133,6 +133,10 @@ const config = {
               {
                 label: "GitHub",
                 href: "https://github.com/korthout/camunda-platform-rest-api"
+              },
+              {
+                label: "Changelog",
+                href: "https://github.com/korthout/camunda-platform-rest-api/blob/main/CHANGELOG.md"
               }
             ]
           }
