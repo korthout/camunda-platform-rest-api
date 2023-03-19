@@ -10,6 +10,8 @@ and this project will adhere to [Semantic Versioning](https://semver.org/spec/v2
 
 ## [Unreleased]
 
+## [0.2.0] - 2023-03-19
+
 ### Added
 
 - New operations to:
@@ -42,6 +44,7 @@ and this project will adhere to [Semantic Versioning](https://semver.org/spec/v2
   - Activate Jobs
   - Update a Job (Complete, Fail, or Throw Error)
 
-[unreleased]: https://github.com/korthout/camunda-platform-rest-api/compare/v0.1.0...main
+[unreleased]: https://github.com/korthout/camunda-platform-rest-api/compare/v0.2.0...main
+[0.2.0]: https://github.com/korthout/camunda-platform-rest-api/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/korthout/camunda-platform-rest-api/releases/tag/v0.1.0
 

@@ -12,7 +12,7 @@ info:
 
 
     :::
-  version: 0.2.0-SNAPSHOT
+  version: 0.2.0
 externalDocs:
   description: Find out more
   url: https://korthout.github.io/camunda-platform-rest-api/
@@ -81,11 +81,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProcessInstanceDetailsResponse"
         "404":
-          description: >-
-            Unable to find the process instance.
-            Are you sure an instance with this key was created?
-            Note that this data may lag behind due to eventual consistency.
-            Please try this request again in a few moments.
+          description: Unable to find the process instance. Are you sure an instance with
+            this key was created? Note that this data may lag behind due to
+            eventual consistency. Please try this request again in a few
+            moments.
         "503":
           description: Unable to connect to Operate
       tags:
@@ -394,7 +393,9 @@ components:
         parentInstanceKey:
           type: integer
           format: int64
-          description: Unique key of the process instance which this instance is a part of (e.g. called from call activity), or null if it has no parent instance
+          description: Unique key of the process instance which this instance is a part of
+            (e.g. called from call activity), or null if it has no parent
+            instance
         status:
           type: string
           description: The status of the process instance
@@ -405,10 +406,12 @@ components:
             - terminated
         startedAt:
           type: string
-          description: Timestamp when the process instance was started, in ISO 8601 representation
+          description: Timestamp when the process instance was started, in ISO 8601
+            representation
         endedAt:
           type: string
-          description: Timestamp when the process instance was ended, in ISO 8601 representation, or null if it has yet ended
+          description: Timestamp when the process instance was ended, in ISO 8601
+            representation, or null if it has yet ended
     ActivatedJobsResponse:
       title: A response to a request to Activate Jobs
       description: A response to a request to Activate Jobs
