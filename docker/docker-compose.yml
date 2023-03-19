@@ -9,10 +9,14 @@ services:
     environment:
       - ZEEBE_CLIENT_BROKER_GATEWAY-ADDRESS=zeebe:26500
       - ZEEBE_CLIENT_SECURITY_PLAINTEXT=true
+      - CAMUNDA_OPERATE_CLIENT_URL=http://operate:8080
+      - CAMUNDA_OPERATE_CLIENT_USERNAME=demo
+      - CAMUNDA_OPERATE_CLIENT_PASSWORD=demo
     networks:
       - camunda-platform
     depends_on:
       - zeebe
+      - operate
 
   zeebe:
     container_name: zeebe
@@ -25,14 +29,63 @@ services:
       - ZEEBE_BROKER_DATA_DISKUSAGECOMMANDWATERMARK=0.998
       - ZEEBE_BROKER_DATA_DISKUSAGEREPLICATIONWATERMARK=0.999
       - "JAVA_TOOL_OPTIONS=-Xms512m -Xmx512m"
+      - ZEEBE_BROKER_EXPORTERS_ELASTICSEARCH_CLASSNAME=io.camunda.zeebe.exporter.ElasticsearchExporter
+      - ZEEBE_BROKER_EXPORTERS_ELASTICSEARCH_ARGS_URL=http://elasticsearch:9200
+      - ZEEBE_BROKER_EXPORTERS_ELASTICSEARCH_ARGS_BULK_SIZE=1
     restart: always
     volumes:
       - zeebe:/usr/local/zeebe/data
     networks:
       - camunda-platform
+    depends_on:
+      - elasticsearch
+
+  operate:
+    container_name: operate
+    image: camunda/operate:8.1.4
+    ports:
+      - "8081:8080"
+    environment:
+      - CAMUNDA_OPERATE_ZEEBE_GATEWAYADDRESS=zeebe:26500
+      - CAMUNDA_OPERATE_ELASTICSEARCH_URL=http://elasticsearch:9200
+      - CAMUNDA_OPERATE_ZEEBEELASTICSEARCH_URL=http://elasticsearch:9200
+    networks:
+      - camunda-platform
+    depends_on:
+      - zeebe
+      - elasticsearch
+
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.5
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      # allow running with low disk space
+      - cluster.routing.allocation.disk.threshold_enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:9200/_cat/health | grep -q green" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - elastic:/usr/share/elasticsearch/data
+    networks:
+      - camunda-platform
 
 volumes:
   zeebe:
+  elastic:
 
 networks:
   camunda-platform:
