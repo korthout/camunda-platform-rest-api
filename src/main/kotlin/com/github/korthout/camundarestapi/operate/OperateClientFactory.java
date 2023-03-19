@@ -103,7 +103,7 @@ public class OperateClientFactory {
                 return Optional.of(new SaasAuthentication(clientId, clientSecret));
             } else if (operateUsername!=null){
                 LOG.debug("Authenticating with Camunda Operate using username and password");
-                return Optional.of(new SimpleAuthentication("demo", "demo", operateUrl));
+                return Optional.of(new SimpleAuthentication(operateUsername, operatePassword, operateUrl));
             }
         }
         return Optional.empty();
