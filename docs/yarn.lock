@@ -3948,10 +3948,10 @@ dns-packet@^5.2.2:
   dependencies:
     "@leichtgewicht/ip-codec" "^2.0.1"
 
-docusaurus-plugin-openapi-docs@^2.0.0-beta.1:
-  version "2.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/docusaurus-plugin-openapi-docs/-/docusaurus-plugin-openapi-docs-2.0.0-beta.1.tgz#04d3c0c335ae3fb420e4ea62a8fb837ba89c6285"
-  integrity sha512-SM7u9HRy3SFJm65Mmb33RNBhkYpYzl0J43afBv/wRg3Z0AnlQSOmVVyxg2GoR4+PLPhFLhVoARuOXmqbjMdVPw==
+docusaurus-plugin-openapi-docs@^2.0.0-beta.1, docusaurus-plugin-openapi-docs@^2.0.0-beta.2:
+  version "2.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/docusaurus-plugin-openapi-docs/-/docusaurus-plugin-openapi-docs-2.0.0-beta.2.tgz#728c3765833d868d79ede01c81d8d2dd53a7e351"
+  integrity sha512-QQwoz3CLMb9dl2M9PKU4tPNeqkqTUjukh8L4d1ggmGTojmt0i2QxDixqGcdEV0zA/bzrRdgm6gykOHvyMdiP0A==
   dependencies:
     "@apidevtools/json-schema-ref-parser" "^9.0.9"
     "@docusaurus/mdx-loader" "^2.3.0"
