@@ -39,7 +39,7 @@
 
   <properties>
     <java.version>17</java.version>
-    <kotlin.version>1.8.10</kotlin.version>
+    <kotlin.version>1.8.20</kotlin.version>
     <version.dep.camunda-operate-client-java>8.1.7.0</version.dep.camunda-operate-client-java>
     <version.dep.kotlin-duration-string>1.2</version.dep.kotlin-duration-string>
     <version.dep.spring-zeebe-starter>8.1.17</version.dep.spring-zeebe-starter>
