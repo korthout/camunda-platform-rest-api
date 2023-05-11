@@ -47,7 +47,7 @@
     <version.plugin.jib-maven-plugin>3.3.1</version.plugin.jib-maven-plugin>
     <version.plugin.maven-gpg-plugin>3.0.1</version.plugin.maven-gpg-plugin>
     <version.plugin.nexus-staging-maven-plugin>1.6.13</version.plugin.nexus-staging-maven-plugin>
-    <version.plugin.openapi-generator-maven-plugin>6.4.0</version.plugin.openapi-generator-maven-plugin>
+    <version.plugin.openapi-generator-maven-plugin>6.6.0</version.plugin.openapi-generator-maven-plugin>
     <version.plugin.spotless>2.28.0</version.plugin.spotless>
   </properties>
 
