@@ -42,7 +42,7 @@
     <kotlin.version>1.8.10</kotlin.version>
     <version.dep.camunda-operate-client-java>8.1.7.0</version.dep.camunda-operate-client-java>
     <version.dep.kotlin-duration-string>1.2</version.dep.kotlin-duration-string>
-    <version.dep.spring-zeebe-starter>8.1.17</version.dep.spring-zeebe-starter>
+    <version.dep.spring-zeebe-starter>8.2.2</version.dep.spring-zeebe-starter>
     <version.dep.springdoc-openapi-ui>2.0.4</version.dep.springdoc-openapi-ui>
     <version.plugin.jib-maven-plugin>3.3.1</version.plugin.jib-maven-plugin>
     <version.plugin.maven-gpg-plugin>3.0.1</version.plugin.maven-gpg-plugin>
