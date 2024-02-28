@@ -6,23 +6,19 @@
   <a href="https://github.com/camunda-community-hub/community"><img src="https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700" alt="Community Extension" /></a>
   <br/>
   <a href="https://camunda.com/platform/"><img src="https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%208-0072Ce" alt="Compatible with: Camunda Platform 8" /></a>
-  <a href="https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#incubating-"><img src="https://img.shields.io/badge/Lifecycle-Incubating-blue" alt="Lifecycle: Incubating" /></a>
+  <a href="https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#Unmaintained-"><img src="https://img.shields.io/badge/Lifecycle-Unmaintained-lightgrey" alt="Lifecycle: Unmaintained" /></a>
   <img alt="GitHub" src="https://img.shields.io/github/license/korthout/camunda-platform-rest-api?label=License" alt="Licence: Apache-2.0">
 </p>
 
-> **Note**
-> **Public Beta** - We want your feedback!
-> Give it a star on GitHub if you like the project.
-> Or please tell us what you'd like to see added or changed in a [GitHub Issue](https://github.com/korthout/camunda-platform-rest-api/issues).
+> [!WARNING]
+> **This project is unmaintained** - There are ongoing efforts to add a REST API to Zeebe and ideas about unifying the REST APIs of all Camunda Platform 8 components.
+> With that, it's time to sunset this project.
 >
-> **Warning**
-> **This project is incubating** - While it is ready to be used,
-> it does not offer operations for all parts of Camunda Platform 8 yet.
-> Have a look at [API](#api) to see what operations are already available.
-> [Let us know](https://github.com/korthout/camunda-platform-rest-api/issues/10) what operations you'd like to see next.
+> Working on this project has taught me much about Spring and Kotlin and even more about REST APIs.
+> I'm proud that Camunda is taking a path that was explored by this project and took note of our successes and mistakes to make a better product.
 >
-> **Warning**
-> **This API is not yet stable** - We might break backward compatibility in newer releases of `v0`.
+> Thank you all for all your feedback and support.
+> Happy RESTful orchestrating!
 
 ## Introduction
 
